@@ -1,0 +1,94 @@
+/* Shared sidebar and mobile navigation styles */
+.sidebar {
+    width: 80px;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+}
+
+.nav-icons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.icon-box {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+}
+
+.icon-box i {
+    font-size: 1.05rem;
+    color: #ffffff;
+}
+
+.icon-box.active {
+    background-color: #0d6efd;
+    box-shadow: 0 4px 14px rgba(13,110,253,0.25);
+}
+
+.icon-box:hover:not(.active) {
+    background-color: #6c757d;
+}
+
+/* Mobile bottom nav */
+.mobile-nav {
+    position: fixed;
+    /* inset slightly so rounded corners are visible */
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    height: 64px;
+    background: rgba(0, 0, 0, 0.92);
+    display: none; /* shown only on small screens via media query */
+    justify-content: space-around;
+    align-items: center;
+    z-index: 200;
+    border-radius: 14px;
+    padding: 6px 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.28);
+}
+
+.mobile-nav a {
+    color: #e9ecef;
+    text-decoration: none;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.mobile-nav a i { font-size: 18px; }
+.mobile-nav a.active { color: #0d6efd; }
+
+@media (max-width: 768px) {
+    .sidebar { display: none !important; }
+    main { padding-bottom: 80px; }
+    .mobile-nav { display: flex; }
+}
+
+/* Sessions badge (small round count) */
+.icon-box { position: relative; }
+.sessions-nav-count {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: #ffc107;
+    color: #000;
+    padding: 2px 6px;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    display: none;
+}
+.mobile-nav .sessions-nav-count { position: static; margin-left:6px; top: auto; right: auto; display: inline-block; background: transparent; color: inherit; padding:0; font-weight:600; }

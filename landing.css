@@ -1,0 +1,352 @@
+/* ================= GLOBAL ================= */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+    background: radial-gradient(circle at top left, #e0e7ff, transparent 40%),
+        radial-gradient(circle at bottom right, #fce7f3, transparent 40%),
+        linear-gradient(180deg, #f8fafc, #f1f5f9);
+    scroll-behavior: smooth;
+}
+
+.text-gradient {
+    background: linear-gradient(135deg, #0d6efd, #6610f2);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.tracking-tight {
+    letter-spacing: -0.5px;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #0d6efd;
+    border: none;
+    transition: 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);
+}
+
+.hover-lift:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* ================= BACKGROUND ANIMATION ================= */
+.doodle-layer {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.doodle {
+    position: absolute;
+    opacity: 0.15;
+    animation: float 7s ease-in-out infinite;
+}
+
+.doodle.circle {
+    width: 200px;
+    height: 200px;
+    border: 4px dashed #6366f1;
+    border-radius: 50%;
+    top: 10%;
+    left: 5%;
+}
+
+.doodle.zigzag {
+    width: 160px;
+    height: 60px;
+    border-top: 4px solid #ec4899;
+    transform: rotate(-12deg);
+    top: 68%;
+    left: 6%;
+}
+
+.doodle.blob {
+    width: 260px;
+    height: 200px;
+    background: radial-gradient(circle at 30% 30%, #93c5fd, transparent 70%);
+    border-radius: 60% 40% 55% 45%;
+    top: 18%;
+    right: 8%;
+}
+
+.doodle.star {
+    width: 100px;
+    height: 100px;
+    border: 3px solid #22c55e;
+    transform: rotate(45deg);
+    top: 72%;
+    right: 20%;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-12px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+/* ================= HERO & 3D ELEMENTS ================= */
+.hero-section {
+    min-height: 100vh;
+    padding-top: 80px;
+    overflow: hidden;
+}
+
+.navbar {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+/* 3D Container */
+.perspective-container {
+    width: 100%;
+    height: 500px;
+    /* Increased height */
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    transition: transform 0.1s ease-out;
+}
+
+.layer {
+    position: absolute;
+    width: 320px;
+    height: 480px;
+    border-radius: 28px;
+    transition: transform 0.1s ease-out;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* --- CRITICAL Z-INDEX FIX --- */
+.layer-3 {
+    background: linear-gradient(135deg, #6610f2, #0d6efd);
+    transform: translateZ(0px) translateX(-40px) rotate(-5deg);
+    opacity: 0.6;
+    z-index: 1 !important;
+    /* Force to Back */
+}
+
+.layer-2 {
+    background: #ffffff;
+    transform: translateZ(40px) translateX(-20px) rotate(-3deg);
+    opacity: 0.8;
+    z-index: 2 !important;
+    /* Force to Middle */
+}
+
+.layer-1 {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(5px);
+    transform: translateZ(80px);
+    z-index: 3 !important;
+    /* Force to Front */
+    overflow: hidden;
+}
+
+/* Window controls */
+.circle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.circle.red {
+    background: #ff5f56;
+}
+
+.circle.yellow {
+    background: #ffbd2e;
+}
+
+.circle.green {
+    background: #27c93f;
+}
+
+/* Floating Badge */
+.floating-badge {
+    position: absolute;
+    bottom: 40px;
+    right: -30px;
+    background: white;
+    padding: 12px 20px;
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    border: 1px solid #edf2f7;
+    transform: translateZ(120px);
+    z-index: 10 !important;
+    min-width: 180px;
+}
+
+/* ================= FEATURES ================= */
+.icon-square {
+    width: 60px;
+    height: 60px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.feature-card {
+    background: white;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+.feature-image-box {
+    position: relative;
+    transition: transform 0.3s;
+}
+
+.rotate-right {
+    transform: rotate(3deg);
+}
+
+.rotate-left {
+    transform: rotate(-3deg);
+}
+
+.feature-image-box:hover {
+    transform: rotate(0deg) scale(1.02);
+}
+
+/* Mock Elements */
+.heat-box {
+    width: 30px;
+    height: 30px;
+    background: #e9ecef;
+    border-radius: 4px;
+}
+
+.heat-box.active {
+    background: #0d6efd;
+}
+
+.timer-ring {
+    width: 120px;
+    height: 120px;
+    border: 4px solid #0d6efd;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-top-color: transparent;
+}
+
+.fake-calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.fake-calendar-grid span {
+    padding: 5px;
+    background: white;
+    border-radius: 4px;
+}
+
+.fake-calendar-grid span.active {
+    background: #0d6efd;
+    color: white;
+}
+
+/* Gamification */
+.bg-white\/10 {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.backdrop-blur {
+    backdrop-filter: blur(10px);
+}
+
+.border-white\/10 {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Scroll Animations */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.delay-100 {
+    animation-delay: 0.1s;
+}
+
+.delay-200 {
+    animation-delay: 0.2s;
+}
+
+.delay-300 {
+    animation-delay: 0.3s;
+}
+
+.delay-400 {
+    animation-delay: 0.4s;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mobile */
+@media (max-width: 991px) {
+    .perspective-container {
+        height: 400px;
+        transform: scale(0.85);
+    }
+
+    .layer {
+        width: 280px;
+        height: 420px;
+    }
+
+    .hero-section {
+        text-align: center;
+        padding-top: 100px;
+    }
+}

@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memoir • The Ultimate Student Planner</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="shared.css">
+    <link rel="stylesheet" href="landing.css">
+</head>
+
+<body>
+
+    <div class="doodle-layer">
+        <span class="doodle circle"></span>
+        <span class="doodle zigzag"></span>
+        <span class="doodle blob"></span>
+        <span class="doodle star"></span>
+        <span class="doodle circle" style="top:50%; left:80%"></span>
+        <span class="doodle zigzag" style="top:10%; right:10%"></span>
+        <span class="doodle circle"></span>
+        <span class="doodle zigzag"></span>
+        <span class="doodle blob"></span>
+        <span class="doodle star"></span>
+        <span class="doodle circle" style="top:50%; left:80%"></span>
+        <span class="doodle zigzag" style="top:10%; right:10%"></span>
+    </div>
+
+    <nav class="navbar navbar-expand-lg fixed-top py-3 transition-all">
+        <div class="container">
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="#">
+                <i class="fa-solid fa-owl text-primary fs-4"></i>
+                <span class="tracking-tight">Memoir</span>
+            </a>
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto gap-lg-4 align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="#how-it-works">How it Works</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#gamification">Gamification</a></li>
+                    <li class="nav-item">
+                        <a href="login.html" class="btn btn-outline-primary rounded-pill px-4 me-2">Log In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="login.html?mode=signup" class="btn btn-primary rounded-pill px-4 shadow-sm hover-lift">Get Started</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero-section d-flex align-items-center position-relative" id="hero">
+        <div class="container position-relative z-2">
+            <div class="row align-items-center">
+                
+                <div class="col-lg-5 mb-5 mb-lg-0 text-center text-lg-start">
+                    <div class="badge bg-white text-primary border border-primary-subtle rounded-pill px-3 py-2 mb-3 fw-bold shadow-sm fade-in-up">
+                        🚀 Project 2025 Live
+                    </div>
+                    <h1 class="display-3 fw-bolder mb-3 lh-sm fade-in-up delay-100">
+                        Study Smarter,<br> <span class="text-gradient">Not Harder.</span>
+                    </h1>
+                    <p class="lead text-muted mb-4 fade-in-up delay-200">
+                        The all-in-one productivity OS for CSE students. Track sessions, visualize progress with heatmaps, and earn badges.
+                    </p>
+                    <div class="d-flex gap-3 justify-content-center justify-content-lg-start fade-in-up delay-300">
+                        <a href="login.html" class="btn btn-primary btn-lg rounded-pill px-5 shadow-lg hover-lift">
+                            Join Now
+                        </a>
+                    </div>
+                    
+                    <div class="mt-5 d-flex align-items-center justify-content-center justify-content-lg-start gap-3 fade-in-up delay-400">
+                        <div class="avatars">
+                            <span class="avatar bg-primary text-white">H</span>
+                            <span class="avatar bg-success text-white">R</span>
+                            <span class="avatar bg-warning text-dark">A</span>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <div class="d-flex text-warning small">
+                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                            </div>
+                            <small class="text-muted fw-bold">Loved by 1000+ students</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-7">
+                    <div class="perspective-container" id="tiltContainer">
+                        
+                        <div class="layer layer-3 bg-gradient-primary"></div>
+                        
+                        <div class="layer layer-2 bg-white shadow-lg"></div>
+                        
+                        <div class="layer layer-1 main-card shadow-2xl bg-white d-flex flex-column">
+                            <div class="card-header border-bottom p-3 d-flex justify-content-between align-items-center bg-white">
+                                <div class="d-flex gap-2">
+                                    <div class="circle red"></div>
+                                    <div class="circle yellow"></div>
+                                    <div class="circle green"></div>
+                                </div>
+                                <div class="small fw-bold text-muted text-uppercase">Memoir Dashboard</div>
+                                <i class="bi bi-person-circle text-muted fs-5"></i>
+                            </div>
+
+                            <div class="card-body p-4 bg-light flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <div>
+                                        <h5 class="fw-bold mb-0">Good Morning! ☀️</h5>
+                                        <small class="text-muted">Ready to focus?</small>
+                                    </div>
+                                    <div class="btn btn-primary btn-sm rounded-pill px-3">+ Session</div>
+                                </div>
+
+                                <div class="bg-white p-3 rounded-4 shadow-sm border mb-3">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <small class="fw-bold text-primary">Daily Goal</small>
+                                        <small class="fw-bold">4h / 6h</small>
+                                    </div>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar bg-primary w-75"></div>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <div class="bg-white p-3 rounded-4 shadow-sm border h-100 text-center">
+                                            <i class="bi bi-fire text-warning fs-4 mb-1"></i>
+                                            <h6 class="fw-bold mb-0">7 Day</h6>
+                                            <small class="text-muted" style="font-size: 10px;">Current Streak</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="bg-white p-3 rounded-4 shadow-sm border h-100 text-center">
+                                            <i class="bi bi-journal-text text-success fs-4 mb-1"></i>
+                                            <h6 class="fw-bold mb-0">3 Notes</h6>
+                                            <small class="text-muted" style="font-size: 10px;">Added Today</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="floating-badge">
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="badge bg-success rounded-circle p-2"><i class="bi bi-check-lg"></i></span>
+                                    <div>
+                                        <div class="fw-bold small lh-1">Session Complete</div>
+                                        <small class="text-muted" style="font-size: 10px;">+25 mins Focus</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <section class="py-5 bg-light" id="how-it-works">
+        <div class="container py-5">
+            <div class="text-center mb-5 reveal">
+                <small class="text-primary fw-bold text-uppercase ls-1">Workflow</small>
+                <h2 class="fw-bold mt-2">Your Daily Productivity Loop</h2>
+            </div>
+            <div class="row g-4 text-center">
+                <div class="col-md-4 reveal delay-100">
+                    <div class="p-4 bg-white rounded-4 shadow-sm h-100 hover-lift border">
+                        <div class="icon-square bg-primary-subtle text-primary mb-4 rounded-circle mx-auto">
+                            <i class="bi bi-calendar-plus fs-3"></i>
+                        </div>
+                        <h4 class="fw-bold">1. Plan</h4>
+                        <p class="text-muted">Set your daily goals and schedule sessions in the calendar.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 reveal delay-200">
+                    <div class="p-4 bg-white rounded-4 shadow-sm h-100 hover-lift border">
+                        <div class="icon-square bg-success-subtle text-success mb-4 rounded-circle mx-auto">
+                            <i class="bi bi-play-circle fs-3"></i>
+                        </div>
+                        <h4 class="fw-bold">2. Focus</h4>
+                        <p class="text-muted">Start the SmartTimer. Block distractions and get in the zone.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 reveal delay-300">
+                    <div class="p-4 bg-white rounded-4 shadow-sm h-100 hover-lift border">
+                        <div class="icon-square bg-warning-subtle text-warning mb-4 rounded-circle mx-auto">
+                            <i class="bi bi-trophy fs-3"></i>
+                        </div>
+                        <h4 class="fw-bold">3. Reward</h4>
+                        <p class="text-muted">Watch your heatmap grow, unlock badges, and maintain your streak.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5" id="features">
+        <div class="container py-5">
+            
+            <div class="row align-items-center mb-5 pb-5 reveal">
+                <div class="col-lg-6 order-lg-2">
+                    <div class="feature-image-box bg-white p-2 rounded-4 shadow-lg rotate-right">
+                        <div class="p-4 bg-light rounded-4 border">
+                            <div class="d-flex gap-2 mb-3">
+                                <div class="heat-box active"></div><div class="heat-box"></div><div class="heat-box active"></div><div class="heat-box active"></div>
+                            </div>
+                            <h4 class="fw-bold">Focus Score: 85%</h4>
+                            <div class="progress mt-3" style="height: 10px;">
+                                <div class="progress-bar bg-primary w-75"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 order-lg-1">
+                    <div class="icon-square bg-primary-subtle text-primary mb-4 rounded-4">
+                        <i class="bi bi-graph-up-arrow fs-3"></i>
+                    </div>
+                    <h2 class="fw-bold display-6 mb-3">Visualize Your Progress</h2>
+                    <p class="lead text-muted mb-4">Stop guessing how much you study. Our heatmaps and focus scores give you data-driven insights.</p>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Daily & Weekly Goal Tracking</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> Subject-wise breakdown</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row align-items-center mb-5 pb-5 reveal">
+                <div class="col-lg-6">
+                    <div class="feature-image-box bg-white p-2 rounded-4 shadow-lg rotate-left">
+                        <div class="p-5 bg-dark text-white rounded-4 text-center">
+                            <div class="timer-ring mx-auto mb-3">25:00</div>
+                            <span class="badge bg-primary-subtle text-primary rounded-pill px-3">Pomodoro Mode</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 offset-lg-1">
+                    <div class="icon-square bg-success-subtle text-success mb-4 rounded-4">
+                        <i class="bi bi-stopwatch fs-3"></i>
+                    </div>
+                    <h2 class="fw-bold display-6 mb-3">Master Your Focus</h2>
+                    <p class="lead text-muted mb-4">Choose between Pomodoro intervals or Deep Focus sessions. Our SmartTimer keeps distractions away.</p>
+                    <a href="timer.html" class="btn btn-outline-dark rounded-pill px-4">Try Timer Demo</a>
+                </div>
+            </div>
+
+            <div class="row align-items-center reveal">
+                <div class="col-lg-6 order-lg-2">
+                    <div class="feature-image-box bg-white p-2 rounded-4 shadow-lg rotate-right">
+                        <div class="p-4 bg-light rounded-4 border">
+                            <div class="d-flex justify-content-between mb-3">
+                                <span class="fw-bold">December</span>
+                                <span class="badge bg-warning text-dark">Exams</span>
+                            </div>
+                            <div class="fake-calendar-grid">
+                                <span>1</span><span>2</span><span class="active">3</span><span>4</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 order-lg-1">
+                    <div class="icon-square bg-warning-subtle text-warning mb-4 rounded-4">
+                        <i class="bi bi-calendar-check fs-3"></i>
+                    </div>
+                    <h2 class="fw-bold display-6 mb-3">Plan Like a Pro</h2>
+                    <p class="lead text-muted mb-4">The interactive calendar lets you log notes, mark days as 'Productive' or 'Missed', and track monthly tasks.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="py-5 bg-dark text-white position-relative overflow-hidden" id="gamification">
+        <div class="position-absolute top-0 end-0 p-5 opacity-25">
+            <i class="bi bi-trophy-fill display-1"></i>
+        </div>
+        <div class="container py-5 position-relative z-2">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-5 mb-lg-0 reveal">
+                    <span class="text-warning fw-bold text-uppercase ls-1">Gamification</span>
+                    <h2 class="display-5 fw-bold mb-4">Make Studying Addictive.</h2>
+                    <p class="lead text-white-50 mb-4">Earn badges for consistency, late-night sessions, and focus milestones. Turn your hard work into a trophy cabinet.</p>
+                    <div class="d-flex gap-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="badge-icon bg-warning text-dark rounded-circle p-2"><i class="bi bi-fire"></i></div>
+                            <span>Streaks</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="badge-icon bg-info text-dark rounded-circle p-2"><i class="bi bi-lightning-fill"></i></div>
+                            <span>Levels</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 offset-lg-1 reveal">
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <div class="bg-white/10 backdrop-blur p-4 rounded-4 text-center border border-white/10 hover-scale">
+                                <div class="fs-1 mb-2">🦉</div>
+                                <h6 class="fw-bold">Night Owl</h6>
+                                <small class="text-white-50">Study after 10 PM</small>
+                            </div>
+                        </div>
+                        <div class="col-6 mt-4">
+                            <div class="bg-white/10 backdrop-blur p-4 rounded-4 text-center border border-white/10 hover-scale">
+                                <div class="fs-1 mb-2">🔥</div>
+                                <h6 class="fw-bold">On Fire</h6>
+                                <small class="text-white-50">7 Day Streak</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5 bg-white">
+        <div class="container py-5">
+            <div class="text-center mb-5 reveal">
+                <h2 class="fw-bold">Frequently Asked Questions</h2>
+            </div>
+            <div class="row justify-content-center reveal">
+                <div class="col-lg-8">
+                    <div class="accordion accordion-flush" id="faqAccordion">
+                        <div class="accordion-item border-bottom">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                    Is Memoir free to use?
+                                </button>
+                            </h2>
+                            <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-muted">Yes! Project 2025 is currently free for all students.</div>
+                            </div>
+                        </div>
+                        <div class="accordion-item border-bottom">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                    Can I use it on mobile?
+                                </button>
+                            </h2>
+                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-muted">Absolutely. Memoir is fully responsive and works great on phones and tablets.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5 bg-light">
+        <div class="container py-5">
+            <div class="bg-primary rounded-5 p-5 text-center text-white shadow-lg position-relative overflow-hidden reveal">
+                <div class="doodle circle position-absolute top-0 start-0 opacity-25" style="border-color: white;"></div>
+                <div class="doodle star position-absolute bottom-0 end-0 opacity-25" style="border-color: white;"></div>
+                
+                <div class="position-relative z-2">
+                    <h2 class="display-5 fw-bold mb-3">Ready to transform your grades?</h2>
+                    <p class="lead mb-4 text-white-50">Join Project 2025 and start building your study streak today.</p>
+                    <a href="login.html?mode=signup" class="btn btn-light btn-lg rounded-pill px-5 fw-bold text-primary shadow-sm hover-lift">
+                        Create Free Account
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-white py-5 border-top">
+        <div class="container">
+            <div class="row g-4 justify-content-between">
+                <div class="col-lg-4">
+                    <a class="d-flex align-items-center gap-2 text-decoration-none text-dark mb-3" href="#">
+                        <i class="fa-solid fa-owl text-primary fs-4"></i>
+                        <span class="fw-bold fs-5">Memoir</span>
+                    </a>
+                    <p class="text-muted small">The ultimate study companion for Computer Science Engineering students.</p>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <h6 class="fw-bold mb-3">Product</h6>
+                    <ul class="list-unstyled small gap-2 d-flex flex-column">
+                        <li><a href="timer.html" class="text-muted text-decoration-none">Timer</a></li>
+                        <li><a href="calendar.html" class="text-muted text-decoration-none">Calendar</a></li>
+                        <li><a href="badges1.html" class="text-muted text-decoration-none">Badges</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <h6 class="fw-bold mb-3">Project</h6>
+                    <ul class="list-unstyled small gap-2 d-flex flex-column">
+                        <li><a href="#" class="text-muted text-decoration-none">About</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Github</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-top mt-5 pt-4 text-center">
+                <p class="mb-0 text-muted small">&copy; 2025 Memoir Project.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        const hero = document.getElementById('hero');
+        const container = document.getElementById('tiltContainer');
+        const layerBack = document.querySelector('.layer-3');
+        const layerMiddle = document.querySelector('.layer-2');
+        const layerFront = document.querySelector('.layer-1');
+        const badge = document.querySelector('.floating-badge');
+
+        if (hero && container) {
+            hero.addEventListener('mousemove', (e) => {
+                const rect = hero.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                
+                const mouseX = e.clientX - centerX;
+                const mouseY = e.clientY - centerY;
+
+                // 1. Rotate Container
+                const rotateX = (mouseY / rect.height) * -15; 
+                const rotateY = (mouseX / rect.width) * 15;
+                container.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+
+                // 2. Parallax Layers (Strict Z-Order)
+                // Back Moves Less (10), Front Moves More (30)
+                const backMoveX = (mouseX / rect.width) * 10; 
+                const backMoveY = (mouseY / rect.height) * 10;
+                layerBack.style.transform = `translateZ(0px) translateX(${backMoveX * -1}px) translateY(${backMoveY * -1}px) rotate(-5deg)`;
+
+                const midMoveX = (mouseX / rect.width) * 20; 
+                const midMoveY = (mouseY / rect.height) * 20;
+                layerMiddle.style.transform = `translateZ(40px) translateX(${midMoveX * -1}px) translateY(${midMoveY * -1}px) rotate(-3deg)`;
+
+                const frontMoveX = (mouseX / rect.width) * 30; 
+                const frontMoveY = (mouseY / rect.height) * 30;
+                layerFront.style.transform = `translateZ(80px) translateX(${frontMoveX * -1}px) translateY(${frontMoveY * -1}px)`;
+
+                if(badge) {
+                    const badgeMoveX = (mouseX / rect.width) * 50;
+                    const badgeMoveY = (mouseY / rect.height) * 50;
+                    badge.style.transform = `translateZ(120px) translateX(${badgeMoveX * -1.5}px) translateY(${badgeMoveY * -1.5}px)`;
+                }
+            });
+
+            // Reset
+            hero.addEventListener('mouseleave', () => {
+                container.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+                // Reset to CSS default states
+                layerBack.style.transform = `translateZ(0px) rotate(-5deg)`;
+                layerMiddle.style.transform = `translateZ(40px) rotate(-3deg)`;
+                layerFront.style.transform = `translateZ(80px)`;
+                if(badge) badge.style.transform = `translateZ(120px)`;
+            });
+        }
+
+        // Scroll Reveal
+        const revealElements = document.querySelectorAll('.reveal');
+        window.addEventListener('scroll', () => {
+            const windowHeight = window.innerHeight;
+            revealElements.forEach((reveal) => {
+                const elementTop = reveal.getBoundingClientRect().top;
+                if (elementTop < windowHeight - 100) {
+                    reveal.classList.add('active');
+                }
+            });
+        });
+        
+        // Navbar Scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-sm', 'bg-white');
+                nav.classList.remove('py-3');
+                nav.classList.add('py-2');
+            } else {
+                nav.classList.remove('shadow-sm', 'bg-white');
+                nav.classList.add('py-3');
+                nav.classList.remove('py-2');
+            }
+        });
+    </script>
+</body>
+</html>

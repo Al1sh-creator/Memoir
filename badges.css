@@ -1,0 +1,103 @@
+/* Badge Cards */
+.badge-card {
+  background: #f9fafb;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.badge-card:hover {
+  transform: scale(1.04);
+}
+
+/* Icon */
+.badge-icon {
+  font-size: 2rem;
+}
+
+/* States */
+.badge-card.locked {
+  opacity: 0.5;
+  filter: grayscale(1);
+}
+
+.badge-card.earned {
+  border: 2px solid #22c55e;
+  background: #ecfdf5;
+}
+
+/* Status text */
+.badge-status {
+  font-size: 0.8rem;
+  margin-top: 0.4rem;
+}
+
+/* Progress bar */
+.badge-progress {
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: #22c55e;
+  transition: width 0.4s ease;
+}
+.sidebar {
+  width: 80px;
+  background: linear-gradient(180deg, #0f0f0f, #000);
+  min-height: 100vh;
+  padding-top: 1rem;
+  border-right: 1px solid #1f2937;
+}
+
+.icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  transition: all 0.2s ease;
+}
+
+.icon-box:hover {
+  background: #1f2937;
+  color: #fff;
+  transform: scale(1.08);
+}
+
+.icon-box.active {
+  background: #fff;
+  color: #000;
+  box-shadow: 0 4px 14px rgba(255,255,255,0.15);
+}
+/* Rare badge glow */
+.badge-card.rare {
+  position: relative;
+  border: 2px solid #facc15;
+  box-shadow:
+    0 0 8px rgba(250, 204, 21, 0.6),
+    0 0 20px rgba(250, 204, 21, 0.4);
+  animation: rareGlow 2s infinite alternate;
+}
+
+@keyframes rareGlow {
+  from {
+    box-shadow:
+      0 0 6px rgba(250, 204, 21, 0.5),
+      0 0 14px rgba(250, 204, 21, 0.3);
+  }
+  to {
+    box-shadow:
+      0 0 10px rgba(250, 204, 21, 0.9),
+      0 0 24px rgba(250, 204, 21, 0.6);
+  }
+}
