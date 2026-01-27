@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memoir • Subjects</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="shared.css">
+    <link rel="stylesheet" href="subjects.css">
+    <script src="shared.js"></script>
+    <script src="auth.js"></script>
+</head>
+<body class="bg-light">
+    <nav class="mobile-nav d-md-none">
+        <a href="pg1.html"><i class="bi bi-speedometer"></i><span>Home</span></a>
+        <a href="timer.html"><i class="bi bi-stopwatch"></i><span>Timer</span></a>
+        <a href="subjects.html" class="active"><i class="bi bi-mortarboard-fill"></i><span>Subjects</span></a>
+    </nav>
+
+    <div class="d-flex">
+        <nav class="sidebar d-flex flex-column align-items-center bg-black vh-100 py-4 rounded">
+            <div class="mb-4"><i class="bi bi-owl fs-3 text-white"></i></div>
+            <div class="nav-icons d-flex flex-column gap-2">
+                <a href="pg1.html" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
+                    <div class="icon-box"><i class="bi bi-speedometer"></i></div>
+                </a>
+                <a href="timer.html" data-bs-toggle="tooltip" data-bs-placement="right" title="Timer">
+                    <div class="icon-box"><i class="bi bi-stopwatch"></i></div>
+                </a>
+                <a href="Sessions.html" data-bs-toggle="tooltip" data-bs-placement="right" title="Study Sessions">
+                    <div class="icon-box"><i class="bi bi-book"></i><span class="sessions-nav-count" data-sessions-badge></span></div>
+                </a>
+                <a href="subjects.html" data-bs-toggle="tooltip" data-bs-placement="right" title="Subjects">
+                    <div class="icon-box active"><i class="bi bi-mortarboard-fill"></i></div>
+                </a>
+                <a href="analytics.html" data-bs-toggle="tooltip" data-bs-placement="right" title="Analytics">
+                    <div class="icon-box"><i class="bi bi-bar-chart-line"></i></div>
+                </a>
+            </div>
+        </nav>
+
+        <main class="flex-grow-1 p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold">My Subjects</h2>
+                <button class="btn btn-dark rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#addSubjectModal">
+                    + Add Subject
+                </button>
+            </div>
+
+            <div class="row g-4" id="subjectsGrid">
+                </div>
+        </main>
+    </div>
+
+    <div class="modal fade" id="addSubjectModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 shadow">
+                <div class="modal-header border-0">
+                    <h5 class="fw-bold">New Subject</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="subjectForm">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Subject Name</label>
+                            <input type="text" id="subjectName" class="form-control rounded-3" placeholder="e.g. Mathematics" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Goal (Hours)</label>
+                            <input type="number" id="subjectGoal" class="form-control rounded-3" placeholder="e.g. 40">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 rounded-pill">Create Subject</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Check authentication first
+            if (!auth.requireAuth()) {
+                return; // Will redirect to login
+            }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="sessions.js"></script>
+    <script src="subjects.js"></script>
+
+    <script>
+        function handleLogout() {
+            auth.logout();
+            window.location.href = 'landing.html';
+        }
+    </script>
+</body>
+</html>

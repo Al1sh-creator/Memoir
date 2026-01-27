@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Memoir • Focus Timer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Bootstrap & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="shared.css">
+  <!-- Shared Dashboard CSS -->
+  <link rel="stylesheet" href="pg1.css">
+
+  <!-- Timer CSS -->
+  <link rel="stylesheet" href="timer.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="shared.js"></script>
+  <script src="auth.js"></script>
+
+<script>
+    // This script must be on every page to initialize the tooltips
+    document.addEventListener("DOMContentLoaded", function() {
+        // Check authentication first
+        if (!auth.requireAuth()) {
+            return; // Will redirect to login
+        }
+
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    });
+</script>
+</head>
+
+<body class="bg-light">
+<!-- ===============Doodle Layer============== -->
+<div class="doodle-layer">
+  <span class="doodle circle"></span>
+  <span class="doodle zigzag"></span>
+  <span class="doodle blob"></span>
+  <span class="doodle star"></span>
+   <span class="doodle circle"></span>
+  <span class="doodle zigzag"></span>
+  <span class="doodle blob"></span>
+  <span class="doodle star"></span>
+    <span class="doodle circle"></span>
+  <span class="doodle zigzag"></span>
+  <span class="doodle blob"></span>
+  <span class="doodle star"></span>
+</div>
+
+<!-- ================= MOBILE NAV ================= -->
+<nav class="mobile-nav d-md-none">
+  <a href="pg1.html">
+    <i class="bi bi-speedometer"></i>
+    <span>Home</span>
+  </a>
+  <a href="timer.html" class="active">
+    <i class="bi bi-stopwatch"></i>
+    <span>Timer</span>
+  </a>
+  <a href="Sessions.html">
+    <i class="bi bi-book"></i>
+    <span>Sessions</span>
+    <span class="sessions-nav-count" data-sessions-badge></span>
+  </a>
+  <a href="badges1.html">
+    <i class="bi bi-trophy-fill"></i>
+    <span>Badges</span>
+  </a>
+</nav>
+
+<div class="d-flex">
+
+  <!-- ================= SIDEBAR ================= -->
+  <nav class="sidebar d-none d-md-flex flex-column align-items-center py-4 bg-dark text-white vh-100">
+    <div class="mb-4"><i class="fa-solid fa-owl fs-3"></i></div>
+
+    <div class="nav-icons d-flex flex-column gap-2">
+        <a href="pg1.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
+            <div class="icon-box "><i class="bi bi-speedometer"></i></div>
+        </a>
+        <a href="timer.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right" title="Timer">
+            <div class="icon-box active"><i class="bi bi-stopwatch"></i></div>
+        </a>
+        <a href="Sessions.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right" title="Study Sessions">
+            <div class="icon-box">
+                <i class="bi bi-book"></i>
+                <span class="sessions-nav-count" data-sessions-badge></span>
+            </div>
+        </a>
+        <a href="calendar.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right" title="Calendar">
+            <div class="icon-box"><i class="bi bi-calendar3"></i></div>
+        </a>
+        <a href="subjects.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right" title="Subjects">
+            <div class="icon-box"><i class="bi bi-mortarboard-fill"></i></div>
+        </a>
+        <a href="badges1.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right" title="Badges & Trophies">
+          <div class="icon-box"><i class="bi bi-trophy-fill"></i></div>
+        </a>
+         <a href="analytics.html" class="text-decoration-none" data-bs-toggle="tooltip" title="Analytics">
+    <div class="icon-box">
+        <i class="bi bi-bar-chart-line"></i>
+    </div>
+</a>
+        <a href="settings.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
+            <div class="icon-box"><i class="bi bi-gear"></i></div>
+        </a>
+       
+    </div>
+
+    <div class="mt-auto mb-3">
+        <a href="#" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right" title="Logout" onclick="handleLogout()">
+            <div class="icon-box logout-btn">
+                <i class="bi bi-box-arrow-right"></i>
+            </div>
+        </a>
+    </div>
+  </nav>
+
+  <!-- ================= MAIN ================= -->
+  <main class="container-fluid p-4">
+
+    <div class="text-center mb-4">
+      <small class="text-muted fw-bold text-uppercase">Focus Mode</small>
+      <h1 class="fw-bold">Focus Timer</h1>
+    </div>
+
+    <!-- Mode Selector -->
+    <div class="d-flex justify-content-center mb-4">
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <button class="nav-link active mode-btn" data-time="25">Pomodoro</button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link mode-btn" data-time="50">Deep Focus</button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link mode-btn" data-time="session">Session</button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link mode-btn" data-time="custom">Custom</button>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Timer -->
+    <div class="card timer-card mx-auto text-center p-4">
+      <div class="timer-circle">
+  <svg class="progress-ring" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="timerGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#7c3aed"/>
+        <stop offset="100%" stop-color="#06b6d4"/>
+      </linearGradient>
+    </defs>
+    <circle class="progress-ring-bg" cx="120" cy="120" r="100"/>
+    <circle class="progress-ring-fill" cx="120" cy="120" r="100"/>
+  </svg>
+
+  <div style="position:relative; z-index:2; display:flex; flex-direction:column; align-items:center;">
+    <span id="time">25:00</span>
+    <small id="percent" style="display:block; margin-top:.35rem; color:#6b7280; font-weight:700;">0%</small>
+  </div>
+</div>
+
+<!-- completion sound -->
+<audio id="doneSound" src="" preload="auto"></audio>
+
+      <div class="d-flex justify-content-center gap-3 mt-4">
+        <button id="startBtn" class="btn btn-dark rounded-pill px-4">
+          <i class="bi bi-play-fill"></i> Start
+        </button>
+        <button id="pauseBtn" class="btn btn-outline-secondary rounded-pill px-4">
+          Pause
+        </button>
+        <button id="finishBtn" class="btn btn-success rounded-pill px-4 d-none">
+          Finish
+        </button>
+        <button id="resetBtn" class="btn btn-outline-danger rounded-pill px-4">
+          Reset
+        </button>
+      </div>
+
+      <div class="row mt-4">
+        <div class="col-6">
+          <small class="text-muted fw-bold">SUBJECT</small>
+          <div class="info-box" id="subjectBox" contenteditable="true" data-lskey="timer_subject">Data Structures</div>
+        </div>
+        <div class="col-6">
+          <small class="text-muted fw-bold">GOAL</small>
+          <div class="info-box" id="goalBox" contenteditable="true" data-lskey="timer_goal">2h Today</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ================= SESSION COMPLETE MODAL ================= -->
+<div class="modal fade" id="sessionDone" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 p-3">
+      <h4 class="fw-bold">Session Summary 🎉</h4>
+      <p class="text-muted">Fill details to save this session.</p>
+
+      <div class="mb-3">
+        <label class="form-label fw-bold">Subject</label>
+        <input id="sessionSubject" class="form-control" placeholder="e.g., Data Structures">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-bold">Activity / Note</label>
+        <textarea id="sessionNote" class="form-control" rows="3" placeholder="e.g., Reviewed trees & graphs"></textarea>
+      </div>
+
+      <div class="d-flex justify-content-end gap-2">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-primary" id="saveSessionBtn">Save Session</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= CUSTOM TIME MODAL ================= -->
+<div class="modal fade" id="customTimeModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 p-4">
+      <h5 class="fw-bold mb-3">Custom Focus Time</h5>
+      <label class="form-label fw-bold">Minutes</label>
+      <input type="number" id="customMinutes" class="form-control mb-3" min="1" max="180" value="30">
+      <div class="d-flex justify-content-end gap-2">
+        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-primary" id="setCustomTime">Set Timer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="timer.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+
+  // If opened from +Session
+  if (params.get("session") === "1") {
+    const sessionBtn = document.querySelector('.mode-btn[data-time="session"]');
+    if (sessionBtn) sessionBtn.click();
+
+    // Auto start after small delay (DOM safety)
+    setTimeout(() => {
+      const startBtn = document.getElementById("startBtn");
+      if (startBtn) startBtn.click();
+    }, 300);
+  }
+});
+</script>
+
+<script>
+    function handleLogout() {
+        auth.logout();
+        window.location.href = 'landing.html';
+    }
+</script>
+</body>
+</html>
