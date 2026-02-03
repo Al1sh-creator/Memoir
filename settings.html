@@ -134,6 +134,39 @@
         </div>
       </div>
 
+      <!-- STUDY GOALS -->
+      <div class="col-lg-6">
+        <div class="settings-card">
+          <h5 class="fw-bold mb-3">🎯 Study Goals</h5>
+
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Daily Goal (hours)</label>
+            <input type="number" class="form-control" id="dailyGoal" min="1" max="12" step="0.5" value="4">
+            <small class="text-muted">Target study time per day</small>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Weekly Goal (hours)</label>
+            <input type="number" class="form-control" id="weeklyGoal" min="5" max="80" step="1" value="20">
+            <small class="text-muted">Target study time per week</small>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Monthly Goal (hours)</label>
+            <input type="number" class="form-control" id="monthlyGoal" min="20" max="300" step="1" value="80">
+            <small class="text-muted">Target study time per month</small>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Total Goal (hours)</label>
+            <input type="number" class="form-control" id="totalGoal" min="50" max="1000" step="10" value="200">
+            <small class="text-muted">Your overall target</small>
+          </div>
+
+          <button class="btn btn-primary rounded-pill px-4" id="saveGoalsBtn">Save Goals</button>
+        </div>
+      </div>
+
       <!-- AUTOMATION -->
       <div class="col-lg-6">
         <div class="settings-card">

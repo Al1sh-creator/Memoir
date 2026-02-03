@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", () => {
 
   /* ========== LOAD SAVED SETTINGS ========== */
   const savedTheme = localStorage.getItem("memoir_theme") || "light";
@@ -11,6 +11,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const reminderTime = localStorage.getItem("memoir_reminder_time") || "09:00";
   const displayName = localStorage.getItem("memoir_display_name") || "";
 
+  // Load Study Goals from localStorage
+  const dailyGoal = localStorage.getItem("memoir_goal_daily") || "4";
+  const weeklyGoal = localStorage.getItem("memoir_goal_weekly") || "20";
+  const monthlyGoal = localStorage.getItem("memoir_goal_monthly") || "80";
+  const totalGoal = localStorage.getItem("memoir_goal_total") || "200";
+
   // Apply loaded settings to form
   document.querySelector("#themeSelect").value = savedTheme;
   document.querySelector("#accentColor").value = savedAccent;
@@ -21,6 +27,14 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelector("#dailyReminder").checked = dailyReminder;
   document.querySelector("#reminderTime").value = reminderTime;
   document.querySelector("#displayName").value = displayName;
+
+  // Load goals if elements exist
+  if (document.getElementById("dailyGoal")) {
+    document.querySelector("#dailyGoal").value = dailyGoal;
+    document.querySelector("#weeklyGoal").value = weeklyGoal;
+    document.querySelector("#monthlyGoal").value = monthlyGoal;
+    document.querySelector("#totalGoal").value = totalGoal;
+  }
 
   /* ========== EVENT LISTENERS ========== */
 
@@ -90,11 +104,45 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Account Save
-  document.querySelector("button.btn-primary").addEventListener("click", () => {
-    const name = document.querySelector("#displayName").value;
-    localStorage.setItem("memoir_display_name", name);
-    alert("Settings saved!");
+  const saveButtons = document.querySelectorAll("button.btn-primary");
+  let accountSaveBtn = null;
+  saveButtons.forEach(btn => {
+    if (btn.id !== "saveGoalsBtn") {
+      accountSaveBtn = btn;
+    }
   });
+
+  if (accountSaveBtn) {
+    accountSaveBtn.addEventListener("click", () => {
+      const name = document.querySelector("#displayName").value;
+      localStorage.setItem("memoir_display_name", name);
+      alert("Settings saved!");
+    });
+  }
+
+  // Save Goals
+  const saveGoalsBtn = document.getElementById("saveGoalsBtn");
+  if (saveGoalsBtn) {
+    saveGoalsBtn.addEventListener("click", () => {
+      const daily = document.querySelector("#dailyGoal").value;
+      const weekly = document.querySelector("#weeklyGoal").value;
+      const monthly = document.querySelector("#monthlyGoal").value;
+      const total = document.querySelector("#totalGoal").value;
+
+      localStorage.setItem("memoir_goal_daily", daily);
+      localStorage.setItem("memoir_goal_weekly", weekly);
+      localStorage.setItem("memoir_goal_monthly", monthly);
+      localStorage.setItem("memoir_goal_total", total);
+
+      alert("Goals updated successfully!");
+      
+      // Reload dashboard if it exists
+      if (window.dashboardManager) {
+        window.dashboardManager.loadGoals();
+        window.dashboardManager.initializeDashboard();
+      }
+    });
+  }
 
   // Export Data
   document.querySelector("#exportData").addEventListener("click", () => {

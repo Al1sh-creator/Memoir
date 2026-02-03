@@ -27,7 +27,14 @@ class DashboardManager {
         // Load sessions from localStorage
         const allSessions = JSON.parse(localStorage.getItem('sessions') || '[]');
         // Filter sessions for current user (in a multi-user system)
-        this.sessions = allSessions.filter(session => {
+        this.sessions = allSessions.map(session => {
+            // Ensure date field is set for compatibility
+            if (!session.date && session.timestamp) {
+                const dateObj = new Date(session.timestamp);
+                session.date = dateObj.toISOString().split('T')[0];
+            }
+            return session;
+        }).filter(session => {
             // For now, assume all sessions belong to current user
             // In future, add userId filtering
             return true;
@@ -35,13 +42,17 @@ class DashboardManager {
     }
 
     loadGoals() {
-        // Load user goals from settings
-        const userGoals = this.currentUser?.settings?.goals || {};
+        // Load goals from localStorage settings
+        const dailyHours = parseFloat(localStorage.getItem("memoir_goal_daily") || "4");
+        const weeklyHours = parseFloat(localStorage.getItem("memoir_goal_weekly") || "20");
+        const monthlyHours = parseFloat(localStorage.getItem("memoir_goal_monthly") || "80");
+        const totalHours = parseFloat(localStorage.getItem("memoir_goal_total") || "200");
+
         this.goals = {
-            daily: userGoals.daily || 4 * 60 * 60, // 4 hours in seconds
-            weekly: userGoals.weekly || 20 * 60 * 60, // 20 hours in seconds
-            monthly: userGoals.monthly || 80 * 60 * 60, // 80 hours in seconds
-            total: userGoals.total || 200 * 60 * 60 // 200 hours in seconds
+            daily: dailyHours * 60 * 60, // Convert hours to seconds
+            weekly: weeklyHours * 60 * 60,
+            monthly: monthlyHours * 60 * 60,
+            total: totalHours * 60 * 60
         };
     }
 
@@ -59,6 +70,8 @@ class DashboardManager {
         this.updateMotivationalQuote();
         this.updateQuickStats();
         this.updateNeedsAttention();
+        this.displayRecentBadges();
+        this.displayLearningInsights();
 
         // Show daily goal by default
         this.showGoalPeriod('daily');
@@ -247,9 +260,21 @@ class DashboardManager {
                 break;
         }
 
-        const periodSessions = this.sessions.filter(s =>
-            new Date(s.timestamp || s.date) >= startDate
-        );
+        const periodSessions = this.sessions.filter(s => {
+            // Use timestamp if available (in milliseconds), otherwise try to parse date
+            let sessionDate;
+            if (s.timestamp) {
+                sessionDate = new Date(s.timestamp);
+            } else if (s.date) {
+                sessionDate = new Date(s.date);
+            } else if (s.createdAt) {
+                sessionDate = new Date(s.createdAt);
+            } else {
+                return false;
+            }
+            
+            return sessionDate >= startDate;
+        });
 
         const actualSeconds = periodSessions.reduce((sum, s) => sum + (s.durationSeconds || 0), 0);
         const percentage = goalSeconds > 0 ? (actualSeconds / goalSeconds) * 100 : 0;
@@ -410,18 +435,177 @@ class DashboardManager {
         return `${minutes}m`;
     }
 
+    formatDate(dateString) {
+        if (!dateString) return 'Unknown date';
+        const date = new Date(dateString);
+        const today = new Date();
+        const yesterday = new Date(today);
+        yesterday.setDate(yesterday.getDate() - 1);
+
+        if (date.toDateString() === today.toDateString()) {
+            return 'Today';
+        } else if (date.toDateString() === yesterday.toDateString()) {
+            return 'Yesterday';
+        } else {
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+    }
+
+    getProductivityColor(productivity) {
+        switch(productivity) {
+            case 'Focused':
+                return 'success';
+            case 'Average':
+                return 'warning';
+            case 'Distracted':
+                return 'danger';
+            default:
+                return 'secondary';
+        }
+    }
+
+    startSmartTimer() {
+        // Navigate to timer with smart settings
+        window.location.href = 'timer.html?smart=true';
+    }
+
     updateElement(id, value) {
         const element = document.getElementById(id);
         if (element) {
             element.textContent = value;
         }
     }
+
+    displayRecentBadges() {
+        const badgesContainer = document.getElementById('recentBadges');
+        if (!badgesContainer) return;
+
+        const earnedBadges = JSON.parse(localStorage.getItem('earnedBadges') || '[]');
+        
+        if (earnedBadges.length === 0) {
+            badgesContainer.innerHTML = '<span class="text-muted">—</span><span class="text-muted">—</span><span class="text-muted">—</span>';
+            return;
+        }
+
+        // Get last 3 earned badges sorted by earned date (most recent first)
+        const lastBadges = earnedBadges
+            .sort((a, b) => (b.earnedAt || 0) - (a.earnedAt || 0))
+            .slice(0, 3);
+
+        badgesContainer.innerHTML = lastBadges
+            .map(badge => `<span title="${badge.name}" style="cursor: pointer; font-size: 1.3em;">${badge.icon}</span>`)
+            .join('');
+    }
+
+    displayLearningInsights() {
+        if (this.sessions.length === 0) {
+            document.getElementById('focusedSubject').textContent = 'Start studying to see insights';
+            document.getElementById('peakStudyTime').textContent = '—';
+            document.getElementById('productiveSession').textContent = '—';
+            document.getElementById('studyConsistency').textContent = '—';
+            return;
+        }
+
+        // 1. Most Focused Subject (highest average focus score)
+        const subjectFocusMap = {};
+        this.sessions.forEach(session => {
+            const subject = session.subject || 'Unknown';
+            if (!subjectFocusMap[subject]) {
+                subjectFocusMap[subject] = { totalFocus: 0, count: 0, totalTime: 0 };
+            }
+            subjectFocusMap[subject].totalFocus += session.focusScore || 0;
+            subjectFocusMap[subject].count += 1;
+            subjectFocusMap[subject].totalTime += session.durationSeconds || 0;
+        });
+
+        const mostFocusedSubject = Object.entries(subjectFocusMap)
+            .reduce((best, [subject, data]) => {
+                const avgFocus = data.count > 0 ? data.totalFocus / data.count : 0;
+                if (avgFocus > (best.avgFocus || 0)) {
+                    return { subject, avgFocus };
+                }
+                return best;
+            }, {});
+
+        document.getElementById('focusedSubject').textContent = 
+            mostFocusedSubject.subject ? `${mostFocusedSubject.subject} (${Math.round(mostFocusedSubject.avgFocus)}%)` : '—';
+
+        // 2. Peak Study Time (most sessions at which hour)
+        const hourMap = {};
+        this.sessions.forEach(session => {
+            if (!session.timestamp) return;
+            const hour = new Date(session.timestamp).getHours();
+            hourMap[hour] = (hourMap[hour] || 0) + 1;
+        });
+
+        const peakHour = Object.entries(hourMap).reduce((best, [hour, count]) => 
+            count > best.count ? { hour: parseInt(hour), count } : best, 
+            { hour: null, count: 0 }
+        );
+
+        const peakTimeText = peakHour.hour !== null 
+            ? `${String(peakHour.hour).padStart(2, '0')}:00 - ${String(peakHour.hour + 1).padStart(2, '0')}:00`
+            : '—';
+        document.getElementById('peakStudyTime').textContent = peakTimeText;
+
+        // 3. Most Productive Session (highest focus score session)
+        const mostProductive = this.sessions.reduce((best, session) => {
+            const sessionFocus = session.focusScore || 0;
+            return sessionFocus > (best.focusScore || 0) ? session : best;
+        }, {});
+
+        const productiveText = mostProductive.subject 
+            ? `${mostProductive.subject} (${mostProductive.focusScore}% focus)`
+            : '—';
+        document.getElementById('productiveSession').textContent = productiveText;
+
+        // 4. Study Consistency (days with at least 1 hour study)
+        const uniqueDays = new Set(this.sessions
+            .filter(s => (s.durationSeconds || 0) >= 3600)
+            .map(s => s.date)
+        ).size;
+
+        const consistencyText = uniqueDays > 0 ? `${uniqueDays} days studied` : 'Not yet started';
+        document.getElementById('studyConsistency').textContent = consistencyText;
+    }
+
+    showGoalPeriod(period) {
+        // Hide all tabs
+        document.querySelectorAll('.tab-pane').forEach(el => {
+            el.classList.remove('show', 'active');
+        });
+
+        // Show selected tab
+        const tabEl = document.getElementById(`${period}Goal`);
+        if (tabEl) {
+            tabEl.classList.add('show', 'active');
+        }
+
+        // Update active button
+        document.querySelectorAll('.goal-tab').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        const activeBtn = document.querySelector(`.goal-tab[data-period="${period}"]`);
+        if (activeBtn) {
+            activeBtn.classList.add('active');
+        }
+
+        // Animate progress bar
+        const barEl = document.getElementById(`${period}ProgressBar`);
+        if (barEl) {
+            barEl.style.transition = 'none';
+            barEl.style.width = '0%';
+            setTimeout(() => {
+                barEl.style.transition = 'width 1.2s ease';
+                barEl.style.width = barEl.style.width; // Trigger reflow
+                this.updateGoalProgress(period, this.goals[period]);
+            }, 10);
+        }
+    }
 }
 
 // Initialize dashboard when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    if (window.dashboardManager) {
-        window.dashboardManager.updateAll();
-    }
+    window.dashboardManager = new DashboardManager();
 });
 
