@@ -1,0 +1,219 @@
+/* ====================================== */
+/* Mobile Navbar Styles - Memoir App      */
+/* ====================================== */
+
+:root {
+    --mobile-nav-height: 70px;
+    --mobile-nav-bg: rgba(15, 15, 15, 0.95);
+    --mobile-nav-backdrop: blur(12px);
+    --mobile-nav-color: #e9ecef;
+    --mobile-nav-active-color: #0d6efd;
+    --mobile-nav-border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Mobile Bottom Navigation Container */
+.mobile-navbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: var(--mobile-nav-height);
+    background: var(--mobile-nav-bg);
+    backdrop-filter: var(--mobile-nav-backdrop);
+    border-top: var(--mobile-nav-border);
+    display: none;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1000;
+    padding-bottom: max(0px, env(safe-area-inset-bottom));
+}
+
+/* Show mobile navbar on small screens */
+@media (max-width: 768px) {
+    .mobile-navbar {
+        display: flex;
+    }
+    
+    body {
+        padding-bottom: calc(var(--mobile-nav-height) + 10px);
+    }
+    
+    main, 
+    .container-fluid {
+        padding-bottom: calc(var(--mobile-nav-height) + 20px) !important;
+    }
+}
+
+/* Mobile Navbar Links */
+.mobile-navbar a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    text-decoration: none;
+    color: var(--mobile-nav-color);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    position: relative;
+    flex: 1;
+    height: 100%;
+    max-width: 70px;
+}
+
+.mobile-navbar a:hover:not(.active) {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.mobile-navbar a.active {
+    color: var(--mobile-nav-active-color);
+    background-color: rgba(13, 110, 253, 0.15);
+    font-weight: 600;
+}
+
+/* Icons in Mobile Navbar */
+.mobile-navbar a i {
+    font-size: 20px;
+    line-height: 1;
+}
+
+/* Active indicator line */
+.mobile-navbar a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 2px;
+    background-color: var(--mobile-nav-active-color);
+    border-radius: 1px;
+}
+
+/* Badge/Count for Sessions */
+.nav-badge {
+    position: absolute;
+    top: 2px;
+    right: 0px;
+    background-color: #ffc107;
+    color: #000;
+    padding: 2px 5px;
+    border-radius: 10px;
+    font-size: 9px;
+    font-weight: 700;
+    display: none;
+    line-height: 1;
+}
+
+.mobile-navbar a .nav-badge {
+    display: inline-block;
+}
+
+.nav-badge:empty {
+    display: none;
+}
+
+/* Hamburger Menu for Settings (Optional) */
+.mobile-navbar-menu {
+    position: relative;
+}
+
+.mobile-menu-toggle {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    padding: 0;
+    font-size: 20px;
+}
+
+/* Dark Mode Support */
+.dark-mode .mobile-navbar {
+    background: rgba(20, 20, 20, 0.95);
+    border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .mobile-navbar a {
+    color: #d1d5db;
+}
+
+.dark-mode .mobile-navbar a:hover:not(.active) {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+.dark-mode .mobile-navbar a.active {
+    background-color: rgba(13, 110, 253, 0.2);
+}
+
+/* Authentication Pages - Hide Mobile Nav */
+body.auth-body .mobile-navbar {
+    display: none !important;
+}
+
+/* Landing Page - Hide Mobile Nav */
+body.landing-body .mobile-navbar {
+    display: none !important;
+}
+
+/* Tablet view adjustments */
+@media (min-width: 576px) and (max-width: 768px) {
+    .mobile-navbar a {
+        font-size: 12px;
+    }
+    
+    .mobile-navbar a i {
+        font-size: 22px;
+    }
+}
+
+/* Larger screens - Hide Mobile Nav */
+@media (min-width: 769px) {
+    .mobile-navbar {
+        display: none !important;
+    }
+    
+    body {
+        padding-bottom: 0;
+    }
+}
+
+/* Smooth scrolling with mobile navbar */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Safe area support for notched devices */
+@supports (padding: max(0px)) {
+    .mobile-navbar {
+        padding-bottom: max(0px, env(safe-area-inset-bottom));
+    }
+}
+
+/* Animation for active state change */
+@keyframes navActivePulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.mobile-navbar a.active {
+    animation: navActivePulse 0.3s ease;
+}
+
+/* Print styles - Hide navbar */
+@media print {
+    .mobile-navbar {
+        display: none !important;
+    }
+}

@@ -14,11 +14,52 @@
   <!-- Shared + Badges CSS -->
   <link rel="stylesheet" href="shared.css">
   <link rel="stylesheet" href="badges.css">
+  
+  <!-- Mobile Navbar -->
+  <link rel="stylesheet" href="mobile-navbar.css">
   <script src="shared.js"></script>
   <script src="auth.js"></script>
+  <script src="mobile-navbar.js"></script>
 </head>
 
 <body>
+
+<!-- ================= MOBILE BOTTOM NAVBAR ================= -->
+<nav class="mobile-navbar">
+  <a href="pg1.html">
+    <i class="bi bi-speedometer"></i>
+    <span>Home</span>
+  </a>
+  <a href="timer.html">
+    <i class="bi bi-stopwatch"></i>
+    <span>Timer</span>
+  </a>
+  <a href="Sessions.html">
+    <i class="bi bi-book"></i>
+    <span>Sessions</span>
+    <span class="nav-badge" data-sessions-badge></span>
+  </a>
+  <a href="calendar.html">
+    <i class="bi bi-calendar3"></i>
+    <span>Calendar</span>
+  </a>
+  <a href="subjects.html">
+    <i class="bi bi-mortarboard-fill"></i>
+    <span>Subjects</span>
+  </a>
+  <a href="badges1.html" class="active">
+    <i class="bi bi-trophy-fill"></i>
+    <span>Badges</span>
+  </a>
+  <a href="analytics.html">
+    <i class="bi bi-bar-chart-line"></i>
+    <span>Analytics</span>
+  </a>
+  <a href="settings.html">
+    <i class="bi bi-gear"></i>
+    <span>Settings</span>
+  </a>
+</nav>
 
 <div class="d-flex">
 
@@ -42,7 +83,7 @@
         <a href="calendar.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right" title="Calendar">
             <div class="icon-box"><i class="bi bi-calendar3"></i></div>
         </a>
-        <a href="#" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right" title="Subjects">
+        <a href="subjects.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right" title="Subjects">
             <div class="icon-box"><i class="bi bi-mortarboard-fill"></i></div>
         </a>
         <a href="badges1.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right" title="Badges & Trophies">

@@ -9,9 +9,13 @@
     <link rel="stylesheet" href="shared.css">
     <link rel="stylesheet" href="pg1.css">
     <link rel="stylesheet" href="analytics.css">
+    
+    <!-- Mobile Navbar -->
+    <link rel="stylesheet" href="mobile-navbar.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="shared.js"></script>
     <script src="auth.js"></script>
+    <script src="mobile-navbar.js"></script>
     <style>
         .analytics-card { border-radius: 24px; border: none; background: white; transition: transform 0.3s ease; }
         .stat-value { font-size: 1.8rem; font-weight: 800; color: #0d6efd; }
@@ -19,6 +23,44 @@
     </style>
 </head>
 <body class="bg-light">
+
+<!-- ================= MOBILE BOTTOM NAVBAR ================= -->
+<nav class="mobile-navbar">
+    <a href="pg1.html">
+        <i class="bi bi-speedometer"></i>
+        <span>Home</span>
+    </a>
+    <a href="timer.html">
+        <i class="bi bi-stopwatch"></i>
+        <span>Timer</span>
+    </a>
+    <a href="Sessions.html">
+        <i class="bi bi-book"></i>
+        <span>Sessions</span>
+        <span class="nav-badge" data-sessions-badge></span>
+    </a>
+    <a href="calendar.html">
+        <i class="bi bi-calendar3"></i>
+        <span>Calendar</span>
+    </a>
+    <a href="subjects.html">
+        <i class="bi bi-mortarboard-fill"></i>
+        <span>Subjects</span>
+    </a>
+    <a href="badges1.html">
+        <i class="bi bi-trophy-fill"></i>
+        <span>Badges</span>
+    </a>
+    <a href="analytics.html" class="active">
+        <i class="bi bi-bar-chart-line"></i>
+        <span>Analytics</span>
+    </a>
+    <a href="settings.html">
+        <i class="bi bi-gear"></i>
+        <span>Settings</span>
+    </a>
+</nav>
+
     <div class="doodle-layer">
   <span class="doodle circle"></span>
   <span class="doodle zigzag"></span>
