@@ -14,11 +14,15 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="pg1.css">
+    
+    <!-- Mobile Navbar -->
+    <link rel="stylesheet" href="mobile-navbar.css">
 
     <!-- Shared JS -->
     <script src="shared.js"></script>
     <script src="auth.js"></script>
     <script src="dashboard.js"></script>
+    <script src="mobile-navbar.js"></script>
 
     <!-- Progress Animation -->
     <script>
@@ -86,8 +90,8 @@ function applyAccent(color) {
 }
 </script>
 </head>
-<!-- ================= MOBILE BOTTOM NAV ================= -->
-<nav class="mobile-nav d-md-none">
+<!-- ================= MOBILE BOTTOM NAVBAR ================= -->
+<nav class="mobile-navbar">
     <a href="pg1.html" class="active">
         <i class="bi bi-speedometer"></i>
         <span>Home</span>
@@ -99,15 +103,27 @@ function applyAccent(color) {
     <a href="Sessions.html">
         <i class="bi bi-book"></i>
         <span>Sessions</span>
-        <span class="sessions-nav-count" data-sessions-badge></span>
+        <span class="nav-badge" data-sessions-badge></span>
     </a>
-    <a href="#">
+    <a href="calendar.html">
         <i class="bi bi-calendar3"></i>
-        <span>Plan</span>
+        <span>Calendar</span>
+    </a>
+    <a href="subjects.html">
+        <i class="bi bi-mortarboard-fill"></i>
+        <span>Subjects</span>
     </a>
     <a href="badges1.html">
         <i class="bi bi-trophy-fill"></i>
         <span>Badges</span>
+    </a>
+    <a href="analytics.html">
+        <i class="bi bi-bar-chart-line"></i>
+        <span>Analytics</span>
+    </a>
+    <a href="settings.html">
+        <i class="bi bi-gear"></i>
+        <span>Settings</span>
     </a>
 </nav>
 
@@ -140,12 +156,11 @@ function applyAccent(color) {
                 <a href="timer.html" class="text-decoration-none"><div class="icon-box"><i class="bi bi-stopwatch"></i></div></a>
                 <a href="Sessions.html" class="text-decoration-none"><div class="icon-box"><i class="bi bi-book"></i><span class="sessions-nav-count" data-sessions-badge></span></div></a>
                 <a href="calendar.html" class="text-decoration-none"><div class="icon-box"><i class="bi bi-calendar3"></i></div></a>
-                <a href="#" class="text-decoration-none"><div class="icon-box"><i class="bi bi-mortarboard-fill"></i></div></a>
+                <a href="subjects.html" class="text-decoration-none"><div class="icon-box"><i class="bi bi-mortarboard-fill"></i></div></a>
                 <a href="badges1.html" class="text-decoration-none"><div class="icon-box"><i class="bi bi-trophy-fill"></i></div></a>
                 <a href="analytics.html" class="text-decoration-none"><div class="icon-box"><i class="bi bi-bar-chart-line"></i></div></a>
                 <a href="settings.html" class="text-decoration-none"><div class="icon-box"><i class="bi bi-gear"></i></div></a>
             </div>
-
             <div class="mt-auto mb-3">
                 <div class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right" title="Logout" onclick="handleLogout()">
                     <div class="icon-box logout-btn">
