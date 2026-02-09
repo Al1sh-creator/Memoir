@@ -131,15 +131,15 @@ class DashboardManager {
     }
 
     updateStreaks() {
-        const todayStreak = this.calculateStreak('today');
-        const weekStreak = this.calculateStreak('week');
+        // const todayStreak = this.calculateStreak('today');
+        // const weekStreak = this.calculateStreak('week');
         const currentStreak = this.calculateConsecutiveStreak();
-        const longestStreak = this.calculateLongestStreak();
+        // const longestStreak = this.calculateLongestStreak();
 
-        // Update streak counters
-        this.updateElement('todayStreak', todayStreak);
-        this.updateElement('weekStreak', weekStreak);
-        this.updateElement('longestStreak', longestStreak);
+        // Update streak counters - REMOVED per user request
+        // this.updateElement('todayStreak', todayStreak);
+        // this.updateElement('weekStreak', weekStreak);
+        // this.updateElement('longestStreak', longestStreak);
 
         // Update current streak display
         const currentStreakEl = document.getElementById('currentStreakDays');
@@ -216,35 +216,88 @@ class DashboardManager {
             sessionsByDate[date].push(session);
         });
 
-        // Calculate total time per day
-        const dailyTotals = {};
-        Object.keys(sessionsByDate).forEach(date => {
-            const totalSeconds = sessionsByDate[date].reduce((sum, s) => sum + (s.durationSeconds || 0), 0);
-            dailyTotals[date] = totalSeconds;
-        });
+        // Helper: Check if a date qualifies as a streak day (Matches Calendar Logic)
+        const isStreakDay = (sessions) => {
+            if (!sessions || sessions.length === 0) return false;
 
-        // Count consecutive days from today backwards (minimum 30 minutes per day)
-        const minSeconds = 30 * 60; // 30 minutes
+            const totalMin = sessions.reduce((a, s) => a + (s.durationSeconds || 0), 0) / 60;
+            const avgFocus = sessions.reduce((a, s) => a + (s.focusScore || 0), 0) / sessions.length;
+            const hasFocused = sessions.some(s => s.productivity === "Focused");
+
+            return totalMin >= 30 && avgFocus >= 60 && hasFocused;
+        };
+
         let streak = 0;
         const today = new Date();
+        // Check "Today" first. If today is NOT a streak day yet, check yesterday to continue streak.
+        // If today IS a streak day, count it.
 
-        for (let i = 0; i < 365; i++) { // Check up to a year back
-            const checkDate = new Date(today);
-            checkDate.setDate(today.getDate() - i);
-            const dateStr = checkDate.toISOString().split('T')[0];
+        // Actually, logic: count backwards from today.
+        // If today has qualified, day 0 counts. If not, maybe streak is from yesterday.
+        // But standard streak logic: if today is incomplete, streak doesn't break until tomorrow.
+        // Let's be simple: verify consecutive days starting from yesterday or today.
 
-            if (dailyTotals[dateStr] && dailyTotals[dateStr] >= minSeconds) {
-                streak++;
-            } else if (i === 0) {
-                // If today has no qualifying session, check yesterday
-                continue;
-            } else {
-                // Streak broken
-                break;
-            }
+        // Better Algorithm for Stability:
+        // Find the most recent qualifying day. If it's today or yesterday, the streak is alive.
+        // Count backwards from there.
+
+        const dateKeys = Object.keys(sessionsByDate).sort().reverse(); // Newest first
+        if (dateKeys.length === 0) return 0;
+
+        const todayKey = today.toISOString().split('T')[0];
+        const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1);
+        const yesterdayKey = yesterday.toISOString().split('T')[0];
+
+        // Check internal streak logic
+        // We iterate backwards from today.
+        let currentCheck = new Date(today);
+        let foundGap = false;
+
+        // Special case: If today isn't qualified yet, we don't kill the streak immediately if yesterday was good.
+        // But if we are counting "Consecutive Streak", usually we count qualified days.
+        // Let's stick to: Count backwards.
+
+        let consecutive = 0;
+        // Check Today
+        if (sessionsByDate[todayKey] && isStreakDay(sessionsByDate[todayKey])) {
+            consecutive++;
+        } else {
+            // If today is not done, we start checking from yesterday?
+            // If today is empty or invalid, the streak only continues if yesterday was valid.
+            // If yesterday is valid, streak = 1 (yesterday) + ...
+            // If today is valid, streak = 1 (today) + 1 (yesterday) + ...
         }
 
-        return streak;
+        // Revised Loop:
+        for (let i = 0; i < 365; i++) {
+            const d = new Date(today);
+            d.setDate(d.getDate() - i);
+            // Use LOCAL date string construction to match Calendar logic
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            const dKey = `${y}-${m}-${day}`;
+
+            if (sessionsByDate[dKey] && isStreakDay(sessionsByDate[dKey])) {
+                if (i === 0) {
+                    // Today is good
+                    consecutive++;
+                } else {
+                    // Previous days
+                    consecutive++;
+                }
+            } else {
+                if (i === 0) {
+                    // Today is NOT good. Streak might be kept by yesterday.
+                    // Don't increment, just continue to check yesterday.
+                    continue;
+                } else {
+                    // Break on any other day
+                    break;
+                }
+            }
+        }
+        return consecutive;
     }
 
     calculateLongestStreak() {
