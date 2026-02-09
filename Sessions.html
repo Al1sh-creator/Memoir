@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Memoir • Sessions</title>
@@ -11,8 +12,8 @@
 
   <!-- Shared Styles -->
   <link rel="stylesheet" href="shared.css">
-    <link rel="stylesheet" href="Sessions.css">
-  
+  <link rel="stylesheet" href="Sessions.css">
+
   <!-- Mobile Navbar -->
   <link rel="stylesheet" href="mobile-navbar.css">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -24,139 +25,139 @@
 
 <body>
 
-<!-- ================= MOBILE BOTTOM NAVBAR ================= -->
-<nav class="mobile-navbar">
-  <a href="pg1.html">
-    <i class="bi bi-speedometer"></i>
-    <span>Home</span>
-  </a>
-  <a href="timer.html">
-    <i class="bi bi-stopwatch"></i>
-    <span>Timer</span>
-  </a>
-  <a href="Sessions.html" class="active">
-    <i class="bi bi-book"></i>
-    <span>Sessions</span>
-    <span class="nav-badge" data-sessions-badge></span>
-  </a>
-  <a href="calendar.html">
-    <i class="bi bi-calendar3"></i>
-    <span>Calendar</span>
-  </a>
-  <a href="subjects.html">
-    <i class="bi bi-mortarboard-fill"></i>
-    <span>Subjects</span>
-  </a>
-  <a href="badges1.html">
-    <i class="bi bi-trophy-fill"></i>
-    <span>Badges</span>
-  </a>
-  <a href="analytics.html">
-    <i class="bi bi-bar-chart-line"></i>
-    <span>Analytics</span>
-  </a>
-  <a href="settings.html">
-    <i class="bi bi-gear"></i>
-    <span>Settings</span>
-  </a>
-</nav>
+  <!-- ================= MOBILE BOTTOM NAVBAR ================= -->
+  <nav class="mobile-navbar">
+    <a href="pg1.html">
+      <i class="bi bi-speedometer"></i>
+      <span>Home</span>
+    </a>
+    <a href="timer.html">
+      <i class="bi bi-stopwatch"></i>
+      <span>Timer</span>
+    </a>
+    <a href="Sessions.html" class="active">
+      <i class="bi bi-book"></i>
+      <span>Sessions</span>
+      <span class="nav-badge" data-sessions-badge></span>
+    </a>
+    <a href="calendar.html">
+      <i class="bi bi-calendar3"></i>
+      <span>Calendar</span>
+    </a>
+    <a href="subjects.html">
+      <i class="bi bi-mortarboard-fill"></i>
+      <span>Subjects</span>
+    </a>
+    <a href="badges1.html">
+      <i class="bi bi-trophy-fill"></i>
+      <span>Badges</span>
+    </a>
+    <a href="analytics.html">
+      <i class="bi bi-bar-chart-line"></i>
+      <span>Analytics</span>
+    </a>
+    <a href="settings.html">
+      <i class="bi bi-gear"></i>
+      <span>Settings</span>
+    </a>
+  </nav>
 
-<!-- DOODLES -->
-<div class="doodle-layer">
-  <span class="doodle circle"></span>
-  <span class="doodle zigzag"></span>
-  <span class="doodle blob"></span>
-  <span class="doodle star"></span>
-</div>
-
-<div class="d-flex">
-
-  <nav
-        class="sidebar d-flex flex-column align-items-center bg-black vh-100 py-4 rounded d-none d-md-flex"
-      >
-        <div class="mb-4"><i class="fa-solid fa-owl fs-3 text-white"></i></div>
-
-        <div class="nav-icons d-flex flex-column gap-2">
-          <a href="pg1.html" class="text-decoration-none">
-            <div class="icon-box"><i class="bi bi-speedometer"></i></div>
-          </a>
-
-          <a href="timer.html" class="text-decoration-none">
-            <div class="icon-box"><i class="bi bi-stopwatch"></i></div>
-          </a>
-          <a href="Sessions.html" class="text-decoration-none">
-            <div class="icon-box active"><i class="bi bi-book"></i></div>
-          </a>
-          <a href="calendar.html" class="text-decoration-none">
-            <div class="icon-box"><i class="bi bi-calendar3"></i></div>
-          </a>
-          <a href="#" class="text-decoration-none">
-            <div class="icon-box"><i class="bi bi-mortarboard-fill"></i></div>
-          </a>
-          <a href="badges1.html" class="text-decoration-none">
-            <div class="icon-box"><i class="bi bi-trophy-fill"></i></div>
-          </a>
-          <a href="analytics.html" class="text-decoration-none">
-            <div class="icon-box"><i class="bi bi-bar-chart-line"></i></div>
-          </a>
-          <a href="settings.html" class="text-decoration-none">
-            <div class="icon-box"><i class="bi bi-gear"></i></div>
-          </a>
-        </div>
-
-        <div class="mt-auto mb-3">
-          <div class="icon-box logout-btn" onclick="handleLogout()" style="cursor: pointer;">
-            <i class="bi bi-box-arrow-right"></i>
-          </div>
-        </div>
-      </nav>
-
-  <!-- MAIN -->
-  <main class="container-fluid p-4">
-
-    <div class="mb-3">
-      <h1 class="h2 fw-bold">Study Sessions</h1>
-    </div>
-
-    <!-- SUMMARY + FILTER -->
-    <div class="summary-bar d-flex flex-wrap justify-content-between align-items-center gap-2">
-  <div>
-    <div id="overallSummary" class="fw-bold small"></div>
-    <div id="streakDisplay" class="text-muted small"></div>
+  <!-- DOODLES -->
+  <div class="doodle-layer">
+    <span class="doodle circle"></span>
+    <span class="doodle zigzag"></span>
+    <span class="doodle blob"></span>
+    <span class="doodle star"></span>
   </div>
-  <div class="d-flex gap-2">
-        <span class="filter-pill active" data-filter="all">All</span>
-        <span class="filter-pill" data-filter="Focused">Focused</span>
-        <span class="filter-pill" data-filter="Average">Average</span>
-        <span class="filter-pill" data-filter="Distracted">Distracted</span>
 
+  <div class="d-flex" style="height: 100vh; overflow: hidden;">
+
+    <nav class="sidebar d-flex flex-column align-items-center bg-black py-4 rounded d-none d-md-flex"
+      style="position: fixed; left: 0; top: 0; height: 100vh; overflow-y: auto;">
+      <div class="mb-4"><i class="fa-solid fa-owl fs-3 text-white"></i></div>
+
+      <div class="nav-icons d-flex flex-column gap-2">
+        <a href="pg1.html" class="text-decoration-none">
+          <div class="icon-box"><i class="bi bi-speedometer"></i></div>
+        </a>
+
+        <a href="timer.html" class="text-decoration-none">
+          <div class="icon-box"><i class="bi bi-stopwatch"></i></div>
+        </a>
+        <a href="Sessions.html" class="text-decoration-none">
+          <div class="icon-box active"><i class="bi bi-book"></i></div>
+        </a>
+        <a href="calendar.html" class="text-decoration-none">
+          <div class="icon-box"><i class="bi bi-calendar3"></i></div>
+        </a>
+        <a href="subjects.html" class="text-decoration-none">
+          <div class="icon-box"><i class="bi bi-mortarboard-fill"></i></div>
+        </a>
+        <a href="badges1.html" class="text-decoration-none">
+          <div class="icon-box"><i class="bi bi-trophy-fill"></i></div>
+        </a>
+        <a href="analytics.html" class="text-decoration-none">
+          <div class="icon-box"><i class="bi bi-bar-chart-line"></i></div>
+        </a>
+        <a href="settings.html" class="text-decoration-none">
+          <div class="icon-box"><i class="bi bi-gear"></i></div>
+        </a>
       </div>
-    </div>
 
-    <div id="sessionsContainer"></div>
+      <div class="mt-auto mb-3">
+        <div class="icon-box logout-btn" onclick="handleLogout()" style="cursor: pointer;">
+          <i class="bi bi-box-arrow-right"></i>
+        </div>
+      </div>
+    </nav>
 
-  </main>
-</div>
-<div id="badgeToast" class="badge-toast hidden">
-  <span id="badgeToastIcon">🏆</span>
-  <span id="badgeToastText">Badge Unlocked!</span>
-</div>
+    <!-- MAIN -->
+    <main class="container-fluid p-4" style="margin-left: 80px; height: 100vh; overflow-y: auto;">
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Check authentication first
-        if (!auth.requireAuth()) {
-            return; // Will redirect to login
-        }
+      <div class="mb-3">
+        <h1 class="h2 fw-bold">Study Sessions</h1>
+      </div>
+
+      <!-- SUMMARY + FILTER -->
+      <div class="summary-bar d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <div>
+          <div id="overallSummary" class="fw-bold small"></div>
+          <div id="streakDisplay" class="text-muted small"></div>
+        </div>
+        <div class="d-flex gap-2">
+          <span class="filter-pill active" data-filter="all">All</span>
+          <span class="filter-pill" data-filter="Focused">Focused</span>
+          <span class="filter-pill" data-filter="Average">Average</span>
+          <span class="filter-pill" data-filter="Distracted">Distracted</span>
+
+        </div>
+      </div>
+
+      <div id="sessionsContainer"></div>
+
+    </main>
+  </div>
+  <div id="badgeToast" class="badge-toast hidden">
+    <span id="badgeToastIcon">🏆</span>
+    <span id="badgeToastText">Badge Unlocked!</span>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Check authentication first
+      if (!auth.requireAuth()) {
+        return; // Will redirect to login
+      }
     });
-</script>
-<script src="Sessions.js"></script>
+  </script>
+  <script src="Sessions.js"></script>
 
-<script>
+  <script>
     function handleLogout() {
-        auth.logout();
-        window.location.href = 'landing.html';
+      auth.logout();
+      window.location.href = 'landing.html';
     }
-</script>
+  </script>
 </body>
+
 </html>

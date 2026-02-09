@@ -13,26 +13,26 @@
     <link rel="stylesheet" href="shared.css">
     <link rel="stylesheet" href="pg1.css">
     <link rel="stylesheet" href="calendar.css">
-    
+
     <!-- Mobile Navbar -->
     <link rel="stylesheet" href="mobile-navbar.css">
     <script src="shared.js"></script>
     <script src="auth.js"></script>
     <script src="mobile-navbar.js"></script>
     <script>
-    // This script must be on every page to initialize the tooltips
-    document.addEventListener("DOMContentLoaded", function() {
-        // Check authentication first
-        if (!auth.requireAuth()) {
-            return; // Will redirect to login
-        }
+        // This script must be on every page to initialize the tooltips
+        document.addEventListener("DOMContentLoaded", function () {
+            // Check authentication first
+            if (!auth.requireAuth()) {
+                return; // Will redirect to login
+            }
 
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl)
-        })
-    });
-</script>
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+        });
+    </script>
 </head>
 
 <body class="bg-light">
@@ -86,49 +86,57 @@
         <nav class="sidebar d-flex flex-column align-items-center bg-black vh-100 py-4 rounded d-none d-md-flex">
             <div class="mb-4"><i class="fa-solid fa-owl fs-3"></i></div>
 
-    <div class="nav-icons d-flex flex-column gap-2">
-        <a href="pg1.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right" title="Dashboard">
-            <div class="icon-box "><i class="bi bi-speedometer"></i></div>
-        </a>
-        <a href="timer.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right" title="Timer">
-            <div class="icon-box "><i class="bi bi-stopwatch"></i></div>
-        </a>
-        <a href="Sessions.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right" title="Study Sessions">
-            <div class="icon-box">
-                <i class="bi bi-book"></i>
-                <span class="sessions-nav-count" data-sessions-badge></span>
+            <div class="nav-icons d-flex flex-column gap-2">
+                <a href="pg1.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="Dashboard">
+                    <div class="icon-box "><i class="bi bi-speedometer"></i></div>
+                </a>
+                <a href="timer.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="Timer">
+                    <div class="icon-box "><i class="bi bi-stopwatch"></i></div>
+                </a>
+                <a href="Sessions.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="Study Sessions">
+                    <div class="icon-box">
+                        <i class="bi bi-book"></i>
+                        <span class="sessions-nav-count" data-sessions-badge></span>
+                    </div>
+                </a>
+                <a href="calendar.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="Calendar">
+                    <div class="icon-box active"><i class="bi bi-calendar3"></i></div>
+                </a>
+                <a href="subjects.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="Subjects">
+                    <div class="icon-box"><i class="bi bi-mortarboard-fill"></i></div>
+                </a>
+                <a href="badges1.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="Badges & Trophies">
+                    <div class="icon-box"><i class="bi bi-trophy-fill"></i></div>
+                </a>
+                <a href="analytics.html" class="text-decoration-none" data-bs-toggle="tooltip" title="Analytics">
+                    <div class="icon-box">
+                        <i class="bi bi-bar-chart-line"></i>
+                    </div>
+                </a>
+                <a href="settings.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="Settings">
+                    <div class="icon-box"><i class="bi bi-gear"></i></div>
+                </a>
             </div>
-        </a>
-        <a href="calendar.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right" title="Calendar">
-            <div class="icon-box active"><i class="bi bi-calendar3"></i></div>
-        </a>
-        <a href="subjects.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right" title="Subjects">
-            <div class="icon-box"><i class="bi bi-mortarboard-fill"></i></div>
-        </a>
-        <a href="badges1.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right" title="Badges & Trophies">
-            <div class="icon-box"><i class="bi bi-trophy-fill"></i></div>
-        </a>
-         <a href="analytics.html" class="text-decoration-none" data-bs-toggle="tooltip" title="Analytics">
-    <div class="icon-box">
-        <i class="bi bi-bar-chart-line"></i>
-    </div>
-</a>
-        <a href="settings.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right" title="Settings">
-            <div class="icon-box"><i class="bi bi-gear"></i></div>
-        </a>
-    </div>
 
-    <div class="mt-auto mb-3">
-        <a href="#" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right" title="Logout" onclick="handleLogout()">
-            <div class="icon-box logout-btn">
-                <i class="bi bi-box-arrow-right"></i>
+            <div class="mt-auto mb-3">
+                <a href="#" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="Logout" onclick="handleLogout()">
+                    <div class="icon-box logout-btn">
+                        <i class="bi bi-box-arrow-right"></i>
+                    </div>
+                </a>
             </div>
-        </a>
-    </div>
         </nav>
 
         <main class="container-fluid p-4">
-            
+
             <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
                 <div>
                     <small class="text-muted text-uppercase fw-bold">Project 2025</small>
@@ -136,16 +144,18 @@
                 </div>
                 <div class="d-flex gap-2">
                     <button class="btn btn-dark rounded-pill px-4">+ Session</button>
-                    <button class="btn btn-primary rounded-pill px-4"><i class="fa-solid fa-play me-2"></i>Timer</button>
-                    <button class="btn btn-success rounded-pill px-4"><i class="fa-solid fa-lightbulb me-2"></i>SmartTimer</button>
+                    <button class="btn btn-primary rounded-pill px-4"><i
+                            class="fa-solid fa-play me-2"></i>Timer</button>
+                    <button class="btn btn-success rounded-pill px-4"><i
+                            class="fa-solid fa-lightbulb me-2"></i>SmartTimer</button>
                 </div>
             </div>
 
             <div class="row g-4">
-                
+
                 <div class="col-lg-8">
                     <div class="card border-0 shadow-sm p-4 rounded-4 h-100">
-                        
+
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h4 class="fw-bold mb-0" id="currentMonthYear">Loading...</h4>
                             <div class="d-flex gap-2">
@@ -172,7 +182,7 @@
                         </div>
 
                         <div class="calendar-grid" id="calendarGrid">
-                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -181,32 +191,66 @@
                     <div class="card border-0 shadow-sm p-4 rounded-4 mb-4" id="dailySummaryCard" aria-live="polite">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h6 class="fw-bold mb-0">Daily Summary</h6>
-                            <button class="btn btn-sm btn-light rounded-circle" id="clearSummaryBtn" title="Clear selection"><i class="bi bi-x"></i></button>
+                            <button class="btn btn-sm btn-light rounded-circle" id="clearSummaryBtn"
+                                title="Clear selection"><i class="bi bi-x"></i></button>
                         </div>
-                        <div id="dailySummaryEmpty" class="text-center text-muted py-4">Select a day to view its study summary.</div>
+                        <div id="dailySummaryEmpty" class="text-center text-muted py-5">
+                            <i class="bi bi-calendar-check fs-1 mb-3 d-block text-muted opacity-50"></i>
+                            <p class="mb-0">Select a day to view its study summary</p>
+                        </div>
                         <div id="dailySummary" style="display:none">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <div>
-                                    <div class="small text-muted" id="summaryDate">Date</div>
-                                    <h5 class="fw-bold mb-0" id="summaryTotalTime">0m</h5>
-                                    <small class="text-muted">Total study time</small>
+                            <!-- Date Header -->
+                            <div class="mb-3 pb-3 border-bottom">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="small text-muted mb-1" id="summaryDate">Date</div>
+                                        <h4 class="fw-bold mb-1" id="summaryTotalTime">0m</h4>
+                                        <small class="text-muted">Total study time</small>
+                                    </div>
+                                    <div id="summaryStatus" class="text-end"></div>
                                 </div>
-                                <div id="summaryStatus" class="text-end"></div>
                             </div>
 
-                            <div class="mb-3">
-                                <div class="small text-muted mb-1">Subjects</div>
-                                <div id="summarySubjects" class="mb-2"></div>
+                            <!-- Focus Score & Productivity -->
+                            <div class="mb-3 pb-3 border-bottom" id="focusMetricsSection" style="display:none">
+                                <div class="small text-muted fw-bold mb-2">Focus Metrics</div>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="small">Average Focus Score</span>
+                                    <span class="badge bg-primary" id="summaryFocusScore">0%</span>
+                                </div>
+                                <div class="progress mb-2" style="height: 8px;">
+                                    <div class="progress-bar" id="summaryFocusBar" role="progressbar" style="width: 0%">
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2 flex-wrap" id="summaryProductivity"></div>
                             </div>
 
-                            <div class="mb-3">
-                                <div class="small text-muted mb-1">Notes</div>
-                                <div id="summaryNotes" class="text-muted small mb-2"></div>
-                                <button class="btn btn-sm btn-outline-primary" id="editNoteFromPanel">Edit Note</button>
+                            <!-- Subjects -->
+                            <div class="mb-3 pb-3 border-bottom">
+                                <div class="small text-muted fw-bold mb-2">Subjects</div>
+                                <div id="summarySubjects"></div>
                             </div>
 
+                            <!-- Notes -->
+                            <div class="mb-3 pb-3 border-bottom">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div class="small text-muted fw-bold">Notes</div>
+                                    <button class="btn btn-sm btn-outline-primary" id="editNoteFromPanel">
+                                        <i class="bi bi-pencil"></i> Edit
+                                    </button>
+                                </div>
+                                <div id="summaryNotes" class="small" style="white-space: pre-wrap;"></div>
+                            </div>
+
+                            <!-- Sessions List -->
                             <div>
-                                <div class="small text-muted mb-2">Sessions</div>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div class="small text-muted fw-bold">Sessions (<span id="sessionCount">0</span>)
+                                    </div>
+                                    <a href="timer.html" class="btn btn-sm btn-success">
+                                        <i class="bi bi-plus-circle"></i> Add
+                                    </a>
+                                </div>
                                 <div id="summarySessionsList" class="list-group"></div>
                             </div>
                         </div>
@@ -217,13 +261,16 @@
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h6 class="fw-bold mb-0">Tasks</h6>
                             <div class="d-flex gap-2">
-                                <button class="btn btn-sm btn-outline-secondary" id="clearMonthTasksBtn" title="Clear all tasks for this month">Clear</button>
+                                <button class="btn btn-sm btn-outline-secondary" id="clearMonthTasksBtn"
+                                    title="Clear all tasks for this month">Clear</button>
                             </div>
                         </div>
 
                         <div class="mb-3 d-flex gap-2">
-                            <input id="taskInput" class="form-control form-control-sm" placeholder="Add a task for this month" />
-                            <button class="btn btn-primary btn-sm rounded-circle" id="addTaskBtn" title="Add task"><i class="bi bi-plus-lg"></i></button>
+                            <input id="taskInput" class="form-control form-control-sm"
+                                placeholder="Add a task for this month" />
+                            <button class="btn btn-primary btn-sm rounded-circle" id="addTaskBtn" title="Add task"><i
+                                    class="bi bi-plus-lg"></i></button>
                         </div>
 
                         <div id="monthTasksList" class="list-group"></div>
@@ -242,7 +289,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <textarea id="noteInput" class="form-control bg-light border-0 rounded-3 p-3" rows="5" placeholder="Add a note..."></textarea>
+                    <textarea id="noteInput" class="form-control bg-light border-0 rounded-3 p-3" rows="5"
+                        placeholder="Add a note..."></textarea>
                     <div class="mt-3">
                         <label class="small text-muted fw-bold d-block mb-2">Day Status</label>
                         <div class="status-options" id="statusOptions">
@@ -271,4 +319,5 @@
         }
     </script>
 </body>
+
 </html>

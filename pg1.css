@@ -396,3 +396,40 @@ body.compact-mode .settings-card {
   background-color: var(--accent-color);
   border-color: var(--accent-color);
 }
+
+/* ========== STREAK ANIMATIONS ========== */
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.8;
+    }
+}
+
+.streak-fire {
+    display: inline-block;
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+/* Weekly Calendar Styling */
+.weekly-calendar {
+    display: flex;
+    justify-content: space-between;
+    gap: 4px;
+}
+
+.weekly-calendar span {
+    flex: 1;
+    text-align: center;
+    font-size: 0.75rem;
+    line-height: 1.2;
+}
+
+.weekly-calendar i {
+    font-size: 1.2rem;
+    margin-top: 4px;
+}

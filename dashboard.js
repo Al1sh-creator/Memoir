@@ -140,12 +140,38 @@ class DashboardManager {
     updateStreaks() {
         const todayStreak = this.calculateStreak('today');
         const weekStreak = this.calculateStreak('week');
-        const monthStreak = this.calculateStreak('month');
+        const currentStreak = this.calculateConsecutiveStreak();
+        const longestStreak = this.calculateLongestStreak();
 
         // Update streak counters
         this.updateElement('todayStreak', todayStreak);
         this.updateElement('weekStreak', weekStreak);
-        this.updateElement('monthStreak', monthStreak);
+        this.updateElement('longestStreak', longestStreak);
+
+        // Update current streak display
+        const currentStreakEl = document.getElementById('currentStreakDays');
+        const streakFireEl = document.getElementById('streakFire');
+
+        if (currentStreakEl) {
+            currentStreakEl.textContent = currentStreak;
+
+            // Animate fire emoji based on streak length
+            if (streakFireEl) {
+                if (currentStreak >= 7) {
+                    streakFireEl.textContent = '🔥🔥🔥';
+                    streakFireEl.style.animation = 'pulse 1s infinite';
+                } else if (currentStreak >= 3) {
+                    streakFireEl.textContent = '🔥🔥';
+                    streakFireEl.style.animation = 'pulse 1.5s infinite';
+                } else if (currentStreak > 0) {
+                    streakFireEl.textContent = '🔥';
+                    streakFireEl.style.animation = '';
+                } else {
+                    streakFireEl.textContent = '💤';
+                    streakFireEl.style.animation = '';
+                }
+            }
+        }
 
         // Update weekly calendar
         this.updateWeeklyCalendar();
@@ -184,6 +210,91 @@ class DashboardManager {
         return Math.min(Math.floor(totalMinutes / minMinutesPerDay), days);
     }
 
+    calculateConsecutiveStreak() {
+        if (this.sessions.length === 0) return 0;
+
+        // Group sessions by date
+        const sessionsByDate = {};
+        this.sessions.forEach(session => {
+            const date = session.date || new Date(session.timestamp).toISOString().split('T')[0];
+            if (!sessionsByDate[date]) {
+                sessionsByDate[date] = [];
+            }
+            sessionsByDate[date].push(session);
+        });
+
+        // Calculate total time per day
+        const dailyTotals = {};
+        Object.keys(sessionsByDate).forEach(date => {
+            const totalSeconds = sessionsByDate[date].reduce((sum, s) => sum + (s.durationSeconds || 0), 0);
+            dailyTotals[date] = totalSeconds;
+        });
+
+        // Count consecutive days from today backwards (minimum 30 minutes per day)
+        const minSeconds = 30 * 60; // 30 minutes
+        let streak = 0;
+        const today = new Date();
+
+        for (let i = 0; i < 365; i++) { // Check up to a year back
+            const checkDate = new Date(today);
+            checkDate.setDate(today.getDate() - i);
+            const dateStr = checkDate.toISOString().split('T')[0];
+
+            if (dailyTotals[dateStr] && dailyTotals[dateStr] >= minSeconds) {
+                streak++;
+            } else if (i === 0) {
+                // If today has no qualifying session, check yesterday
+                continue;
+            } else {
+                // Streak broken
+                break;
+            }
+        }
+
+        return streak;
+    }
+
+    calculateLongestStreak() {
+        if (this.sessions.length === 0) return 0;
+
+        // Group sessions by date
+        const sessionsByDate = {};
+        this.sessions.forEach(session => {
+            const date = session.date || new Date(session.timestamp).toISOString().split('T')[0];
+            if (!sessionsByDate[date]) {
+                sessionsByDate[date] = 0;
+            }
+            sessionsByDate[date] += session.durationSeconds || 0;
+        });
+
+        // Get all dates with qualifying sessions (30+ minutes)
+        const minSeconds = 30 * 60;
+        const qualifyingDates = Object.keys(sessionsByDate)
+            .filter(date => sessionsByDate[date] >= minSeconds)
+            .sort();
+
+        if (qualifyingDates.length === 0) return 0;
+
+        // Find longest consecutive streak
+        let longestStreak = 1;
+        let currentStreak = 1;
+
+        for (let i = 1; i < qualifyingDates.length; i++) {
+            const prevDate = new Date(qualifyingDates[i - 1]);
+            const currDate = new Date(qualifyingDates[i]);
+            const dayDiff = Math.floor((currDate - prevDate) / (1000 * 60 * 60 * 24));
+
+            if (dayDiff === 1) {
+                currentStreak++;
+                longestStreak = Math.max(longestStreak, currentStreak);
+            } else {
+                currentStreak = 1;
+            }
+        }
+
+        return longestStreak;
+    }
+
     updateWeeklyCalendar() {
         const calendarEl = document.getElementById('weeklyCalendar');
         if (!calendarEl) return;
@@ -195,11 +306,57 @@ class DashboardManager {
 
         days.forEach((day, index) => {
             const dayEl = document.createElement('span');
-            const hasActivity = this.hasStudyActivity(index);
+            const studyData = this.getStudyDataForDay(index);
+            const isToday = index === today;
+            const isFuture = this.isFutureDay(index);
 
-            dayEl.innerHTML = `${day}<br><i class="fa-solid ${hasActivity ? 'fa-check text-success' : 'fa-xmark text-danger'}"></i>`;
+            let icon = '';
+            let iconClass = '';
+            let title = `${day}`;
+
+            if (isFuture) {
+                icon = 'bi-circle';
+                iconClass = 'text-muted';
+                title += ' - Future';
+            } else if (studyData.hasActivity) {
+                icon = 'bi-check-circle-fill';
+                iconClass = 'text-success';
+                title += ` - ${this.formatTime(studyData.totalTime)} studied`;
+            } else {
+                icon = 'bi-x-circle';
+                iconClass = 'text-danger';
+                title += ' - No activity';
+            }
+
+            if (isToday) {
+                dayEl.style.fontWeight = 'bold';
+            }
+
+            dayEl.innerHTML = `${day}<br><i class="bi ${icon} ${iconClass}" title="${title}"></i>`;
+            dayEl.style.cursor = 'pointer';
+            dayEl.title = title;
             calendarEl.appendChild(dayEl);
         });
+    }
+
+    getStudyDataForDay(dayIndex) {
+        const now = new Date();
+        const targetDate = new Date(now);
+        targetDate.setDate(now.getDate() - (now.getDay() - dayIndex));
+        const targetDateStr = targetDate.toISOString().split('T')[0];
+
+        const daySessions = this.sessions.filter(s => s.date === targetDateStr);
+        const totalTime = daySessions.reduce((sum, s) => sum + (s.durationSeconds || 0), 0);
+        const hasActivity = totalTime >= 30 * 60; // At least 30 minutes
+
+        return { hasActivity, totalTime, sessionCount: daySessions.length };
+    }
+
+    isFutureDay(dayIndex) {
+        const now = new Date();
+        const targetDate = new Date(now);
+        targetDate.setDate(now.getDate() - (now.getDay() - dayIndex));
+        return targetDate > now;
     }
 
     hasStudyActivity(dayIndex) {
@@ -272,7 +429,7 @@ class DashboardManager {
             } else {
                 return false;
             }
-            
+
             return sessionDate >= startDate;
         });
 
@@ -372,7 +529,7 @@ class DashboardManager {
         const quoteEl = document.getElementById('motivationalQuote');
         if (quoteEl) {
             const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-            quoteEl.innerHTML = `<i class="fa-solid fa-quote-left text-muted me-2"></i>${randomQuote}<i class="fa-solid fa-quote-right text-muted ms-2"></i>`;
+            quoteEl.textContent = randomQuote;
         }
     }
 
@@ -411,7 +568,7 @@ class DashboardManager {
         }
 
         const leastStudied = Object.entries(subjectStats)
-            .sort(([,a], [,b]) => a.time - b.time)[0];
+            .sort(([, a], [, b]) => a.time - b.time)[0];
 
         if (leastStudied) {
             const [subject, stats] = leastStudied;
@@ -452,7 +609,7 @@ class DashboardManager {
     }
 
     getProductivityColor(productivity) {
-        switch(productivity) {
+        switch (productivity) {
             case 'Focused':
                 return 'success';
             case 'Average':
@@ -481,7 +638,7 @@ class DashboardManager {
         if (!badgesContainer) return;
 
         const earnedBadges = JSON.parse(localStorage.getItem('earnedBadges') || '[]');
-        
+
         if (earnedBadges.length === 0) {
             badgesContainer.innerHTML = '<span class="text-muted">—</span><span class="text-muted">—</span><span class="text-muted">—</span>';
             return;
@@ -527,7 +684,7 @@ class DashboardManager {
                 return best;
             }, {});
 
-        document.getElementById('focusedSubject').textContent = 
+        document.getElementById('focusedSubject').textContent =
             mostFocusedSubject.subject ? `${mostFocusedSubject.subject} (${Math.round(mostFocusedSubject.avgFocus)}%)` : '—';
 
         // 2. Peak Study Time (most sessions at which hour)
@@ -538,12 +695,12 @@ class DashboardManager {
             hourMap[hour] = (hourMap[hour] || 0) + 1;
         });
 
-        const peakHour = Object.entries(hourMap).reduce((best, [hour, count]) => 
-            count > best.count ? { hour: parseInt(hour), count } : best, 
+        const peakHour = Object.entries(hourMap).reduce((best, [hour, count]) =>
+            count > best.count ? { hour: parseInt(hour), count } : best,
             { hour: null, count: 0 }
         );
 
-        const peakTimeText = peakHour.hour !== null 
+        const peakTimeText = peakHour.hour !== null
             ? `${String(peakHour.hour).padStart(2, '0')}:00 - ${String(peakHour.hour + 1).padStart(2, '0')}:00`
             : '—';
         document.getElementById('peakStudyTime').textContent = peakTimeText;
@@ -554,7 +711,7 @@ class DashboardManager {
             return sessionFocus > (best.focusScore || 0) ? session : best;
         }, {});
 
-        const productiveText = mostProductive.subject 
+        const productiveText = mostProductive.subject
             ? `${mostProductive.subject} (${mostProductive.focusScore}% focus)`
             : '—';
         document.getElementById('productiveSession').textContent = productiveText;

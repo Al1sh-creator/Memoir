@@ -9,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="shared.css">
     <link rel="stylesheet" href="subjects.css">
-    
+
     <!-- Mobile Navbar -->
     <link rel="stylesheet" href="mobile-navbar.css">
     <script src="shared.js"></script>
@@ -74,8 +74,8 @@
     <div class="d-flex">
 
         <!-- ================= SIDEBAR ================= -->
-        <nav class="sidebar d-flex flex-column align-items-center bg-black vh-100 py-4 rounded ">
-
+        <nav class="sidebar d-flex flex-column align-items-center bg-black py-4 rounded d-none d-md-flex"
+            style="position: fixed; left: 0; top: 0; height: 100vh; overflow-y: auto;">
 
             <div class="nav-icons d-flex flex-column gap-2">
                 <a href="pg1.html" class="text-decoration-none">
@@ -115,7 +115,7 @@
             </div>
         </nav>
 
-        <main class="flex-grow-1 p-4">
+        <main class="flex-grow-1 p-4" style="margin-left: 80px;">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="fw-bold">My Subjects</h2>
                 <button class="btn btn-dark rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#addSubjectModal">
@@ -148,6 +148,32 @@
                         </div>
                         <button type="submit" class="btn btn-primary w-100 rounded-pill">Create Subject</button>
                     </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Subject Modal -->
+        <div class="modal fade" id="editSubjectModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content rounded-4 border-0 shadow">
+                    <div class="modal-header border-0">
+                        <h5 class="fw-bold">Edit Subject</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editSubjectForm">
+                            <input type="hidden" id="editSubjectIndex">
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold">Subject Name</label>
+                                <input type="text" id="editSubjectName" class="form-control rounded-3" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold">Goal (Hours)</label>
+                                <input type="number" id="editSubjectGoal" class="form-control rounded-3" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 rounded-pill">Save Changes</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

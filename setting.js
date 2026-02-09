@@ -1,6 +1,26 @@
-  document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
 
-  /* ========== LOAD SAVED SETTINGS ========== */
+  /* ================= AUTH CONTEXT ================= */
+  let currentUser = null;
+  try {
+    currentUser =
+      (window.auth && typeof window.auth.getCurrentUser === "function")
+        ? auth.getCurrentUser()
+        : (localStorage.getItem("memoir_current_user")
+            ? JSON.parse(localStorage.getItem("memoir_current_user"))
+            : null);
+  } catch (e) {
+    currentUser = null;
+  }
+
+  if (!currentUser) {
+    window.location.href = "landing.html";
+    return;
+  }
+
+  const userId = currentUser.id;
+
+  /* ================= LOAD SAVED SETTINGS ================= */
   const savedTheme = localStorage.getItem("memoir_theme") || "light";
   const savedAccent = localStorage.getItem("memoir_accent") || "#0d6efd";
   const compactMode = localStorage.getItem("memoir_compact") === "true";
@@ -11,13 +31,13 @@
   const reminderTime = localStorage.getItem("memoir_reminder_time") || "09:00";
   const displayName = localStorage.getItem("memoir_display_name") || "";
 
-  // Load Study Goals from localStorage
-  const dailyGoal = localStorage.getItem("memoir_goal_daily") || "4";
-  const weeklyGoal = localStorage.getItem("memoir_goal_weekly") || "20";
-  const monthlyGoal = localStorage.getItem("memoir_goal_monthly") || "80";
-  const totalGoal = localStorage.getItem("memoir_goal_total") || "200";
+  // Goals (USER-SPECIFIC)
+  const dailyGoal = localStorage.getItem(`memoir_goal_daily_${userId}`) || "4";
+  const weeklyGoal = localStorage.getItem(`memoir_goal_weekly_${userId}`) || "20";
+  const monthlyGoal = localStorage.getItem(`memoir_goal_monthly_${userId}`) || "80";
+  const totalGoal = localStorage.getItem(`memoir_goal_total_${userId}`) || "200";
 
-  // Apply loaded settings to form
+  /* ================= APPLY SETTINGS ================= */
   document.querySelector("#themeSelect").value = savedTheme;
   document.querySelector("#accentColor").value = savedAccent;
   document.querySelector("#compactToggle").checked = compactMode;
@@ -28,7 +48,10 @@
   document.querySelector("#reminderTime").value = reminderTime;
   document.querySelector("#displayName").value = displayName;
 
-  // Load goals if elements exist
+  if (document.querySelector("#email")) {
+    document.querySelector("#email").value = currentUser.email || "";
+  }
+
   if (document.getElementById("dailyGoal")) {
     document.querySelector("#dailyGoal").value = dailyGoal;
     document.querySelector("#weeklyGoal").value = weeklyGoal;
@@ -36,17 +59,16 @@
     document.querySelector("#totalGoal").value = totalGoal;
   }
 
-  /* ========== EVENT LISTENERS ========== */
+  /* ================= EVENT LISTENERS ================= */
 
   // Theme
   document.querySelector("#themeSelect").addEventListener("change", e => {
     applyTheme(e.target.value);
     localStorage.setItem("memoir_theme", e.target.value);
 
-    // Set up system theme listener if system theme is selected
     if (e.target.value === "system") {
-      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-      mediaQuery.addEventListener("change", (event) => {
+      const mq = window.matchMedia("(prefers-color-scheme: dark)");
+      mq.addEventListener("change", () => {
         if (localStorage.getItem("memoir_theme") === "system") {
           applyTheme("system");
         }
@@ -54,7 +76,7 @@
     }
   });
 
-  // Accent Color
+  // Accent
   document.querySelector("#accentColor").addEventListener("input", e => {
     applyAccent(e.target.value);
     localStorage.setItem("memoir_accent", e.target.value);
@@ -68,8 +90,10 @@
 
   // Focus Duration
   document.querySelector("#focusDuration").addEventListener("change", e => {
-    const value = e.target.value.replace(" min", "");
-    localStorage.setItem("memoir_focus_duration", value);
+    localStorage.setItem(
+      "memoir_focus_duration",
+      e.target.value.replace(" min", "")
+    );
   });
 
   // Automation toggles
@@ -84,11 +108,7 @@
   // Notifications
   document.querySelector("#dailyReminder").addEventListener("change", e => {
     localStorage.setItem("memoir_daily_reminder", e.target.checked);
-    if (e.target.checked) {
-      scheduleDailyReminder();
-    } else {
-      clearDailyReminder();
-    }
+    e.target.checked ? scheduleDailyReminder() : clearDailyReminder();
   });
 
   document.querySelector("#reminderTime").addEventListener("change", e => {
@@ -98,45 +118,32 @@
     }
   });
 
-  // Initialize notifications if enabled
-  if (dailyReminder) {
-    scheduleDailyReminder();
-  }
+  if (dailyReminder) scheduleDailyReminder();
 
-  // Account Save
-  const saveButtons = document.querySelectorAll("button.btn-primary");
-  let accountSaveBtn = null;
-  saveButtons.forEach(btn => {
+  // Save account settings
+  document.querySelectorAll("button.btn-primary").forEach(btn => {
     if (btn.id !== "saveGoalsBtn") {
-      accountSaveBtn = btn;
+      btn.addEventListener("click", () => {
+        localStorage.setItem(
+          "memoir_display_name",
+          document.querySelector("#displayName").value
+        );
+        alert("Settings saved!");
+      });
     }
   });
 
-  if (accountSaveBtn) {
-    accountSaveBtn.addEventListener("click", () => {
-      const name = document.querySelector("#displayName").value;
-      localStorage.setItem("memoir_display_name", name);
-      alert("Settings saved!");
-    });
-  }
-
-  // Save Goals
+  // Save goals (USER-SPECIFIC)
   const saveGoalsBtn = document.getElementById("saveGoalsBtn");
   if (saveGoalsBtn) {
     saveGoalsBtn.addEventListener("click", () => {
-      const daily = document.querySelector("#dailyGoal").value;
-      const weekly = document.querySelector("#weeklyGoal").value;
-      const monthly = document.querySelector("#monthlyGoal").value;
-      const total = document.querySelector("#totalGoal").value;
-
-      localStorage.setItem("memoir_goal_daily", daily);
-      localStorage.setItem("memoir_goal_weekly", weekly);
-      localStorage.setItem("memoir_goal_monthly", monthly);
-      localStorage.setItem("memoir_goal_total", total);
+      localStorage.setItem(`memoir_goal_daily_${userId}`, document.querySelector("#dailyGoal").value);
+      localStorage.setItem(`memoir_goal_weekly_${userId}`, document.querySelector("#weeklyGoal").value);
+      localStorage.setItem(`memoir_goal_monthly_${userId}`, document.querySelector("#monthlyGoal").value);
+      localStorage.setItem(`memoir_goal_total_${userId}`, document.querySelector("#totalGoal").value);
 
       alert("Goals updated successfully!");
-      
-      // Reload dashboard if it exists
+
       if (window.dashboardManager) {
         window.dashboardManager.loadGoals();
         window.dashboardManager.initializeDashboard();
@@ -144,51 +151,51 @@
     });
   }
 
-  // Export Data
+  // Export Data (USER-SAFE)
   document.querySelector("#exportData").addEventListener("click", () => {
     const data = {
-      sessions: JSON.parse(localStorage.getItem("studySessions") || "[]"),
-      badges: JSON.parse(localStorage.getItem("earnedBadges") || "[]"),
+      sessions: JSON.parse(localStorage.getItem(`memoir_sessions_${userId}`) || "[]"),
       settings: {
-        theme: localStorage.getItem("memoir_theme"),
-        accent: localStorage.getItem("memoir_accent"),
-        compact: localStorage.getItem("memoir_compact"),
-        focusDuration: localStorage.getItem("memoir_focus_duration"),
-        displayName: localStorage.getItem("memoir_display_name")
+        theme: savedTheme,
+        accent: savedAccent,
+        compact: compactMode,
+        focusDuration,
+        displayName
       }
     };
-    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
-    a.download = 'memoir-study-data.json';
+    a.download = "memoir-study-data.json";
     a.click();
     URL.revokeObjectURL(url);
   });
 
-  // Delete Account
+  /* ================= DELETE ACCOUNT (FIXED) ================= */
   document.querySelector("#deleteAccount").addEventListener("click", () => {
-    if (confirm("Are you sure you want to delete your account? This will remove all your data.")) {
-      localStorage.clear();
-      window.location.href = "landing.html";
-    }
+    if (!confirm("This will permanently delete ONLY your account data. Continue?")) return;
+
+    localStorage.removeItem(`memoir_sessions_${userId}`);
+    localStorage.removeItem(`memoir_subjects_${userId}`);
+    localStorage.removeItem(`memoir_goal_daily_${userId}`);
+    localStorage.removeItem(`memoir_goal_weekly_${userId}`);
+    localStorage.removeItem(`memoir_goal_monthly_${userId}`);
+    localStorage.removeItem(`memoir_goal_total_${userId}`);
+    localStorage.removeItem("memoir_current_user");
+
+    window.location.href = "landing.html";
   });
 
 });
 
-// ===== NOTIFICATION FUNCTIONS =====
+/* ================= NOTIFICATION FUNCTIONS ================= */
 function scheduleDailyReminder() {
-  if (!("Notification" in window)) {
-    alert("This browser does not support notifications.");
-    return;
-  }
+  if (!("Notification" in window)) return;
 
   if (Notification.permission === "default") {
-    Notification.requestPermission().then(permission => {
-      if (permission === "granted") {
-        setDailyReminder();
-      }
-    });
+    Notification.requestPermission().then(p => p === "granted" && setDailyReminder());
   } else if (Notification.permission === "granted") {
     setDailyReminder();
   }
@@ -196,32 +203,22 @@ function scheduleDailyReminder() {
 
 function setDailyReminder() {
   const time = localStorage.getItem("memoir_reminder_time") || "09:00";
-  const [hours, minutes] = time.split(":").map(Number);
+  const [h, m] = time.split(":").map(Number);
 
   const now = new Date();
-  const reminderTime = new Date();
-  reminderTime.setHours(hours, minutes, 0, 0);
+  const next = new Date();
+  next.setHours(h, m, 0, 0);
+  if (next <= now) next.setDate(next.getDate() + 1);
 
-  if (reminderTime <= now) {
-    reminderTime.setDate(reminderTime.getDate() + 1);
-  }
-
-  const delay = reminderTime - now;
-
-  // Clear existing timeout
-  if (window.dailyReminderTimeout) {
-    clearTimeout(window.dailyReminderTimeout);
-  }
+  if (window.dailyReminderTimeout) clearTimeout(window.dailyReminderTimeout);
 
   window.dailyReminderTimeout = setTimeout(() => {
     new Notification("Memoir Study Reminder", {
-      body: "Time to study! Keep up the good work.",
-      icon: "/favicon.ico" // Add an icon if available
+      body: "Time to study! Stay consistent 💪",
+      icon: "/favicon.ico"
     });
-
-    // Schedule next day's reminder
     setDailyReminder();
-  }, delay);
+  }, next - now);
 }
 
 function clearDailyReminder() {

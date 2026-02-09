@@ -67,7 +67,7 @@ function renderCalendar() {
         const noteHTML = hasNote ? `<div class="note-indicator"><i class="bi bi-circle-fill" style="font-size:0.4rem"></i></div>` : '';
 
         // Session count for that day
-        
+
         const daySessions = sessions.filter(s => s && s.date === dateKey);
         const sessionCount = sessions.filter(s => s && s.date === dateKey).length;
         const hasFocusStreak = isFocusStreakDay(dateKey, sessions);
@@ -149,7 +149,11 @@ function changeMonth(dir) {
 
 function openNote(y, m, d) {
     // Select a day and update right-hand summary panel (don't auto-show modal)
-    selectedDateKey = `${y}-${m}-${d}`;
+    // Format month and day with zero-padding to match the format used in renderCalendar
+    const mm = String(m + 1).padStart(2, '0');
+    const dd = String(d).padStart(2, '0');
+    selectedDateKey = `${y}-${mm}-${dd}`;
+
     const pretty = `${months[m]} ${d}, ${y}`;
     document.getElementById('modalTitle').innerText = pretty;
     document.getElementById('noteInput').value = localStorage.getItem('note_' + selectedDateKey) || '';
@@ -178,7 +182,7 @@ function updateDailySummary(dateKey) {
     if (!dateKey) { card.style.display = 'none'; empty.style.display = 'block'; return; }
 
     const [y, mm, dd] = dateKey.split('-');
-    document.getElementById('summaryDate').innerText = `${months[Number(mm)]} ${dd}, ${y}`;
+    document.getElementById('summaryDate').innerText = `${months[Number(mm) - 1]} ${Number(dd)}, ${y}`;
 
     // sessions.js exposes getSessions(); fallback to localStorage
     const sessions = (window.getSessions && typeof window.getSessions === 'function') ? window.getSessions() : JSON.parse(localStorage.getItem('sessions') || '[]');
@@ -186,34 +190,110 @@ function updateDailySummary(dateKey) {
     const totalSeconds = sessionsForDay.reduce((sum, s) => sum + (s.durationSeconds || 0), 0);
     document.getElementById('summaryTotalTime').innerText = formatTime(totalSeconds);
 
+    // Session count
+    const sessionCountEl = document.getElementById('sessionCount');
+    if (sessionCountEl) sessionCountEl.innerText = sessionsForDay.length;
+
+    // Calculate focus metrics if sessions have focus data
+    const sessionsWithFocus = sessionsForDay.filter(s => s.focusScore !== undefined && s.focusScore !== null);
+    const focusMetricsSection = document.getElementById('focusMetricsSection');
+
+    if (sessionsWithFocus.length > 0) {
+        const avgFocus = Math.round(sessionsWithFocus.reduce((sum, s) => sum + s.focusScore, 0) / sessionsWithFocus.length);
+        const focusScoreEl = document.getElementById('summaryFocusScore');
+        const focusBarEl = document.getElementById('summaryFocusBar');
+
+        if (focusScoreEl) focusScoreEl.innerText = avgFocus + '%';
+        if (focusBarEl) {
+            focusBarEl.style.width = avgFocus + '%';
+            // Color based on score
+            focusBarEl.className = 'progress-bar';
+            if (avgFocus >= 75) focusBarEl.classList.add('bg-success');
+            else if (avgFocus >= 40) focusBarEl.classList.add('bg-warning');
+            else focusBarEl.classList.add('bg-danger');
+        }
+
+        // Productivity breakdown
+        const productivityCounts = { Focused: 0, Average: 0, Distracted: 0 };
+        sessionsWithFocus.forEach(s => {
+            if (s.productivity) productivityCounts[s.productivity]++;
+        });
+
+        const productivityEl = document.getElementById('summaryProductivity');
+        if (productivityEl) {
+            productivityEl.innerHTML = '';
+            if (productivityCounts.Focused > 0) {
+                productivityEl.innerHTML += `<span class="badge bg-success"><i class="bi bi-check-circle"></i> ${productivityCounts.Focused} Focused</span>`;
+            }
+            if (productivityCounts.Average > 0) {
+                productivityEl.innerHTML += `<span class="badge bg-warning text-dark"><i class="bi bi-dash-circle"></i> ${productivityCounts.Average} Average</span>`;
+            }
+            if (productivityCounts.Distracted > 0) {
+                productivityEl.innerHTML += `<span class="badge bg-danger"><i class="bi bi-x-circle"></i> ${productivityCounts.Distracted} Distracted</span>`;
+            }
+        }
+
+        focusMetricsSection.style.display = 'block';
+    } else {
+        focusMetricsSection.style.display = 'none';
+    }
+
     // subjects
     const subjects = Array.from(new Set(sessionsForDay.map(s => (s.subject || '').trim()).filter(Boolean)));
     const subjEl = document.getElementById('summarySubjects');
-    subjEl.innerHTML = subjects.length ? subjects.map(s => `<span class="badge bg-light text-dark me-1">${s}</span>`).join('') : '<div class="text-muted small">No subjects</div>';
+    subjEl.innerHTML = subjects.length ? subjects.map(s => `<span class="badge bg-light text-dark me-1 mb-1">${s}</span>`).join('') : '<div class="text-muted small">No subjects</div>';
 
     // notes
     const note = localStorage.getItem('note_' + dateKey) || '';
-    document.getElementById('summaryNotes').innerText = note || 'No notes for this day.';
+    const notesEl = document.getElementById('summaryNotes');
+    if (note) {
+        notesEl.innerText = note;
+        notesEl.classList.remove('text-muted');
+    } else {
+        notesEl.innerText = 'No notes for this day.';
+        notesEl.classList.add('text-muted');
+    }
 
     // status/mood
     const status = localStorage.getItem('status_' + dateKey) || 'none';
     const statusMap = { studied: 'Studied', long: 'Long session', missed: 'Missed', productive: 'Productive' };
+    const statusEmoji = { studied: '✅', long: '⏱️', missed: '😴', productive: '⭐' };
     const statusLabel = statusMap[status] || '';
     const statusEl = document.getElementById('summaryStatus');
-    statusEl.innerHTML = statusLabel ? `<span class="badge bg-primary text-white">${statusLabel}</span>` : '';
+    statusEl.innerHTML = statusLabel ? `<span class="badge bg-primary text-white">${statusEmoji[status] || ''} ${statusLabel}</span>` : '';
 
-    // sessions list
+    // sessions list with enhanced display
     const listEl = document.getElementById('summarySessionsList');
     listEl.innerHTML = '';
-    if (sessionsForDay.length === 0) { listEl.innerHTML = '<div class="text-muted small">No sessions</div>'; }
-    else {
-        sessionsForDay.forEach(s => {
+    if (sessionsForDay.length === 0) {
+        listEl.innerHTML = '<div class="text-muted small text-center py-3">No sessions recorded</div>';
+    } else {
+        sessionsForDay.forEach((s, idx) => {
             const duration = formatTime(s.durationSeconds || 0);
-            const subject = s.subject || '';
-            const activity = s.activity || '';
+            const subject = s.subject || 'Session';
+            const focusScore = s.focusScore !== undefined ? s.focusScore : null;
+            const productivity = s.productivity || '';
+
             const row = document.createElement('div');
-            row.className = 'list-group-item d-flex justify-content-between align-items-start';
-            row.innerHTML = `<div><strong>${subject || activity || 'Session'}</strong><div class="small text-muted">${activity || ''}</div></div><div class="small text-muted">${duration}</div>`;
+            row.className = 'list-group-item p-2 mb-1 rounded';
+
+            let productivityBadge = '';
+            if (productivity === 'Focused') productivityBadge = '<span class="badge bg-success-subtle text-success">Focused</span>';
+            else if (productivity === 'Average') productivityBadge = '<span class="badge bg-warning-subtle text-warning">Average</span>';
+            else if (productivity === 'Distracted') productivityBadge = '<span class="badge bg-danger-subtle text-danger">Distracted</span>';
+
+            row.innerHTML = `
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="flex-grow-1">
+                        <div class="fw-semibold small">${subject}</div>
+                        ${focusScore !== null ? `<div class="text-muted" style="font-size: 0.75rem;">Focus: ${focusScore}% • ${s.pauseCount || 0} pauses • ${s.inactiveCount || 0} distractions</div>` : ''}
+                    </div>
+                    <div class="text-end ms-2">
+                        <div class="small fw-semibold">${duration}</div>
+                        ${productivityBadge}
+                    </div>
+                </div>
+            `;
             listEl.appendChild(row);
         });
     }

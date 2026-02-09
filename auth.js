@@ -72,8 +72,8 @@ class AuthManager {
     logout() {
         this.currentUser = null;
         localStorage.removeItem('memoir_current_user');
-        // Clear user-specific data but keep global settings
-        this.clearUserSessionData();
+        // Redirect to login page
+        window.location.href = 'login.html';
     }
 
     // Check if user is authenticated
@@ -142,18 +142,7 @@ class AuthManager {
         return JSON.parse(localStorage.getItem('memoir_users') || '[]');
     }
 
-    // Clear user session data
-    clearUserSessionData() {
-        // Keep global settings but clear user-specific session data
-        const keysToKeep = ['memoir_theme', 'memoir_accent', 'memoir_compact'];
-        const allKeys = Object.keys(localStorage);
 
-        allKeys.forEach(key => {
-            if (!keysToKeep.includes(key)) {
-                localStorage.removeItem(key);
-            }
-        });
-    }
 
     // Update user stats
     updateStats(stats) {
