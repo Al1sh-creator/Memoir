@@ -91,18 +91,11 @@ class DashboardManager {
     setupEventListeners() {
         // Quick action buttons
         const quickStartBtn = document.getElementById('quickStartBtn');
-        const smartTimerBtn = document.getElementById('smartTimerBtn');
         const dashboardStartSession = document.getElementById('dashboardStartSession');
 
         if (quickStartBtn) {
             quickStartBtn.addEventListener('click', () => {
                 window.location.href = 'timer.html';
-            });
-        }
-
-        if (smartTimerBtn) {
-            smartTimerBtn.addEventListener('click', () => {
-                this.startSmartTimer();
             });
         }
 

@@ -89,7 +89,8 @@
                     <h6>📦 What will be loaded:</h6>
                     <ul class="small">
                         <li><strong>3 Test Users</strong> (Alice, Bob, Charlie)</li>
-                        <li><strong>30 Study Sessions</strong> with focus scores, pauses, and distractions</li>
+                        <li><strong>45+ Study Sessions</strong> with realistic consecutive patterns over 14 days</li>
+                        <li><strong>7-Day Active Streak</strong> ending today with focus scores and metrics</li>
                         <li><strong>5 Subjects</strong> (Mathematics, Physics, Chemistry, Biology, Computer Science)
                         </li>
                         <li><strong>Earned Badges</strong> for achievements</li>
@@ -156,9 +157,9 @@
                     },
                     stats: {
                         totalSessions: 45,
-                        totalTime: 67500,
+                        totalTime: 72000, // ~20 hours
                         currentStreak: 7,
-                        badges: ['first_session', 'week_warrior', 'focus_master']
+                        badges: ['streak_3', 'streak_7', 'consistency_5', 'focus_80']
                     }
                 },
                 {
@@ -247,7 +248,7 @@
                 }
             ];
 
-            // Create dummy sessions (last 30 days)
+            // Create dummy sessions with realistic consecutive patterns
             const sessions = [];
             const now = new Date();
             const subjectIds = subjects.map(s => s.id);
@@ -260,40 +261,33 @@
                 return "Distracted";
             }
 
-            for (let i = 0; i < 30; i++) {
-                const daysAgo = Math.floor(Math.random() * 30);
+            // Helper to create a session
+            function createSession(id, daysAgo, hourOfDay, subjectIndex, focusType, note = '') {
                 const sessionDate = new Date(now);
                 sessionDate.setDate(sessionDate.getDate() - daysAgo);
-                sessionDate.setHours(Math.floor(Math.random() * 12) + 8); // 8 AM to 8 PM
-                sessionDate.setMinutes(Math.floor(Math.random() * 60));
+                sessionDate.setHours(hourOfDay, Math.floor(Math.random() * 60), 0, 0);
 
-                const subjectIndex = Math.floor(Math.random() * subjects.length);
-                const durationSeconds = [1500, 1800, 2400, 3000, 3600][Math.floor(Math.random() * 5)]; // 25-60 min
+                let pauseCount, inactiveCount, focusScore, durationSeconds;
 
-                // Generate realistic focus metrics
-                // 60% chance of focused session, 30% average, 10% distracted
-                const rand = Math.random();
-                let pauseCount, inactiveCount, focusScore;
-
-                if (rand < 0.6) {
-                    // Focused session
+                if (focusType === 'focused') {
                     pauseCount = Math.floor(Math.random() * 2); // 0-1 pauses
                     inactiveCount = Math.floor(Math.random() * 2); // 0-1 distractions
                     focusScore = 75 + Math.floor(Math.random() * 26); // 75-100
-                } else if (rand < 0.9) {
-                    // Average session
+                    durationSeconds = [1800, 2400, 3000, 3600][Math.floor(Math.random() * 4)]; // 30-60 min
+                } else if (focusType === 'average') {
                     pauseCount = 2 + Math.floor(Math.random() * 3); // 2-4 pauses
                     inactiveCount = 1 + Math.floor(Math.random() * 3); // 1-3 distractions
                     focusScore = 40 + Math.floor(Math.random() * 35); // 40-74
+                    durationSeconds = [1500, 1800, 2400][Math.floor(Math.random() * 3)]; // 25-40 min
                 } else {
-                    // Distracted session
                     pauseCount = 5 + Math.floor(Math.random() * 5); // 5-9 pauses
                     inactiveCount = 3 + Math.floor(Math.random() * 5); // 3-7 distractions
                     focusScore = Math.floor(Math.random() * 40); // 0-39
+                    durationSeconds = [900, 1200, 1500][Math.floor(Math.random() * 3)]; // 15-25 min
                 }
 
-                sessions.push({
-                    id: 'session_' + (1000 + i),
+                return {
+                    id: 'session_' + id,
                     subject: subjectNames[subjectIndex],
                     subjectId: subjectIds[subjectIndex],
                     date: sessionDate.toISOString().split('T')[0],
@@ -305,8 +299,54 @@
                     timestamp: sessionDate.getTime(),
                     createdAt: sessionDate.getTime(),
                     completed: true,
-                    note: i % 4 === 0 ? 'Great study session! Made good progress.' : ''
-                });
+                    note: note
+                };
+            }
+
+            let sessionId = 1000;
+
+            // Last 7 days: Active streak with mostly focused sessions (1-3 sessions per day)
+            for (let daysAgo = 0; daysAgo < 7; daysAgo++) {
+                const sessionsPerDay = 1 + Math.floor(Math.random() * 3); // 1-3 sessions
+
+                for (let sessionNum = 0; sessionNum < sessionsPerDay; sessionNum++) {
+                    const hour = 9 + Math.floor(Math.random() * 10); // 9 AM - 7 PM
+                    const subjectIndex = Math.floor(Math.random() * subjects.length);
+                    const focusType = Math.random() < 0.8 ? 'focused' : 'average'; // 80% focused
+                    const note = daysAgo === 0 && sessionNum === 0 ? 'Great study session today!' : '';
+
+                    sessions.push(createSession(sessionId++, daysAgo, hour, subjectIndex, focusType, note));
+                }
+            }
+
+            // Days 7-13: Mix of focused and average sessions (some days might be skipped)
+            for (let daysAgo = 7; daysAgo < 14; daysAgo++) {
+                // 70% chance of having sessions on this day
+                if (Math.random() < 0.7) {
+                    const sessionsPerDay = 1 + Math.floor(Math.random() * 2); // 1-2 sessions
+
+                    for (let sessionNum = 0; sessionNum < sessionsPerDay; sessionNum++) {
+                        const hour = 10 + Math.floor(Math.random() * 9); // 10 AM - 7 PM
+                        const subjectIndex = Math.floor(Math.random() * subjects.length);
+                        const rand = Math.random();
+                        const focusType = rand < 0.5 ? 'focused' : rand < 0.85 ? 'average' : 'distracted';
+
+                        sessions.push(createSession(sessionId++, daysAgo, hour, subjectIndex, focusType));
+                    }
+                }
+            }
+
+            // Days 14-29: Sparse older sessions for history
+            for (let daysAgo = 14; daysAgo < 30; daysAgo++) {
+                // 30% chance of having a session on this day
+                if (Math.random() < 0.3) {
+                    const hour = 10 + Math.floor(Math.random() * 8);
+                    const subjectIndex = Math.floor(Math.random() * subjects.length);
+                    const rand = Math.random();
+                    const focusType = rand < 0.4 ? 'focused' : rand < 0.75 ? 'average' : 'distracted';
+
+                    sessions.push(createSession(sessionId++, daysAgo, hour, subjectIndex, focusType));
+                }
             }
 
             // Sort sessions by date (newest first)

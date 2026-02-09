@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             <i class="bi bi-journal-bookmark-fill"></i>
                         </div>
                         <div>
-                            <i class="bi bi-pencil-fill me-2 edit-btn" style="cursor:pointer" data-index="${index}" title="Edit subject"></i>
+
                             <i class="bi bi-trash-fill delete-btn" style="cursor:pointer" onclick="event.stopPropagation(); deleteSubject(${index})" title="Delete subject"></i>
                         </div>
                     </div>
@@ -99,42 +99,22 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
             subjectsGrid.appendChild(card);
 
-            // Make the entire card clickable to edit
-            const cardElement = card.querySelector('.subject-card');
-            if (cardElement) {
-                cardElement.addEventListener('click', (e) => {
-                    // Don't trigger if clicking delete button
-                    if (!e.target.closest('.delete-btn')) {
-                        window.editSubject(index);
-                    }
-                });
-            }
+            // Make the entire card clickable to edit - REMOVED per user request
+            // const cardElement = card.querySelector('.subject-card');
+            // if (cardElement) {
+            //     cardElement.addEventListener('click', (e) => {
+            //         // Don't trigger if clicking delete button
+            //         if (!e.target.closest('.delete-btn')) {
+            //             window.editSubject(index);
+            //         }
+            //     });
+            // }
 
-            // Attach direct click handler to ensure the edit button works
-            try {
-                const editBtnEl = card.querySelector('.edit-btn');
-                if (editBtnEl) {
-                    editBtnEl.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        const idx = Number(editBtnEl.dataset.index);
-                        window.editSubject(idx);
-                    });
-                }
-            } catch (err) {
-                // ignore
-            }
+
         });
     };
 
-    // Use event delegation so dynamically created edit buttons reliably trigger edit
-    subjectsGrid.addEventListener('click', (ev) => {
-        const btn = ev.target.closest('.edit-btn');
-        if (!btn) return;
-        const idx = Number(btn.dataset.index);
-        if (Number.isFinite(idx)) {
-            window.editSubject(idx);
-        }
-    });
+
 
     // 5. Edit Subject
     window.editSubject = (index) => {

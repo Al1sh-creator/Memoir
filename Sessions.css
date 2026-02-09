@@ -19,8 +19,10 @@ body {
 .doodle-layer {
   position: fixed;
   inset: 0;
-  z-index: 1;               /* BEHIND everything */
-  pointer-events: none;     /* Never block clicks */
+  z-index: 1;
+  /* BEHIND everything */
+  pointer-events: none;
+  /* Never block clicks */
 }
 
 .doodle {
@@ -58,12 +60,10 @@ body {
   width: 90px;
   height: 90px;
   background: #ef4444;
-  clip-path: polygon(
-    50% 0%, 61% 35%, 98% 35%,
-    68% 57%, 79% 91%, 50% 70%,
-    21% 91%, 32% 57%, 2% 35%,
-    39% 35%
-  );
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%,
+      68% 57%, 79% 91%, 50% 70%,
+      21% 91%, 32% 57%, 2% 35%,
+      39% 35%);
   top: 15%;
   right: 20%;
 }
@@ -71,7 +71,8 @@ body {
 /* ---------- SIDEBAR ---------- */
 .sidebar {
   position: relative;
-  z-index: 20;              /* ABOVE doodles */
+  z-index: 20;
+  /* ABOVE doodles */
   width: 80px;
   background: #000;
 }
@@ -105,7 +106,8 @@ body {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  z-index: 200;             /* TOPMOST */
+  z-index: 200;
+  /* TOPMOST */
 }
 
 .mobile-nav a {
@@ -124,7 +126,8 @@ body {
 /* ---------- MAIN CONTENT ---------- */
 main {
   position: relative;
-  z-index: 10;              /* ABOVE doodles */
+  z-index: 10;
+  /* ABOVE doodles */
   min-height: 100vh;
 }
 
@@ -136,7 +139,7 @@ main {
   background: #ffffff;
   padding: 0.75rem 1rem;
   border-radius: 1rem;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
   margin-bottom: 1rem;
 }
 
@@ -162,7 +165,7 @@ main {
   border-radius: 1.25rem;
   padding: 1.25rem;
   margin-bottom: 1.5rem;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
 }
 
 /* ---------- SESSION CARD ---------- */
@@ -180,9 +183,17 @@ main {
 }
 
 /* Focus states */
-.focused { border-color: #22c55e; }
-.average { border-color: #facc15; }
-.distracted { border-color: #ef4444; }
+.focused {
+  border-color: #22c55e;
+}
+
+.average {
+  border-color: #facc15;
+}
+
+.distracted {
+  border-color: #ef4444;
+}
 
 /* ---------- FOCUS BADGES ---------- */
 .focus-badge {
@@ -214,6 +225,7 @@ main {
     transform: scale(0.8);
     opacity: 0.4;
   }
+
   to {
     transform: scale(1);
     opacity: 1;
@@ -230,13 +242,15 @@ main {
 /* ---------- MOBILE OPTIMIZATION ---------- */
 @media (max-width: 768px) {
   main {
-    padding-bottom: 80px; /* space for mobile nav */
+    padding-bottom: 80px;
+    /* space for mobile nav */
   }
 
   .session-card {
     padding: 0.9rem;
   }
 }
+
 .badge-toast {
   position: fixed;
   bottom: 24px;
@@ -248,7 +262,7 @@ main {
   display: flex;
   align-items: center;
   gap: 10px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
   z-index: 9999;
   animation: slideUp 0.3s ease;
 }
@@ -258,6 +272,205 @@ main {
 }
 
 @keyframes slideUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ===============================
+   DARK MODE STYLES
+================================ */
+
+/* Summary Bar */
+.dark-mode .summary-bar {
+  background: linear-gradient(145deg, #16161f 0%, #1c1c28 100%) !important;
+  border: 1px solid rgba(99, 102, 241, 0.15) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+}
+
+.dark-mode .summary-bar h6,
+.dark-mode .summary-bar .fw-bold {
+  color: #f0f0f3 !important;
+}
+
+.dark-mode .summary-bar .text-muted {
+  color: #9ca3af !important;
+}
+
+/* Filter Pills */
+.dark-mode .filter-pill {
+  background: rgba(99, 102, 241, 0.1) !important;
+  color: #9ca3af !important;
+  border: 1px solid rgba(99, 102, 241, 0.15) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.dark-mode .filter-pill:hover {
+  background: rgba(99, 102, 241, 0.15) !important;
+  color: #a5b4fc !important;
+  border-color: rgba(99, 102, 241, 0.3) !important;
+}
+
+.dark-mode .filter-pill.active {
+  background: linear-gradient(135deg, #6366f1, #4f46e5) !important;
+  color: #ffffff !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3) !important;
+}
+
+/* Day Cards */
+.dark-mode .day-card {
+  background: linear-gradient(145deg, #16161f 0%, #1c1c28 100%) !important;
+  border: 1px solid rgba(99, 102, 241, 0.12) !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.dark-mode .day-card:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(99, 102, 241, 0.2) !important;
+  border-color: rgba(99, 102, 241, 0.25) !important;
+}
+
+.dark-mode .day-card h5,
+.dark-mode .day-card h6,
+.dark-mode .day-card .fw-bold {
+  color: #f0f0f3 !important;
+}
+
+.dark-mode .day-card .text-muted {
+  color: #9ca3af !important;
+}
+
+/* Session Cards */
+.dark-mode .session-card {
+  background: linear-gradient(145deg, #1c1c28 0%, #252535 100%) !important;
+  border: 1px solid rgba(99, 102, 241, 0.1) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.dark-mode .session-card:hover {
+  transform: translateY(-2px) scale(1.01) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(99, 102, 241, 0.2) !important;
+  border-color: rgba(99, 102, 241, 0.2) !important;
+}
+
+.dark-mode .session-card h6,
+.dark-mode .session-card .fw-bold {
+  color: #f0f0f3 !important;
+}
+
+.dark-mode .session-card p,
+.dark-mode .session-card span {
+  color: #d1d5db !important;
+}
+
+.dark-mode .session-meta {
+  color: #9ca3af !important;
+}
+
+/* Focus State Border Colors (Enhanced for Dark Mode) */
+.dark-mode .session-card.focused {
+  border-left-color: #10b981 !important;
+  border-left-width: 4px !important;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.2), inset 4px 0 0 rgba(16, 185, 129, 0.3) !important;
+}
+
+.dark-mode .session-card.average {
+  border-left-color: #f59e0b !important;
+  border-left-width: 4px !important;
+  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.2), inset 4px 0 0 rgba(245, 158, 11, 0.3) !important;
+}
+
+.dark-mode .session-card.distracted {
+  border-left-color: #ef4444 !important;
+  border-left-width: 4px !important;
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.2), inset 4px 0 0 rgba(239, 68, 68, 0.3) !important;
+}
+
+/* Focus Badges (Enhanced for Dark Mode) */
+.dark-mode .focused-badge {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #6ee7b7 !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+  font-weight: 700 !important;
+}
+
+.dark-mode .average-badge {
+  background: rgba(245, 158, 11, 0.15) !important;
+  color: #fbbf24 !important;
+  border: 1px solid rgba(245, 158, 11, 0.3) !important;
+  font-weight: 700 !important;
+}
+
+.dark-mode .distracted-badge {
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: #fca5a5 !important;
+  border: 1px solid rgba(239, 68, 68, 0.3) !important;
+  font-weight: 700 !important;
+}
+
+/* Badge Toast */
+.dark-mode .badge-toast {
+  background: linear-gradient(135deg, #6366f1, #4f46e5) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(99, 102, 241, 0.3) !important;
+  box-shadow: 0 12px 40px rgba(99, 102, 241, 0.4) !important;
+}
+
+/* Empty State */
+.dark-mode .text-center.text-muted {
+  color: #9ca3af !important;
+}
+
+.dark-mode .text-center.text-muted i {
+  color: #6b7280 !important;
+}
+
+/* Buttons in Sessions */
+.dark-mode .btn-outline-primary {
+  color: #6366f1 !important;
+  border-color: #6366f1 !important;
+  background: transparent !important;
+}
+
+.dark-mode .btn-outline-primary:hover {
+  background: #6366f1 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3) !important;
+}
+
+/* Subject and Note Text */
+.dark-mode .session-card .small {
+  color: #9ca3af !important;
+}
+
+.dark-mode .session-card .bi {
+  color: #a5b4fc !important;
+}
+
+/* Focus Streak Badge */
+.dark-mode .badge.bg-success {
+  background: linear-gradient(135deg, #10b981, #059669) !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3) !important;
+}
+
+.dark-mode .badge.bg-warning {
+  background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3) !important;
+}
+
+.dark-mode .badge.bg-danger {
+  background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3) !important;
 }

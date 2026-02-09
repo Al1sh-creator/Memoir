@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,293 +11,835 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
 
   <!-- Shared Styles -->
+  <link rel="stylesheet" href="shared.css">
   <link rel="stylesheet" href="pg1.css">
-  
+
   <!-- Mobile Navbar -->
   <link rel="stylesheet" href="mobile-navbar.css">
 
   <style>
-    /* Match Memoir card language */
-    .settings-card {
-      background: white;
-      border-radius: 28px;
-      border: 1px solid rgba(0,0,0,0.04);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-      padding: 24px;
+    /* =========================================
+       SETTINGS PAGE REDESIGN (FINAL)
+       ========================================= */
+
+    :root {
+      --primary-color: #6366f1;
+      --primary-hover: #4f46e5;
+    }
+
+    body {
+      background-color: #f8f9fa;
+    }
+
+    /* ---------- HEADER ---------- */
+    .settings-icon-header {
+      width: 48px;
+      height: 48px;
+      background: rgba(99, 102, 241, 0.1);
+      color: var(--primary-color);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
     }
 
     .settings-title {
       font-weight: 800;
-      margin-bottom: 4px;
+      color: #1e293b;
     }
 
     .settings-subtitle {
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       text-transform: uppercase;
       letter-spacing: 1px;
-      color: #6c757d;
+      color: #64748b;
       font-weight: 700;
     }
 
+    /* ---------- TABS ---------- */
+    .settings-tabs .nav-link {
+      color: #64748b;
+      font-weight: 600;
+      padding: 10px 24px;
+      border-radius: 50px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid transparent;
+      display: flex;
+      align-items: center;
+    }
+
+    .settings-tabs .nav-link:hover {
+      background: rgba(99, 102, 241, 0.05);
+      color: var(--primary-color);
+    }
+
+    .settings-tabs .nav-link.active {
+      background: var(--primary-color);
+      color: white;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    }
+
+    /* ---------- CARDS ---------- */
+    .settings-card {
+      background: white;
+      border-radius: 20px;
+      border: 1px solid rgba(0, 0, 0, 0.04);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+      overflow: hidden;
+      height: 100%;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .settings-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    }
+
+    .settings-card-header {
+      padding: 20px 24px;
+      background: #fcfcfc;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .settings-card-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: white;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(0, 0, 0, 0.02);
+    }
+
+    .settings-card-body {
+      padding: 24px;
+    }
+
+    .setting-item {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    }
+
+    .setting-item:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    /* ---------- FORMS ---------- */
+    .form-label {
+      color: #475569;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-control,
+    .form-select {
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      padding: 0.6rem 1rem;
+      font-size: 0.95rem;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    }
+
+    .form-control:disabled {
+      background-color: #f1f5f9;
+      opacity: 0.8;
+    }
+
     .form-switch .form-check-input {
-      width: 2.6em;
-      height: 1.4em;
+      width: 3em;
+      height: 1.6em;
+      margin-left: -2.5em;
+      cursor: pointer;
     }
 
+    .form-switch {
+      padding-left: 2.5em;
+    }
+
+    /* ---------- PRESETS ---------- */
+    .color-picker-wrapper {
+      background: #f8fafc;
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .color-preset {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .color-preset:hover {
+      transform: scale(1.15);
+      z-index: 2;
+    }
+
+    /* ---------- DANGER ZONE ---------- */
     .danger-card {
-      border: 1px solid rgba(220,53,69,0.25);
-      background: linear-gradient(180deg,#fff,#fff5f5);
+      border: 1px solid rgba(239, 68, 68, 0.2);
     }
 
-    .section-divider {
-      margin: 18px 0;
-      border-top: 1px dashed #dee2e6;
+    .danger-card .settings-card-header {
+      background: #fef2f2;
     }
+
+    .danger-icon {
+      color: #ef4444;
+      background: #fee2e2;
+    }
+
+    /* =========================================
+       DARK MODE OVERRIDES
+       ========================================= */
+
+    .dark-mode {
+      background-color: #0a0a0a !important;
+      color: #f0f0f3 !important;
+    }
+
+    .dark-mode .settings-title {
+      color: #f0f0f3 !important;
+    }
+
+    .dark-mode .settings-subtitle {
+      color: #94a3b8 !important;
+    }
+
+    /* Dark Cards */
+    .dark-mode .settings-card {
+      background: linear-gradient(145deg, #16161f 0%, #1c1c28 100%) !important;
+      border: 1px solid rgba(255, 255, 255, 0.05) !important;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4) !important;
+    }
+
+    .dark-mode .settings-card-header {
+      background: rgba(255, 255, 255, 0.02) !important;
+      border-bottom-color: rgba(255, 255, 255, 0.05) !important;
+    }
+
+    .dark-mode .settings-card-icon {
+      background: rgba(255, 255, 255, 0.05) !important;
+      color: #94a3b8 !important;
+      border-color: transparent !important;
+    }
+
+    .dark-mode h5.fw-bold {
+      color: #f0f0f3 !important;
+    }
+
+    .dark-mode p.text-muted {
+      color: #9ca3b8 !important;
+    }
+
+    /* Dark Forms */
+    .dark-mode .form-label {
+      color: #cbd5e1 !important;
+    }
+
+    .dark-mode .form-control,
+    .dark-mode .form-select {
+      background: linear-gradient(135deg, #2d2d2d 0%, #3a3a3a 100%) !important;
+      border-color: rgba(255, 255, 255, 0.1) !important;
+      color: #f0f0f3 !important;
+    }
+
+    .dark-mode .form-control:focus,
+    .dark-mode .form-select:focus {
+      background: #2a2a3a !important;
+      border-color: var(--primary-color) !important;
+    }
+
+    .dark-mode .form-control:disabled {
+      background: #1e1e28 !important;
+      opacity: 0.6 !important;
+    }
+
+    .dark-mode .setting-item {
+      border-bottom-color: rgba(255, 255, 255, 0.05) !important;
+    }
+
+    /* Dark Tabs */
+    .dark-mode .settings-tabs .nav-link {
+      color: #94a3b8 !important;
+    }
+
+    .dark-mode .settings-tabs .nav-link:hover {
+      background: rgba(255, 255, 255, 0.05) !important;
+      color: #f0f0f3 !important;
+    }
+
+    .dark-mode .settings-tabs .nav-link.active {
+      color: white !important;
+    }
+
+    /* Dark Specialized */
+    .dark-mode .color-picker-wrapper {
+      background: rgba(0, 0, 0, 0.2) !important;
+      border-color: rgba(255, 255, 255, 0.05) !important;
+    }
+
+    .dark-mode .danger-card {
+      background: linear-gradient(145deg, #2a1215, #1f1212) !important;
+      border-color: rgba(239, 68, 68, 0.3) !important;
+    }
+
+    .dark-mode .danger-card .settings-card-header {
+      background: rgba(239, 68, 68, 0.1) !important;
+    }
+
+    /* Hide old styles if any remain */
+    /* (The replace covers the start of the style block, forcing valid CSS structure) */
   </style>
+
+
 </head>
 
 <body class="bg-light">
 
-<!-- ================= MOBILE BOTTOM NAVBAR ================= -->
-<nav class="mobile-navbar">
-  <a href="pg1.html">
-    <i class="bi bi-speedometer"></i>
-    <span>Home</span>
-  </a>
-  <a href="timer.html">
-    <i class="bi bi-stopwatch"></i>
-    <span>Timer</span>
-  </a>
-  <a href="Sessions.html">
-    <i class="bi bi-book"></i>
-    <span>Sessions</span>
-    <span class="nav-badge" data-sessions-badge></span>
-  </a>
-  <a href="calendar.html">
-    <i class="bi bi-calendar3"></i>
-    <span>Calendar</span>
-  </a>
-  <a href="subjects.html">
-    <i class="bi bi-mortarboard-fill"></i>
-    <span>Subjects</span>
-  </a>
-  <a href="badges1.html">
-    <i class="bi bi-trophy-fill"></i>
-    <span>Badges</span>
-  </a>
-  <a href="analytics.html">
-    <i class="bi bi-bar-chart-line"></i>
-    <span>Analytics</span>
-  </a>
-  <a href="settings.html" class="active">
-    <i class="bi bi-gear"></i>
-    <span>Settings</span>
-  </a>
-</nav>
-
-<!-- DOODLES (consistent with other pages) -->
-<div class="doodle-layer">
-  <span class="doodle circle"></span>
-  <span class="doodle zigzag"></span>
-  <span class="doodle blob"></span>
-  <span class="doodle star"></span>
-</div>
-
-<div class="d-flex">
-
-  <!-- SIDEBAR -->
-  <nav class="sidebar d-flex flex-column align-items-center bg-black vh-100 py-4 rounded d-none d-md-flex">
-    <div class="mb-4"><i class="bi bi-owl fs-3 text-white"></i></div>
-
-    <div class="nav-icons d-flex flex-column gap-2">
-      <a href="pg1.html" class="text-decoration-none"><div class="icon-box"><i class="bi bi-speedometer"></i></div></a>
-      <a href="timer.html" class="text-decoration-none"><div class="icon-box"><i class="bi bi-stopwatch"></i></div></a>
-      <a href="Sessions.html" class="text-decoration-none"><div class="icon-box"><i class="bi bi-book"></i></div></a>
-      <a href="calendar.html" class="text-decoration-none"><div class="icon-box"><i class="bi bi-calendar3"></i></div></a>
-      <a href="#" class="text-decoration-none"><div class="icon-box"><i class="bi bi-mortarboard-fill"></i></div></a>
-      <a href="badges1.html" class="text-decoration-none"><div class="icon-box"><i class="bi bi-trophy-fill"></i></div></a>
-      <a href="analytics.html" class="text-decoration-none"><div class="icon-box"><i class="bi bi-bar-chart-line"></i></div></a>
-      <a href="settings.html" class="text-decoration-none">
-        <div class="icon-box active"><i class="bi bi-gear"></i></div>
-      </a>
-    </div>
-
-    <div class="mt-auto mb-3">
-      <div class="icon-box logout-btn" onclick="handleLogout()" style="cursor: pointer;"><i class="bi bi-box-arrow-right"></i></div>
-    </div>
+  <!-- ================= MOBILE BOTTOM NAVBAR ================= -->
+  <nav class="mobile-navbar">
+    <a href="pg1.html">
+      <i class="bi bi-speedometer"></i>
+      <span>Home</span>
+    </a>
+    <a href="timer.html">
+      <i class="bi bi-stopwatch"></i>
+      <span>Timer</span>
+    </a>
+    <a href="Sessions.html">
+      <i class="bi bi-book"></i>
+      <span>Sessions</span>
+      <span class="nav-badge" data-sessions-badge></span>
+    </a>
+    <a href="calendar.html">
+      <i class="bi bi-calendar3"></i>
+      <span>Calendar</span>
+    </a>
+    <a href="subjects.html">
+      <i class="bi bi-mortarboard-fill"></i>
+      <span>Subjects</span>
+    </a>
+    <a href="badges1.html">
+      <i class="bi bi-trophy-fill"></i>
+      <span>Badges</span>
+    </a>
+    <a href="analytics.html">
+      <i class="bi bi-bar-chart-line"></i>
+      <span>Analytics</span>
+    </a>
+    <a href="settings.html" class="active">
+      <i class="bi bi-gear"></i>
+      <span>Settings</span>
+    </a>
   </nav>
 
-  <!-- MAIN -->
-  <main class="container-fluid p-4">
+  <!-- DOODLES (consistent with other pages) -->
+  <div class="doodle-layer">
+    <span class="doodle circle"></span>
+    <span class="doodle zigzag"></span>
+    <span class="doodle blob"></span>
+    <span class="doodle star"></span>
+  </div>
 
-    <!-- HEADER -->
-    <div class="mb-4">
-      <small class="settings-subtitle">Preferences</small>
-      <h1 class="settings-title">Settings</h1>
-    </div>
+  <div class="d-flex">
 
-    <div class="row g-4">
+    <!-- SIDEBAR -->
+    <nav class="sidebar d-flex flex-column align-items-center bg-black vh-100 py-4 rounded d-none d-md-flex">
+      <div class="mb-4"><i class="bi bi-owl fs-3 text-white"></i></div>
 
-      <!-- ACCOUNT -->
-      <div class="col-lg-6">
-        <div class="settings-card">
-          <h5 class="fw-bold mb-3">👤 Account</h5>
+      <div class="nav-icons d-flex flex-column gap-2">
+        <a href="pg1.html" class="text-decoration-none">
+          <div class="icon-box"><i class="bi bi-speedometer"></i></div>
+        </a>
+        <a href="timer.html" class="text-decoration-none">
+          <div class="icon-box"><i class="bi bi-stopwatch"></i></div>
+        </a>
+        <a href="Sessions.html" class="text-decoration-none">
+          <div class="icon-box"><i class="bi bi-book"></i></div>
+        </a>
+        <a href="calendar.html" class="text-decoration-none">
+          <div class="icon-box"><i class="bi bi-calendar3"></i></div>
+        </a>
+        <a href="#" class="text-decoration-none">
+          <div class="icon-box"><i class="bi bi-mortarboard-fill"></i></div>
+        </a>
+        <a href="badges1.html" class="text-decoration-none">
+          <div class="icon-box"><i class="bi bi-trophy-fill"></i></div>
+        </a>
+        <a href="analytics.html" class="text-decoration-none">
+          <div class="icon-box"><i class="bi bi-bar-chart-line"></i></div>
+        </a>
+        <a href="settings.html" class="text-decoration-none">
+          <div class="icon-box active"><i class="bi bi-gear"></i></div>
+        </a>
+      </div>
 
-          <div class="mb-3">
-            <label class="form-label small fw-bold">Display Name</label>
-            <input type="text" class="form-control" id="displayName" placeholder="Your name">
+      <div class="mt-auto mb-3">
+        <div class="icon-box logout-btn" onclick="handleLogout()" style="cursor: pointer;"><i
+            class="bi bi-box-arrow-right"></i></div>
+      </div>
+    </nav>
+
+    <!-- MAIN -->
+    <main class="container-fluid p-4" style="max-width: 1400px;">
+
+      <!-- HEADER -->
+      <div class="mb-5">
+        <div class="d-flex align-items-center gap-3 mb-2">
+          <div class="settings-icon-header">
+            <i class="bi bi-gear-fill"></i>
           </div>
-
-          <div class="mb-3">
-            <label class="form-label small fw-bold">Email</label>
-            <input type="email" id="email" class="form-control" disabled value="">
+          <div>
+            <small class="settings-subtitle">Customize Your Experience</small>
+            <h1 class="settings-title mb-0">Settings</h1>
           </div>
-
-          <button class="btn btn-primary rounded-pill px-4">Save</button>
         </div>
       </div>
 
-      <!-- STUDY PREFERENCES -->
-      <div class="col-lg-6">
-        <div class="settings-card">
-          <h5 class="fw-bold mb-3">📚 Study Preferences</h5>
+      <!-- TABS NAVIGATION -->
+      <ul class="nav nav-pills mb-4 settings-tabs" id="settingsTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="general-tab" data-bs-toggle="pill" data-bs-target="#general" type="button"
+            role="tab">
+            <i class="bi bi-sliders me-2"></i>General
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="study-tab" data-bs-toggle="pill" data-bs-target="#study" type="button"
+            role="tab">
+            <i class="bi bi-book me-2"></i>Study
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="appearance-tab" data-bs-toggle="pill" data-bs-target="#appearance" type="button"
+            role="tab">
+            <i class="bi bi-palette me-2"></i>Appearance
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="privacy-tab" data-bs-toggle="pill" data-bs-target="#privacy" type="button"
+            role="tab">
+            <i class="bi bi-shield-lock me-2"></i>Privacy
+          </button>
+        </li>
+      </ul>
 
-            <div class="row g-3">
-              <div class="col-12">
-                <label class="form-label small fw-bold">Focus Duration</label>
-                <select class="form-select" id="focusDuration">
-                  <option>25 min</option>
-                  <option>50 min</option>
-                  <option>90 min</option>
-                </select>
+      <!-- TAB CONTENT -->
+      <div class="tab-content" id="settingsTabContent">
+
+        <!-- GENERAL TAB -->
+        <div class="tab-pane fade show active" id="general" role="tabpanel">
+          <div class="row g-4">
+
+            <!-- Account Settings -->
+            <div class="col-lg-6">
+              <div class="settings-card">
+                <div class="settings-card-header">
+                  <div class="settings-card-icon">
+                    <i class="bi bi-person-circle"></i>
+                  </div>
+                  <div>
+                    <h5 class="fw-bold mb-1">Account Information</h5>
+                    <p class="text-muted small mb-0">Manage your personal details</p>
+                  </div>
+                </div>
+
+                <div class="settings-card-body">
+                  <div class="mb-4">
+                    <label class="form-label small fw-bold text-uppercase">
+                      <i class="bi bi-person me-2"></i>Display Name
+                    </label>
+                    <input type="text" class="form-control form-control-lg" id="displayName"
+                      placeholder="Enter your name">
+                  </div>
+
+                  <div class="mb-4">
+                    <label class="form-label small fw-bold text-uppercase">
+                      <i class="bi bi-envelope me-2"></i>Email Address
+                    </label>
+                    <input type="email" id="email" class="form-control form-control-lg" disabled value="">
+                    <small class="text-muted">Email cannot be changed</small>
+                  </div>
+
+                  <button class="btn btn-primary btn-lg rounded-pill px-5">
+                    <i class="bi bi-check-circle me-2"></i>Save Changes
+                  </button>
+                </div>
               </div>
             </div>
-        </div>
-      </div>
 
-      <!-- STUDY GOALS -->
-      <div class="col-lg-6">
-        <div class="settings-card">
-          <h5 class="fw-bold mb-3">🎯 Study Goals</h5>
+            <!-- Notifications -->
+            <div class="col-lg-6">
+              <div class="settings-card">
+                <div class="settings-card-header">
+                  <div class="settings-card-icon">
+                    <i class="bi bi-bell"></i>
+                  </div>
+                  <div>
+                    <h5 class="fw-bold mb-1">Notifications</h5>
+                    <p class="text-muted small mb-0">Manage your alerts and reminders</p>
+                  </div>
+                </div>
 
-          <div class="mb-3">
-            <label class="form-label small fw-bold">Daily Goal (hours)</label>
-            <input type="number" class="form-control" id="dailyGoal" min="1" max="12" step="0.5" value="4">
-            <small class="text-muted">Target study time per day</small>
-          </div>
+                <div class="settings-card-body">
+                  <div class="setting-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <div class="fw-semibold">Daily Study Reminder</div>
+                        <small class="text-muted">Get reminded to study every day</small>
+                      </div>
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="dailyReminder">
+                      </div>
+                    </div>
+                  </div>
 
-          <div class="mb-3">
-            <label class="form-label small fw-bold">Weekly Goal (hours)</label>
-            <input type="number" class="form-control" id="weeklyGoal" min="5" max="80" step="1" value="20">
-            <small class="text-muted">Target study time per week</small>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label small fw-bold">Monthly Goal (hours)</label>
-            <input type="number" class="form-control" id="monthlyGoal" min="20" max="300" step="1" value="80">
-            <small class="text-muted">Target study time per month</small>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label small fw-bold">Total Goal (hours)</label>
-            <input type="number" class="form-control" id="totalGoal" min="50" max="1000" step="10" value="200">
-            <small class="text-muted">Your overall target</small>
-          </div>
-
-          <button class="btn btn-primary rounded-pill px-4" id="saveGoalsBtn">Save Goals</button>
-        </div>
-      </div>
-
-      <!-- AUTOMATION -->
-      <div class="col-lg-6">
-        <div class="settings-card">
-          <h5 class="fw-bold mb-3">⏱ Automation</h5>
-
-          <div class="form-check form-switch mb-2">
-            <input class="form-check-input" type="checkbox" id="autoLogSessions">
-            <label class="form-check-label">Auto-log sessions to calendar</label>
-          </div>
-
-          <div class="form-check form-switch">
-            <input class="form-check-input" type="checkbox" id="pauseOnInactivity">
-            <label class="form-check-label">Pause on inactivity</label>
-          </div>
-        </div>
-      </div>
-
-      <!-- NOTIFICATIONS -->
-      <div class="col-lg-6">
-        <div class="settings-card">
-          <h5 class="fw-bold mb-3">🔔 Notifications</h5>
-
-          <div class="form-check form-switch mb-3">
-            <input class="form-check-input" type="checkbox" id="dailyReminder">
-            <label class="form-check-label">Daily Study Reminder</label>
-          </div>
-
-          <input type="time" class="form-control w-50" id="reminderTime">
-        </div>
-      </div>
-
-      <!-- APPEARANCE -->
-      <div class="col-lg-6">
-        <div class="settings-card">
-          <h5 class="fw-bold mb-3">🎨 Appearance</h5>
-
-          <div class="row g-3">
-            <div class="col-6">
-              <label class="form-label small fw-bold">Theme</label>
-              <select class="form-select" id="themeSelect">
-  <option value="light">Light</option>
-  <option value="dark">Dark</option>
-  <option value="system">System</option>
-</select>
+                  <div class="setting-item">
+                    <label class="form-label small fw-bold text-uppercase mb-2">
+                      <i class="bi bi-clock me-2"></i>Reminder Time
+                    </label>
+                    <input type="time" class="form-control" id="reminderTime" value="09:00">
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="col-6">
-              <label class="form-label small fw-bold">Accent Color</label>
-              <input type="color" class="form-control form-control-color" id="accentColor">
-              <input class="form-check-input" type="checkbox" id="compactToggle">
 
+            <!-- Automation -->
+            <div class="col-lg-6">
+              <div class="settings-card">
+                <div class="settings-card-header">
+                  <div class="settings-card-icon">
+                    <i class="bi bi-lightning-charge"></i>
+                  </div>
+                  <div>
+                    <h5 class="fw-bold mb-1">Automation</h5>
+                    <p class="text-muted small mb-0">Smart features to save time</p>
+                  </div>
+                </div>
+
+                <div class="settings-card-body">
+                  <div class="setting-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <div class="fw-semibold">Auto-log to Calendar</div>
+                        <small class="text-muted">Automatically add sessions to calendar</small>
+                      </div>
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="autoLogSessions">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="setting-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <div class="fw-semibold">Pause on Inactivity</div>
+                        <small class="text-muted">Auto-pause timer when inactive</small>
+                      </div>
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="pauseOnInactivity">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+
           </div>
         </div>
-      </div>
 
-      <!-- DANGER ZONE -->
-      <div class="col-lg-6">
-        <div class="settings-card danger-card">
-          <h5 class="fw-bold text-danger mb-3">⚠️ Privacy & Data</h5>
+        <!-- STUDY TAB -->
+        <div class="tab-pane fade" id="study" role="tabpanel">
+          <div class="row g-4">
 
-          <button class="btn btn-outline-secondary" id="exportData">Export Study Data</button>
-          <div class="section-divider"></div>
-          <button class="btn btn-outline-danger" id="deleteAccount">Delete Account</button>
+            <!-- Study Preferences -->
+            <div class="col-lg-6">
+              <div class="settings-card">
+                <div class="settings-card-header">
+                  <div class="settings-card-icon">
+                    <i class="bi bi-stopwatch"></i>
+                  </div>
+                  <div>
+                    <h5 class="fw-bold mb-1">Timer Settings</h5>
+                    <p class="text-muted small mb-0">Configure your focus sessions</p>
+                  </div>
+                </div>
+
+                <div class="settings-card-body">
+                  <div class="mb-4">
+                    <label class="form-label small fw-bold text-uppercase">
+                      <i class="bi bi-hourglass-split me-2"></i>Default Focus Duration
+                    </label>
+                    <select class="form-select form-select-lg" id="focusDuration">
+                      <option value="25">25 minutes (Pomodoro)</option>
+                      <option value="50">50 minutes (Deep Focus)</option>
+                      <option value="90">90 minutes (Ultra Focus)</option>
+                    </select>
+                    <small class="text-muted">Your preferred timer duration</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Study Goals -->
+            <div class="col-lg-6">
+              <div class="settings-card">
+                <div class="settings-card-header">
+                  <div class="settings-card-icon">
+                    <i class="bi bi-bullseye"></i>
+                  </div>
+                  <div>
+                    <h5 class="fw-bold mb-1">Study Goals</h5>
+                    <p class="text-muted small mb-0">Set your targets and stay motivated</p>
+                  </div>
+                </div>
+
+                <div class="settings-card-body">
+                  <div class="row g-3">
+                    <div class="col-6">
+                      <label class="form-label small fw-bold text-uppercase">Daily Goal</label>
+                      <div class="input-group input-group-lg">
+                        <input type="number" class="form-control" id="dailyGoal" min="1" max="12" step="0.5" value="4">
+                        <span class="input-group-text">hrs</span>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <label class="form-label small fw-bold text-uppercase">Weekly Goal</label>
+                      <div class="input-group input-group-lg">
+                        <input type="number" class="form-control" id="weeklyGoal" min="5" max="80" step="1" value="20">
+                        <span class="input-group-text">hrs</span>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <label class="form-label small fw-bold text-uppercase">Monthly Goal</label>
+                      <div class="input-group input-group-lg">
+                        <input type="number" class="form-control" id="monthlyGoal" min="20" max="300" step="1"
+                          value="80">
+                        <span class="input-group-text">hrs</span>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <label class="form-label small fw-bold text-uppercase">Total Goal</label>
+                      <div class="input-group input-group-lg">
+                        <input type="number" class="form-control" id="totalGoal" min="50" max="1000" step="10"
+                          value="200">
+                        <span class="input-group-text">hrs</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button class="btn btn-primary btn-lg rounded-pill px-5 mt-4 w-100" id="saveGoalsBtn">
+                    <i class="bi bi-check-circle me-2"></i>Save Goals
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
+
+        <!-- APPEARANCE TAB -->
+        <div class="tab-pane fade" id="appearance" role="tabpanel">
+          <div class="row g-4">
+
+            <!-- Theme Settings -->
+            <div class="col-lg-6">
+              <div class="settings-card">
+                <div class="settings-card-header">
+                  <div class="settings-card-icon">
+                    <i class="bi bi-moon-stars"></i>
+                  </div>
+                  <div>
+                    <h5 class="fw-bold mb-1">Theme</h5>
+                    <p class="text-muted small mb-0">Choose your preferred color scheme</p>
+                  </div>
+                </div>
+
+                <div class="settings-card-body">
+                  <div class="mb-4">
+                    <label class="form-label small fw-bold text-uppercase">
+                      <i class="bi bi-brightness-high me-2"></i>Color Mode
+                    </label>
+                    <select class="form-select form-select-lg" id="themeSelect">
+                      <option value="light">☀️ Light Mode</option>
+                      <option value="dark">🌙 Dark Mode</option>
+                      <option value="system">💻 System Default</option>
+                    </select>
+                  </div>
+
+                  <div class="setting-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <div class="fw-semibold">Compact Mode</div>
+                        <small class="text-muted">Reduce spacing for more content</small>
+                      </div>
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="compactToggle">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Accent Color -->
+            <div class="col-lg-6">
+              <div class="settings-card">
+                <div class="settings-card-header">
+                  <div class="settings-card-icon">
+                    <i class="bi bi-palette-fill"></i>
+                  </div>
+                  <div>
+                    <h5 class="fw-bold mb-1">Accent Color</h5>
+                    <p class="text-muted small mb-0">Personalize your interface</p>
+                  </div>
+                </div>
+
+                <div class="settings-card-body">
+                  <label class="form-label small fw-bold text-uppercase mb-3">
+                    <i class="bi bi-droplet-fill me-2"></i>Choose Your Color
+                  </label>
+                  <div class="color-picker-wrapper">
+                    <input type="color" class="form-control form-control-color form-control-lg" id="accentColor"
+                      value="#6366f1">
+                    <div class="color-presets mt-3">
+                      <div class="small fw-bold text-uppercase mb-2">Quick Presets</div>
+                      <div class="d-flex gap-2 flex-wrap">
+                        <button class="color-preset" style="background: #6366f1" data-color="#6366f1"></button>
+                        <button class="color-preset" style="background: #8b5cf6" data-color="#8b5cf6"></button>
+                        <button class="color-preset" style="background: #ec4899" data-color="#ec4899"></button>
+                        <button class="color-preset" style="background: #f43f5e" data-color="#f43f5e"></button>
+                        <button class="color-preset" style="background: #f59e0b" data-color="#f59e0b"></button>
+                        <button class="color-preset" style="background: #10b981" data-color="#10b981"></button>
+                        <button class="color-preset" style="background: #06b6d4" data-color="#06b6d4"></button>
+                        <button class="color-preset" style="background: #3b82f6" data-color="#3b82f6"></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- PRIVACY TAB -->
+        <div class="tab-pane fade" id="privacy" role="tabpanel">
+          <div class="row g-4">
+
+            <!-- Data Export -->
+            <div class="col-lg-6">
+              <div class="settings-card">
+                <div class="settings-card-header">
+                  <div class="settings-card-icon">
+                    <i class="bi bi-download"></i>
+                  </div>
+                  <div>
+                    <h5 class="fw-bold mb-1">Export Data</h5>
+                    <p class="text-muted small mb-0">Download your study information</p>
+                  </div>
+                </div>
+
+                <div class="settings-card-body">
+                  <p class="mb-4">Export all your study sessions, goals, and progress data in JSON format.</p>
+                  <button class="btn btn-outline-primary btn-lg rounded-pill px-5 w-100" id="exportData">
+                    <i class="bi bi-file-earmark-arrow-down me-2"></i>Export All Data
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="col-lg-6">
+              <div class="settings-card danger-card">
+                <div class="settings-card-header">
+                  <div class="settings-card-icon danger-icon">
+                    <i class="bi bi-exclamation-triangle"></i>
+                  </div>
+                  <div>
+                    <h5 class="fw-bold mb-1 text-danger">Danger Zone</h5>
+                    <p class="text-muted small mb-0">Irreversible actions</p>
+                  </div>
+                </div>
+
+                <div class="settings-card-body">
+                  <div class="alert alert-danger d-flex align-items-start gap-2 mb-4">
+                    <i class="bi bi-shield-exclamation fs-5"></i>
+                    <div class="small">
+                      <strong>Warning:</strong> Deleting your account will permanently remove all your data. This action
+                      cannot be undone.
+                    </div>
+                  </div>
+                  <button class="btn btn-danger btn-lg rounded-pill px-5 w-100" id="deleteAccount">
+                    <i class="bi bi-trash me-2"></i>Delete Account
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
       </div>
 
-    </div>
-  </main>
-</div>
+    </main>
+  </div>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Check authentication first
-        if (!auth.requireAuth()) {
-            return; // Will redirect to login
-        }
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Check authentication first
+      if (!auth.requireAuth()) {
+        return; // Will redirect to login
+      }
     });
-</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="shared.js"></script>
-<script src="auth.js"></script>
-<script src="setting.js"></script>
-<script src="mobile-navbar.js"></script>
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="shared.js"></script>
+  <script src="auth.js"></script>
+  <script src="setting.js"></script>
+  <script src="mobile-navbar.js"></script>
 
-<script>
+  <script>
     function handleLogout() {
-        auth.logout();
-        window.location.href = 'landing.html';
+      auth.logout();
+      window.location.href = 'landing.html';
     }
-</script>
+  </script>
 
+  <script>
+    // Handle Color Presets
+    document.querySelectorAll('.color-preset').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const color = btn.dataset.color;
+        const colorInput = document.getElementById('accentColor');
+        if (colorInput) {
+          colorInput.value = color;
+          // Trigger change for logic
+          colorInput.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      });
+    });
+  </script>
 </body>
+
 </html>
