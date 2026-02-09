@@ -72,23 +72,23 @@ document.addEventListener("DOMContentLoaded", () => {
   // ================= LAST 7 DAYS STUDY TIME CHART =================
   const today = new Date();
   const last7Days = [];
-
+  // used for setting x axis of the chart
   for (let i = 6; i >= 0; i--) {
     const d = new Date(today);
     d.setDate(today.getDate() - i);
     last7Days.push(d.toISOString().split("T")[0]);
   }
-
+  //used for setting y axis of the chart
   const dailyMinutes = last7Days.map(date =>
     Math.round(
       sessions
-        .filter(s => s.date === date)
-        .reduce((a, s) => a + (s.durationSeconds || 0), 0) / 60
+        .filter(s => s.date === date)//filter session for this specific date
+        .reduce((a, s) => a + (s.durationSeconds || 0), 0) / 60//sum duration in seconds ->Convert to Minutes
     )
   );
 
   const labels = last7Days.map(d =>
-    new Date(d).toLocaleDateString("en-US", { weekday: "short" })
+    new Date(d).toLocaleDateString("en-US", { weekday: "short" })//convert date to short weekday
   );
 
   const timeCtx = document.getElementById("timeChart")?.getContext("2d");

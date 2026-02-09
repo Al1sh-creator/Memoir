@@ -156,9 +156,9 @@
                         displayName: 'Alice'
                     },
                     stats: {
-                        totalSessions: 45,
-                        totalTime: 72000, // ~20 hours
-                        currentStreak: 7,
+                        totalSessions: 55, // Increased session count
+                        totalTime: 82000,
+                        currentStreak: 10,
                         badges: ['streak_3', 'streak_7', 'consistency_5', 'focus_80']
                     }
                 },
@@ -305,14 +305,17 @@
 
             let sessionId = 1000;
 
-            // Last 7 days: Active streak with mostly focused sessions (1-3 sessions per day)
-            for (let daysAgo = 0; daysAgo < 7; daysAgo++) {
-                const sessionsPerDay = 1 + Math.floor(Math.random() * 3); // 1-3 sessions
+            // Last 10 days: GUARANTEED Active streak (matches Calendar & Dashboard logic)
+            // ensuring >30mins, >60% focus, and "Focused" status.
+            for (let daysAgo = 0; daysAgo < 10; daysAgo++) {
+                const sessionsPerDay = 1 + Math.floor(Math.random() * 2); // 1-2 sessions
 
                 for (let sessionNum = 0; sessionNum < sessionsPerDay; sessionNum++) {
-                    const hour = 9 + Math.floor(Math.random() * 10); // 9 AM - 7 PM
+                    // Use Noon (12:00) to avoid timezone/date boundary issues
+                    const hour = 12 + sessionNum;
                     const subjectIndex = Math.floor(Math.random() * subjects.length);
-                    const focusType = Math.random() < 0.8 ? 'focused' : 'average'; // 80% focused
+                    // FORCE 'focused' type to ensure streak criteria are met
+                    const focusType = 'focused';
                     const note = daysAgo === 0 && sessionNum === 0 ? 'Great study session today!' : '';
 
                     sessions.push(createSession(sessionId++, daysAgo, hour, subjectIndex, focusType, note));

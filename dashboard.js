@@ -206,14 +206,25 @@ class DashboardManager {
     calculateConsecutiveStreak() {
         if (this.sessions.length === 0) return 0;
 
-        // Group sessions by date
+        // Group sessions by date property (matches Calendar logic)
         const sessionsByDate = {};
         this.sessions.forEach(session => {
-            const date = session.date || new Date(session.timestamp).toISOString().split('T')[0];
-            if (!sessionsByDate[date]) {
-                sessionsByDate[date] = [];
+            // Priority: Use existing session.date (which Calendar uses)
+            // Fallback: Calculate from timestamp (Local)
+            let dateKey = session.date;
+
+            if (!dateKey) {
+                const d = new Date(session.timestamp);
+                const y = d.getFullYear();
+                const m = String(d.getMonth() + 1).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                dateKey = `${y}-${m}-${day}`;
             }
-            sessionsByDate[date].push(session);
+
+            if (!sessionsByDate[dateKey]) {
+                sessionsByDate[dateKey] = [];
+            }
+            sessionsByDate[dateKey].push(session);
         });
 
         // Helper: Check if a date qualifies as a streak day (Matches Calendar Logic)
@@ -589,7 +600,99 @@ class DashboardManager {
         this.updateElement('avgSessionTime', `${Math.round(avgSession)}m`);
     }
 
+    checkAndAwardBadges() {
+        const earnedBadges = JSON.parse(localStorage.getItem('earnedBadges') || '[]');
+        const existingIds = new Set(earnedBadges.map(b => b.id));
+        const newBadges = [];
+        const now = new Date();
+
+        // Helper to award a badge
+        const award = (id, name, description, icon) => {
+            if (!existingIds.has(id)) {
+                newBadges.push({
+                    id,
+                    name,
+                    description,
+                    icon,
+                    earnedAt: now.toISOString()
+                });
+                existingIds.add(id);
+            }
+        };
+
+        // 1. Streak Badges
+        const currentStreak = this.calculateConsecutiveStreak();
+        if (currentStreak >= 3) award('streak_3', 'Streak Starter', '3-day focus streak', '🔥');
+        if (currentStreak >= 7) award('streak_7', 'Streak Master', '7-day focus streak', '⚡');
+        if (currentStreak >= 30) award('streak_30', 'Habit Hero', '30-day focus streak', '🏆');
+
+        // 2. Consistency (Unique Days)
+        const uniqueDays = new Set(this.sessions.map(s => s.date)).size;
+        if (uniqueDays >= 5) award('consistency_5', 'Consistency Champ', 'Study on 5 days', '📅');
+        if (uniqueDays >= 14) award('consistency_14', 'Dedicated Learner', 'Study on 14 days', '🛡️');
+
+        // 3. Focus Mastery (Single Session)
+        const bestFocus = Math.max(...this.sessions.map(s => s.focusScore || 0), 0);
+        if (bestFocus >= 80) award('focus_80', 'Focus Beast', '80%+ focus day', '🧠');
+        if (bestFocus >= 90) award('perfect_day', 'Perfect Focus', '90%+ focus session', '✨');
+
+        // 4. Time Milestones
+        const maxDuration = Math.max(...this.sessions.map(s => s.durationSeconds || 0), 0);
+        if (maxDuration >= 7200) award('deep_worker', 'Deep Worker', '2+ hours in one session', '⏱️');
+
+        // 5. Total Study Time
+        const totalHours = this.sessions.reduce((sum, s) => sum + (s.durationSeconds || 0), 0) / 3600;
+        if (totalHours >= 10) award('scholar_10', 'Scholar', '10 hours total study', '🎓');
+        if (totalHours >= 50) award('scholar_50', 'Master Scholar', '50 hours total study', '📜');
+
+        // 6. Night Owl (Session after 10 PM)
+        const hasNightSession = this.sessions.some(s => {
+            if (!s.timestamp) return false;
+            const hour = new Date(s.timestamp).getHours();
+            return hour >= 22 || hour < 4; // 10 PM - 4 AM
+        });
+        if (hasNightSession) award('night_owl', 'Night Owl', 'Study late at night', '🦉');
+
+        // 7. Early Bird (Session before 7 AM)
+        const hasMorningSession = this.sessions.some(s => {
+            if (!s.timestamp) return false;
+            const hour = new Date(s.timestamp).getHours();
+            return hour >= 4 && hour < 7; // 4 AM - 7 AM
+        });
+        if (hasMorningSession) award('early_bird', 'Early Bird', 'Study before 7 AM', '🌅');
+
+        // 8. Marathon Day (3+ hours in a single day)
+        // Group by date first
+        const sessionsByDate = {};
+        this.sessions.forEach(s => {
+            const d = s.date || 'unknown';
+            if (!sessionsByDate[d]) sessionsByDate[d] = 0;
+            sessionsByDate[d] += (s.durationSeconds || 0);
+        });
+        const maxDailySeconds = Math.max(...Object.values(sessionsByDate), 0);
+        if (maxDailySeconds >= 3 * 3600) award('marathon_day', 'Marathoner', '3+ hours in one day', '🏃');
+
+
+        // Save if any new badges
+        if (newBadges.length > 0) {
+            const updatedBadges = [...earnedBadges, ...newBadges];
+            localStorage.setItem('earnedBadges', JSON.stringify(updatedBadges));
+
+            // Optionally notify user (e.g., via toast or alert)
+            // For now, just log and ensure they appear in Recent Medals
+            console.log('New Badges Earned:', newBadges);
+
+            // Update Auth/User Stats as well since auth.js syncs badges?
+            // auth.js: updateStats({ badges: ... })
+            // But auth.js likely reads from its own 'stats' object.
+            // Let's sync with auth if possible, but dashboard display uses 'earnedBadges' in localStorage.
+        }
+    }
+
     updateNeedsAttention() {
+        // Call badge check whenever we update dashboard
+        this.checkAndAwardBadges();
+
         const attentionEl = document.getElementById('needsAttention');
         if (!attentionEl) return;
 

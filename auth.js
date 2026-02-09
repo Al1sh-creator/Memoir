@@ -1,4 +1,4 @@
-// Authentication System for Athenify
+// Authentication System for Memoir
 class AuthManager {
     constructor() {
         this.currentUser = null;
