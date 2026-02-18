@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memoir • Authentication</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/shared.css">
+    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="../css/pg1.css">
+    <script src="../javascript/shared.js"></script>
+    <script src="../javascript/auth.js"></script>
+</head>
+<body class="auth-body">
+    <!-- ===============Doodle Layer============== -->
+<div class="doodle-layer">
+  <span class="doodle circle"></span>
+  <span class="doodle zigzag"></span>
+  <span class="doodle blob"></span>
+  <span class="doodle star"></span>
+   <span class="doodle circle"></span>
+  <span class="doodle zigzag"></span>
+  <span class="doodle blob"></span>
+  <span class="doodle star"></span>
+    <span class="doodle circle"></span>
+  <span class="doodle zigzag"></span>
+  <span class="doodle blob"></span>
+  <span class="doodle star"></span>
+</div>
+
+    <div class="container auth-container">
+        <div class="row g-0 h-100 shadow-2xl rounded-5 overflow-hidden bg-white position-relative" id="authBox">
+            
+            <div class="col-lg-6 d-flex flex-column position-relative z-2 bg-white">
+                <div class="p-5 h-100 d-flex flex-column justify-content-center">
+                    <a href="landing.html" class="text-decoration-none text-muted mb-4 d-inline-block fw-bold">
+                        <i class="bi bi-arrow-left me-1"></i> Back to Home
+                    </a>
+
+                    <div id="loginForm" class="auth-form fade-in">
+                        <div class="mb-4">
+                            <h2 class="fw-bold text-success">Welcome back!</h2>
+                            <p class="text-muted">Enter your credentials to access your account.</p>
+                        </div>
+                        <form id="loginFormData" novalidate>
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold">Email</label>
+                                <input type="email" id="loginEmail" class="form-control form-control-lg bg-light border-0" placeholder="Enter your email" required>
+                                <div class="invalid-feedback">Please enter a valid email address.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold">Password</label>
+                                <input type="password" id="loginPassword" class="form-control form-control-lg bg-light border-0" placeholder="Enter your password" required>
+                                <div class="invalid-feedback">Password is required.</div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="remember">
+                                    <label class="form-check-label small" for="remember">Remember me</label>
+                                </div>
+                                <a href="#" class="small text-decoration-none text-success">Forgot password?</a>
+                            </div>
+                            <button type="submit" class="btn btn-color w-100 rounded-pill py-3 fw-bold hover-lift">
+                                <span id="loginBtnText">Log In</span>
+                                <div id="loginSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status"></div>
+                            </button>
+                        </form>
+                        <div class="text-center mt-4">
+                            <span class="text-muted small">Don't have an account? </span>
+                            <a href="#" class="text-success fw-bold small text-decoration-none" onclick="toggleAuth('signup')">Create Account</a>
+                        </div>
+                    </div>
+
+                    <div id="signupForm" class="auth-form d-none fade-in">
+                        <div class="mb-4">
+                            <h2 class="fw-bold text-success">Get Started</h2>
+                            <p class="text-muted">Start tracking your productivity today.</p>
+                        </div>
+                        <form id="signupFormData" novalidate>
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold">Full Name</label>
+                                <input type="text" id="signupName" class="form-control form-control-lg bg-light border-0" placeholder="Enter your name" required>
+                                <div class="invalid-feedback">Please enter your full name.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold">Email</label>
+                                <input type="email" id="signupEmail" class="form-control form-control-lg bg-light border-0" placeholder="Enter your email" required>
+                                <div class="invalid-feedback">Please enter a valid email address.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold">Password</label>
+                                <input type="password" id="signupPassword" class="form-control form-control-lg bg-light border-0" placeholder="Create a password" required minlength="6">
+                                <div class="invalid-feedback">Password must be at least 6 characters long.</div>
+                            </div>
+                            <button type="submit" class="btn btn-color w-100 rounded-pill py-3 fw-bold hover-lift">
+                                <span id="signupBtnText">Create Account</span>
+                                <div id="signupSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status"></div>
+                            </button>
+                        </form>
+                        <div class="text-center mt-4">
+                            <span class="text-muted small">Already have an account? </span>
+                            <a href="#" class="text-success fw-bold small text-decoration-none" onclick="toggleAuth('login')">Log In</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-lg-6 d-none d-lg-block position-relative bg-success overflow-hidden">
+                <div class="position-absolute w-100 h-100 d-flex flex-column justify-content-center align-items-center text-white p-5 text-center z-2">
+                    <div class="doodle-layer opacity-50">
+                        <span class="doodle circle border-white"></span>
+                        <span class="doodle star border-white" style="top:20%; right:10%"></span>
+                    </div>
+                    
+                    <div id="loginText">
+                        <i class="fa-solid fa-owl fs-1 mb-4"></i>
+                        <h2 class="fw-bold mb-3">Welcome Back!</h2>
+                        <p class="lead text-white-50">"Success is the sum of small efforts, repeated day in and day out."</p>
+                    </div>
+                    
+                    <div id="signupText" class="d-none">
+                        <i class="bi bi-rocket-takeoff-fill fs-1 mb-4"></i>
+                        <h2 class="fw-bold mb-3">Join Project 2025</h2>
+                        <p class="lead text-white-50">Your journey to better grades and lower stress starts here.</p>
+                    </div>
+                </div>
+                <div class="position-absolute bottom-0 end-0 bg-white opacity-10 rounded-circle" style="width: 300px; height: 300px; transform: translate(30%, 30%);"></div>
+                <div class="position-absolute bottom-0 end-0 bg-white opacity-10 rounded-circle" style="width: 200px; height: 200px; transform: translate(-200%, -400%);"></div>
+                <div class="position-absolute bottom-0 end-0 bg-white opacity-10 rounded-circle" style="width: 50px; height: 50px; transform: translate(-80%, -1500%);"></div>
+                <div class="position-absolute bottom-0 end-0 bg-white opacity-10 rounded-circle" style="width: 30px; height: 30px; transform: translate(-900%, -500%);"></div>
+            </div>
+            </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Check if user is already authenticated
+        document.addEventListener('DOMContentLoaded', function() {
+            if (auth.redirectIfAuthenticated()) {
+                return; // User is already logged in, redirected
+            }
+
+            // Initialize forms
+            initializeForms();
+        });
+
+        function initializeForms() {
+            // Login form handler
+            const loginForm = document.getElementById('loginFormData');
+            loginForm.addEventListener('submit', handleLogin);
+
+            // Signup form handler
+            const signupForm = document.getElementById('signupFormData');
+            signupForm.addEventListener('submit', handleSignup);
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const remember = document.getElementById('remember').checked;
+
+            // Show loading state
+            const btnText = document.getElementById('loginBtnText');
+            const spinner = document.getElementById('loginSpinner');
+            const submitBtn = document.getElementById('loginFormData').querySelector('button[type="submit"]');
+
+            btnText.textContent = 'Logging in...';
+            spinner.classList.remove('d-none');
+            submitBtn.disabled = true;
+
+            try {
+                // Manual validation
+                if (!email) {
+                    throw new Error('Please enter your email address.');
+                }
+                if (!password) {
+                    throw new Error('Please enter your password.');
+                }
+
+                // Attempt login
+                const user = auth.login(email, password);
+
+                // Success - redirect to main app
+                showSuccess('Login successful! Redirecting...');
+                setTimeout(() => {
+                    window.location.href = 'pg1.html';
+                }, 1000);
+
+            } catch (error) {
+                showError(error.message);
+                document.getElementById('loginFormData').classList.add('was-validated');
+            } finally {
+                // Reset loading state
+                btnText.textContent = 'Log In';
+                spinner.classList.add('d-none');
+                submitBtn.disabled = false;
+            }
+        }
+
+        async function handleSignup(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('signupName').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const password = document.getElementById('signupPassword').value;
+
+            // Show loading state
+            const btnText = document.getElementById('signupBtnText');
+            const spinner = document.getElementById('signupSpinner');
+            const submitBtn = document.getElementById('signupFormData').querySelector('button[type="submit"]');
+
+            btnText.textContent = 'Creating account...';
+            spinner.classList.remove('d-none');
+            submitBtn.disabled = true;
+
+            try {
+                // Manual validation
+                if (!name) {
+                    throw new Error('Please enter your full name.');
+                }
+                if (!email) {
+                    throw new Error('Please enter your email address.');
+                }
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                    throw new Error('Please enter a valid email address.');
+                }
+                if (!password || password.length < 6) {
+                    throw new Error('Password must be at least 6 characters long.');
+                }
+
+                // Attempt registration
+                const user = auth.register({
+                    name: name,
+                    email: email,
+                    password: password
+                });
+
+                // Success - redirect to main app
+                showSuccess('Account created successfully! Redirecting...');
+                setTimeout(() => {
+                    window.location.href = 'pg1.html';
+                }, 1000);
+
+            } catch (error) {
+                showError(error.message);
+                document.getElementById('signupFormData').classList.add('was-validated');
+            } finally {
+                // Reset loading state
+                btnText.textContent = 'Create Account';
+                spinner.classList.add('d-none');
+                submitBtn.disabled = false;
+            }
+        }
+
+        function showSuccess(message) {
+            // Create success alert
+            const alert = document.createElement('div');
+            alert.className = 'alert alert-success alert-dismissible fade show position-fixed';
+            alert.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            alert.innerHTML = `
+                <i class="bi bi-check-circle-fill me-2"></i>${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.body.appendChild(alert);
+
+            // Auto remove after 3 seconds
+            setTimeout(() => {
+                if (alert.parentNode) {
+                    alert.remove();
+                }
+            }, 3000);
+        }
+
+        function showError(message) {
+            // Create error alert
+            const alert = document.createElement('div');
+            alert.className = 'alert alert-danger alert-dismissible fade show position-fixed';
+            alert.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            alert.innerHTML = `
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.body.appendChild(alert);
+
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (alert.parentNode) {
+                    alert.remove();
+                }
+            }, 5000);
+        }
+
+        // Simple toggle logic
+        function toggleAuth(mode) {
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            const loginText = document.getElementById('loginText');
+            const signupText = document.getElementById('signupText');
+
+            if (mode === 'signup') {
+                loginForm.classList.add('d-none');
+                signupForm.classList.remove('d-none');
+                loginText.classList.add('d-none');
+                signupText.classList.remove('d-none');
+            } else {
+                signupForm.classList.add('d-none');
+                loginForm.classList.remove('d-none');
+                signupText.classList.add('d-none');
+                loginText.classList.remove('d-none');
+            }
+        }
+
+        // Check URL params for ?mode=signup
+        const urlParams = new URLSearchParams(window.location.search);
+        if(urlParams.get('mode') === 'signup') {
+            toggleAuth('signup');
+        }
+    </script>
+</body>
+</html>

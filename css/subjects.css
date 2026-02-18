@@ -1,0 +1,114 @@
+/* Card Container */
+.subject-card {
+    background-color: #212121 !important;
+    /* Dark grey matching the image */
+    border: none !important;
+    border-radius: 20px !important;
+    padding: 24px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.subject-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Icon Box */
+.subject-icon {
+    width: 42px;
+    height: 42px;
+    background-color: #1a2a44;
+    /* Dark blue background */
+    color: #3b82f6;
+    /* Bright blue icon */
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+/* Delete Button */
+.delete-btn {
+    color: #ef4444;
+    /* Red color */
+    opacity: 0.5;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: opacity 0.2s;
+    padding: 5px;
+}
+
+.subject-card:hover .delete-btn {
+    opacity: 1;
+}
+
+/* Progress Bar Overrides */
+.custom-progress {
+    height: 6px !important;
+    background-color: #333333 !important;
+    border-radius: 10px;
+}
+
+.custom-progress .progress-bar {
+    background-color: #3b82f6 !important;
+    border-radius: 10px;
+}
+
+/* Text Colors */
+.text-secondary {
+    color: #9ca3af !important;
+}
+
+/* =========================================
+   Inline Edit Premium Styles
+   ========================================= */
+
+/* Inline Edit Inputs */
+.edit-input {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
+    border-radius: 8px !important;
+    padding: 6px 10px !important;
+    transition: all 0.2s ease;
+}
+
+.edit-input:focus {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border-color: #3b82f6 !important;
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2) !important;
+}
+
+/* Edit Actions Toolbar */
+.edit-actions {
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    padding: 4px 8px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.edit-actions i {
+    transition: transform 0.2s, color 0.2s;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+.edit-actions i:hover {
+    transform: scale(1.1);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.save-btn:hover {
+    color: #22c55e !important;
+    /* Brighter green on hover */
+}
+
+.cancel-btn:hover {
+    color: #e5e7eb !important;
+    /* Brighter white on hover */
+}

@@ -1,0 +1,165 @@
+/* Calendar Grid System */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+/* Weekday Headings */
+.weekday {
+    text-align: center;
+    font-weight: 700;
+    color: #adb5bd;
+    font-size: 0.8rem;
+    padding-bottom: 12px;
+    text-transform: uppercase;
+}
+
+/* Weekly Focus Row */
+.focus-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 14px;
+    flex-wrap: wrap
+}
+
+.focus-title {
+    font-weight: 700;
+    color: #6c757d;
+    margin-right: 8px
+}
+
+.focus-chip {
+    background: #fff;
+    border: 1px solid rgba(16, 24, 40, 0.04);
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-weight: 600;
+    box-shadow: 0 6px 18px rgba(16, 24, 40, 0.04);
+    font-size: 0.9rem
+}
+
+.focus-chip[contenteditable] {
+    outline: none;
+    border-color: rgba(13, 110, 253, 0.12);
+    box-shadow: 0 8px 24px rgba(13, 110, 253, 0.06)
+}
+
+.focus-add {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center
+}
+
+.focus-add input {
+    border-radius: 999px;
+    padding: 6px 10px;
+    border: 1px solid #e9ecef
+}
+
+.focus-actions {
+    margin-left: auto
+}
+
+/* Individual Day Box */
+.day {
+    min-height: 100px;
+    background: linear-gradient(180deg, #fbfdff 0%, #f3f6f9 100%);
+    border-radius: 14px;
+    padding: 12px;
+    font-weight: 600;
+    color: #495057;
+    position: relative;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    cursor: pointer;
+    border: 1px solid rgba(16, 24, 40, 0.04);
+    display: flex;
+    flex-direction: column;
+    /* subtle surface noise via layered gradients */
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.0)), radial-gradient(circle at 10% 10%, rgba(0, 0, 0, 0.02), transparent 10%);
+}
+
+/* Turn date into a positioned element top-left */
+.day .date-number {
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+    font-weight: 700;
+}
+
+/* Status indicator (top-right) */
+.status-icon {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 1rem;
+    line-height: 1;
+    z-index: 2;
+}
+
+/* Session count badge (moved to bottom-right to avoid overlap) */
+.session-count {
+    position: absolute;
+    right: 8px;
+    bottom: 14px;
+    /* Above status bar */
+    top: auto;
+    background: #0d6efd;
+    color: #fff;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-weight: 700;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Focus streak fire icon (moved next to status or date) */
+.focus-fire {
+    position: absolute;
+    top: 8px;
+    right: 32px;
+    /* Left of status icon */
+    font-size: 1rem;
+    line-height: 1;
+}
+
+/* Tooltip on hover */
+.focus-fire:hover::after {
+    content: attr(data-tip);
+    position: absolute;
+    top: -32px;
+    right: 0;
+    background: #000;
+    color: #fff;
+    padding: 4px 8px;
+    font-size: 0.7rem;
+    border-radius: 6px;
+    white-space: nowrap;
+    z-index: 99;
+}
+
+/* Pulse animation for continued streak */
+@keyframes pulseFire {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.25);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.focus-fire.streak-continue {
+    animation: pulseFire 1.2s infinite;
+}
+
+.perfect-day {
+    position: absolute;
+    top: 8px;
+    left: 6px;
+    font-size: 0.9rem;
+}

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memoir • Subjects</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/shared.css">
+    <link rel="stylesheet" href="../css/subjects.css">
+
+    <!-- Mobile Navbar -->
+    <link rel="stylesheet" href="../css/mobile-navbar.css">
+    <script src="../javascript/shared.js"></script>
+    <script src="../javascript/auth.js"></script>
+    <script src="../javascript/mobile-navbar.js"></script>
+</head>
+
+<body class="bg-light dark-mode">
+    <!-- ================= MOBILE BOTTOM NAVBAR ================= -->
+    <nav class="mobile-navbar">
+        <a href="pg1.html">
+            <i class="bi bi-speedometer"></i>
+            <span>Home</span>
+        </a>
+        <a href="timer.html">
+            <i class="bi bi-stopwatch"></i>
+            <span>Timer</span>
+        </a>
+        <a href="Sessions.html">
+            <i class="bi bi-book"></i>
+            <span>Sessions</span>
+            <span class="nav-badge" data-sessions-badge></span>
+        </a>
+        <a href="calendar.html">
+            <i class="bi bi-calendar3"></i>
+            <span>Calendar</span>
+        </a>
+        <a href="subjects.html" class="active">
+            <i class="bi bi-mortarboard-fill"></i>
+            <span>Subjects</span>
+        </a>
+        <a href="badges1.html">
+            <i class="bi bi-trophy-fill"></i>
+            <span>Badges</span>
+        </a>
+        <a href="analytics.html">
+            <i class="bi bi-bar-chart-line"></i>
+            <span>Analytics</span>
+        </a>
+        <a href="settings.html">
+            <i class="bi bi-gear"></i>
+            <span>Settings</span>
+        </a>
+    </nav>
+
+    <div class="doodle-layer">
+        <span class="doodle circle"></span>
+        <span class="doodle zigzag"></span>
+        <span class="doodle blob"></span>
+        <span class="doodle star"></span>
+        <span class="doodle circle"></span>
+        <span class="doodle zigzag"></span>
+        <span class="doodle blob"></span>
+        <span class="doodle star"></span>
+        <span class="doodle circle"></span>
+        <span class="doodle zigzag"></span>
+        <span class="doodle blob"></span>
+        <span class="doodle star"></span>
+    </div>
+
+
+    <div class="d-flex">
+
+        <!-- ================= SIDEBAR ================= -->
+        <nav class="sidebar d-flex flex-column align-items-center bg-black py-4 rounded d-none d-md-flex">
+            <div class="mb-4"><i class="fa-solid fa-owl fs-3 text-white"></i></div>
+
+            <div class="nav-icons d-flex flex-column gap-2">
+                <a href="pg1.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="Dashboard">
+                    <div class="icon-box"><i class="bi bi-speedometer"></i></div>
+                </a>
+                <a href="timer.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="Timer">
+                    <div class="icon-box"><i class="bi bi-stopwatch"></i></div>
+                </a>
+                <a href="Sessions.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="Study Sessions">
+                    <div class="icon-box"><i class="bi bi-book"></i><span class="sessions-nav-count"
+                            data-sessions-badge></span></div>
+                </a>
+                <a href="calendar.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="Calendar">
+                    <div class="icon-box"><i class="bi bi-calendar3"></i></div>
+                </a>
+                <a href="subjects.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="Subjects">
+                    <div class="icon-box active"><i class="bi bi-mortarboard-fill"></i></div>
+                </a>
+                <a href="badges1.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="Badges & Trophies">
+                    <div class="icon-box"><i class="bi bi-trophy-fill"></i></div>
+                </a>
+                <a href="analytics.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="Analytics">
+                    <div class="icon-box"><i class="bi bi-bar-chart-line"></i></div>
+                </a>
+                <a href="settings.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="Settings">
+                    <div class="icon-box"><i class="bi bi-gear"></i></div>
+                </a>
+            </div>
+
+            <div class="mt-auto mb-3">
+                <div class="icon-box logout-btn" data-bs-toggle="tooltip" data-bs-placement="right" title="Logout"
+                    onclick="handleLogout()" style="cursor: pointer;">
+                    <i class="bi bi-box-arrow-right"></i>
+                </div>
+            </div>
+        </nav>
+
+        <main class="flex-grow-1 p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold">My Subjects</h2>
+                <button class="btn btn-dark rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#addSubjectModal">
+                    + Add Subject
+                </button>
+            </div>
+
+            <div class="row g-4" id="subjectsGrid">
+            </div>
+        </main>
+    </div>
+
+    <div class="modal fade" id="addSubjectModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 shadow">
+                <div class="modal-header border-0">
+                    <h5 class="fw-bold">New Subject</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="subjectForm">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Subject Name</label>
+                            <input type="text" id="subjectName" class="form-control rounded-3"
+                                placeholder="e.g. Mathematics" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Goal (Hours)</label>
+                            <input type="number" id="subjectGoal" class="form-control rounded-3" placeholder="e.g. 40">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 rounded-pill">Create Subject</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Subject Modal -->
+        <div class="modal fade" id="editSubjectModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content rounded-4 border-0 shadow">
+                    <div class="modal-header border-0">
+                        <h5 class="fw-bold">Edit Subject</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editSubjectForm">
+                            <input type="hidden" id="editSubjectIndex">
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold">Subject Name</label>
+                                <input type="text" id="editSubjectName" class="form-control rounded-3" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold">Goal (Hours)</label>
+                                <input type="number" id="editSubjectGoal" class="form-control rounded-3" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 rounded-pill">Save Changes</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Check authentication first
+            if (!auth.requireAuth()) {
+                return; // Will redirect to login
+            }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="sessions.js"></script>
+    <script src="../javascript/subjects.js"></script>
+
+    <script>
+        function handleLogout() {
+            auth.logout();
+            window.location.href = 'landing.html';
+        }
+    </script>
+</body>
+
+</html>

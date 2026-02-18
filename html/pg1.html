@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memoir • Dashboard</title>
+
+    <!-- Bootstrap & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/shared.css">
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"> -->
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/pg1.css">
+
+    <!-- Mobile Navbar -->
+    <link rel="stylesheet" href="../css/mobile-navbar.css">
+
+    <!-- Shared JS -->
+    <script src="../javascript/shared.js"></script>
+    <script src="../javascript/auth.js"></script>
+    <script src="../javascript/dashboard.js"></script>
+    <script src="../javascript/mobile-navbar.js"></script>
+
+    <!-- Progress Animation -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Check authentication first
+            if (!auth.requireAuth()) {
+                return; // Will redirect to login
+            }
+
+            // Initialize page if authenticated
+            document.querySelectorAll(".progress-animate").forEach(bar => {
+                const width = bar.getAttribute("data-width");
+                bar.style.width = "0%";
+                setTimeout(() => {
+                    bar.style.transition = "width 1.2s ease";
+                    bar.style.width = width;
+                }, 300);
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dashBtn = document.getElementById('dashboardStartSession');
+            if (!dashBtn) return;
+            dashBtn.addEventListener('click', () => {
+                // Navigate to timer page and open Session Timer mode
+                window.location.href = 'timer.html?session=1';
+            });
+        });
+        document.addEventListener("DOMContentLoaded", () => {
+            const theme = localStorage.getItem("memoir_theme") || "light";
+            const accent = localStorage.getItem("memoir_accent") || "#0d6efd";
+            const compact = localStorage.getItem("memoir_compact") === "true";
+
+            applyTheme(theme);
+            applyAccent(accent);
+            document.body.classList.toggle("compact-mode", compact);
+
+            // Listen for system theme changes when theme is set to "system"
+            if (theme === "system") {
+                const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+                mediaQuery.addEventListener("change", (e) => {
+                    if (localStorage.getItem("memoir_theme") === "system") {
+                        applyTheme("system");
+                    }
+                });
+            }
+        });
+
+        /* ===== HELPERS ===== */
+        function applyTheme(mode) {
+            document.body.classList.remove("dark-mode");
+
+            if (mode === "dark") {
+                document.body.classList.add("dark-mode");
+            } else if (mode === "system") {
+                if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                    document.body.classList.add("dark-mode");
+                }
+            }
+        }
+
+        function applyAccent(color) {
+            document.documentElement.style.setProperty("--accent-color", color);
+        }
+    </script>
+</head>
+<!-- ================= MOBILE BOTTOM NAVBAR ================= -->
+<nav class="mobile-navbar">
+    <a href="pg1.html" class="active">
+        <i class="bi bi-speedometer"></i>
+        <span>Home</span>
+    </a>
+    <a href="timer.html">
+        <i class="bi bi-stopwatch"></i>
+        <span>Timer</span>
+    </a>
+    <a href="Sessions.html">
+        <i class="bi bi-book"></i>
+        <span>Sessions</span>
+        <span class="nav-badge" data-sessions-badge></span>
+    </a>
+    <a href="calendar.html">
+        <i class="bi bi-calendar3"></i>
+        <span>Calendar</span>
+    </a>
+    <a href="subjects.html">
+        <i class="bi bi-mortarboard-fill"></i>
+        <span>Subjects</span>
+    </a>
+    <a href="badges1.html">
+        <i class="bi bi-trophy-fill"></i>
+        <span>Badges</span>
+    </a>
+    <a href="analytics.html">
+        <i class="bi bi-bar-chart-line"></i>
+        <span>Analytics</span>
+    </a>
+    <a href="settings.html">
+        <i class="bi bi-gear"></i>
+        <span>Settings</span>
+    </a>
+</nav>
+
+
+<body class="bg-light">
+    <div class="doodle-layer">
+        <span class="doodle circle"></span>
+        <span class="doodle zigzag"></span>
+        <span class="doodle blob"></span>
+        <span class="doodle star"></span>
+        <span class="doodle circle"></span>
+        <span class="doodle zigzag"></span>
+        <span class="doodle blob"></span>
+        <span class="doodle star"></span>
+        <span class="doodle circle"></span>
+        <span class="doodle zigzag"></span>
+        <span class="doodle blob"></span>
+        <span class="doodle star"></span>
+    </div>
+
+
+    <div class="d-flex">
+
+        <!-- ================= SIDEBAR ================= -->
+        <nav class="sidebar d-flex flex-column align-items-center bg-black py-4 rounded d-none d-md-flex">
+            <div class="mb-4"><i class="fa-solid fa-owl fs-3 text-white"></i></div>
+
+            <div class="nav-icons d-flex flex-column gap-2">
+                <a href="pg1.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="Dashboard">
+                    <div class="icon-box active"><i class="bi bi-speedometer"></i></div>
+                </a>
+                <a href="timer.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="Timer">
+                    <div class="icon-box"><i class="bi bi-stopwatch"></i></div>
+                </a>
+                <a href="Sessions.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="Study Sessions">
+                    <div class="icon-box"><i class="bi bi-book"></i><span class="sessions-nav-count"
+                            data-sessions-badge></span></div>
+                </a>
+                <a href="calendar.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="Calendar">
+                    <div class="icon-box"><i class="bi bi-calendar3"></i></div>
+                </a>
+                <a href="subjects.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="Subjects">
+                    <div class="icon-box"><i class="bi bi-mortarboard-fill"></i></div>
+                </a>
+                <a href="badges1.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="Badges & Trophies">
+                    <div class="icon-box"><i class="bi bi-trophy-fill"></i></div>
+                </a>
+                <a href="analytics.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="Analytics">
+                    <div class="icon-box"><i class="bi bi-bar-chart-line"></i></div>
+                </a>
+                <a href="settings.html" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right"
+                    title="Settings">
+                    <div class="icon-box"><i class="bi bi-gear"></i></div>
+                </a>
+            </div>
+            <div class="mt-auto mb-3">
+                <div class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="right" title="Logout"
+                    onclick="handleLogout()" style="cursor: pointer;">
+                    <div class="icon-box logout-btn">
+                        <i class="bi bi-box-arrow-right"></i>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+
+        <!-- ================= MAIN CONTENT ================= -->
+        <main class="container-fluid p-4">
+
+            <!-- ===== Header ===== -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <small class="text-muted text-uppercase fw-bold">
+
+                    </small>
+                    <h1 class="h2 fw-bold">
+                        <span id="userGreeting">Dashboard</span>
+                        <span class="tooltip-container">
+                            <i class="fa-regular fa-circle-question fs-5 text-muted"></i>
+                            <div class="custom-tooltip">
+                                <strong>Project 2025 Dashboard</strong><br>
+                                Track progress, streaks & milestones.
+                            </div>
+                        </span>
+                    </h1>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button class="btn btn-dark rounded-pill px-4" id="dashboardStartSession">+ Session</button>
+                    <button class="btn btn-primary rounded-pill px-4" id="quickStartBtn">
+                        <i class="fa-solid fa-play me-2"></i>Timer
+                    </button>
+                </div>
+            </div>
+
+            <!-- ================= ROW 1 : streaks+goals ================= -->
+            <div class="row g-4">
+
+                <!-- Streaks -->
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm p-3 h-100 rounded-4">
+                        <!-- Current Streak Display -->
+                        <div class="text-center mb-3 pb-3 border-bottom">
+                            <div class="small text-muted mb-1">Current Streak</div>
+                            <h2 class="display-4 fw-bold mb-0" id="currentStreakDays">0</h2>
+                            <div class="d-flex justify-content-center align-items-center gap-1">
+                                <span class="streak-fire" id="streakFire">🔥</span>
+                                <small class="text-muted">days</small>
+                            </div>
+                        </div>
+
+                        <!-- Quick Stats Row -->
+
+
+                        <!-- Weekly Calendar -->
+                        <h6 class="fw-bold mb-2">This Week</h6>
+                        <div class="weekly-calendar mb-3" id="weeklyCalendar">
+                            <span>Sun<br><i class="bi bi-x-circle text-danger"></i></span>
+                            <span>Mon<br><i class="bi bi-x-circle text-danger"></i></span>
+                            <span>Tue<br><i class="bi bi-question-circle text-primary"></i></span>
+                        </div>
+
+                        <!-- Medals Section -->
+                        <div class="medal-section p-3 rounded-4 mt-auto">
+                            <h6 class="fw-bold mb-2">Recent Medals</h6>
+                            <div id="recentBadges" class="d-flex justify-content-around fs-4">
+                                <span class="text-muted">—</span>
+                                <span class="text-muted">—</span>
+                                <span class="text-muted">—</span>
+                            </div>
+                            <small class="text-muted d-block text-center mt-2">
+                                Last earned badges
+                            </small>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Goals -->
+                <div class="col-md-5">
+                    <div class="card border-0 shadow-sm p-4 h-100 rounded-4">
+                        <h5 class="fw-bold mb-3">Goals</h5>
+
+                        <ul class="nav nav-pills custom-pills d-flex mb-3">
+                            <li class="nav-item flex-fill">
+                                <button class="nav-link active goal-tab" data-period="daily">Day</button>
+                            </li>
+                            <li class="nav-item flex-fill">
+                                <button class="nav-link goal-tab" data-period="weekly">Weekly</button>
+                            </li>
+                            <li class="nav-item flex-fill">
+                                <button class="nav-link goal-tab" data-period="monthly">Monthly</button>
+                            </li>
+                            <li class="nav-item flex-fill">
+                                <button class="nav-link goal-tab" data-period="total">Total</button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="dailyGoal">
+                                <div class="text-center my-4">
+                                    <small class="text-muted">Goal Today</small>
+                                    <h2 class="display-4 fw-bold" id="dailyProgress">0m</h2>
+                                    <div class="progress mt-3" style="height: 10px;">
+                                        <div class="progress-bar bg-primary progress-animate" id="dailyProgressBar">
+                                        </div>
+                                    </div>
+                                    <small class="text-muted mt-2 d-block" id="dailyPercentage">0%</small>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="weeklyGoal">
+                                <div class="text-center my-4">
+                                    <small class="text-muted">Goal This Week</small>
+                                    <h2 class="display-4 fw-bold" id="weeklyProgress">0m</h2>
+                                    <div class="progress mt-3" style="height: 10px;">
+                                        <div class="progress-bar bg-primary progress-animate" id="weeklyProgressBar">
+                                        </div>
+                                    </div>
+                                    <small class="text-muted mt-2 d-block" id="weeklyPercentage">0%</small>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="monthlyGoal">
+                                <div class="text-center my-4">
+                                    <small class="text-muted">Goal This Month</small>
+                                    <h2 class="display-4 fw-bold" id="monthlyProgress">0m</h2>
+                                    <div class="progress mt-3" style="height: 10px;">
+                                        <div class="progress-bar bg-primary progress-animate" id="monthlyProgressBar">
+                                        </div>
+                                    </div>
+                                    <small class="text-muted mt-2 d-block" id="monthlyPercentage">0%</small>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="totalGoal">
+                                <div class="text-center my-4">
+                                    <small class="text-muted">Total Goal</small>
+                                    <h2 class="display-4 fw-bold" id="totalProgress">0m</h2>
+                                    <div class="progress mt-3" style="height: 10px;">
+                                        <div class="progress-bar bg-primary progress-animate" id="totalProgressBar">
+                                        </div>
+                                    </div>
+                                    <small class="text-muted mt-2 d-block" id="totalPercentage">0%</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between small text-muted">
+                            <span>Study progress: <span id="studyProgressPercent">0%</span></span>
+                            <span>Time elapsed: <span id="timeElapsedPercent">0%</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Focus Score -->
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm p-4 rounded-4 h-100">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="fw-bold mb-0">Focus Score</h6>
+                            <i class="bi bi-bullseye text-primary fs-5"></i>
+                        </div>
+                        <div class="text-center">
+                            <h1 class="display-4 fw-bold text-primary mb-2" id="focusScore">78%</h1>
+                            <div id="focusScoreChange">
+                                <small class="text-success"><i class="bi bi-arrow-up"></i> 6% from last week</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= ROW 2 : Insights ================= -->
+            <div class="row g-4 mt-1">
+
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm p-4 rounded-4 h-100">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="fw-bold mb-0">Needs Attention</h6>
+                            <i class="bi bi-exclamation-triangle text-warning fs-5"></i>
+                        </div>
+                        <div id="needsAttention">
+                            <h5 class="text-danger fw-bold">Operating Systems</h5>
+                            <small class="text-muted">Least studied this week</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm p-4 rounded-4 h-100">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="fw-bold mb-0">Recent Activity</h6>
+                            <i class="bi bi-clock-history text-primary fs-5"></i>
+                        </div>
+                        <div id="recentActivity">
+                            <p class="text-muted small">No recent activity</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm p-4 rounded-4 h-100">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="fw-bold mb-0">Quick Stats</h6>
+                            <i class="bi bi-graph-up text-success fs-5"></i>
+                        </div>
+                        <div class="row text-center g-3">
+                            <div class="col-4">
+                                <div class="p-2 rounded-3" style="background: rgba(13, 110, 253, 0.1);">
+                                    <i class="bi bi-book text-primary fs-5 d-block mb-1"></i>
+                                    <div class="fs-5 fw-bold text-primary" id="totalSessions">0</div>
+                                    <small class="text-muted d-block">Sessions</small>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="p-2 rounded-3" style="background: rgba(25, 135, 84, 0.1);">
+                                    <i class="bi bi-clock text-success fs-5 d-block mb-1"></i>
+                                    <div class="fs-5 fw-bold text-success" id="totalStudyTime">0m</div>
+                                    <small class="text-muted d-block">Total Time</small>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="p-2 rounded-3" style="background: rgba(13, 202, 240, 0.1);">
+                                    <i class="bi bi-speedometer2 text-info fs-5 d-block mb-1"></i>
+                                    <div class="fs-5 fw-bold text-info" id="avgSessionTime">0m</div>
+                                    <small class="text-muted d-block">Avg Session</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= ROW 3 : Reflection+Exams ================= -->
+            <div class="row g-4 mt-1">
+
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm p-4 rounded-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="fw-bold mb-0">Daily Motivation</h6>
+                            <i class="bi bi-quote text-primary fs-4"></i>
+                        </div>
+                        <blockquote class="blockquote mb-0">
+                            <p class="mb-2 fst-italic" id="motivationalQuote">
+                                Success is the sum of small efforts, repeated day in and day out.
+                            </p>
+                        </blockquote>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm p-4 h-100 rounded-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="fw-bold mb-0"><i class="bi bi-lightbulb text-warning"></i> Learning Insights</h6>
+                        </div>
+                        <div id="learningInsights">
+                            <div class="mb-3 pb-3 border-bottom">
+                                <div class="d-flex align-items-center gap-2 mb-1">
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                    <small class="text-muted">Most Focused Subject</small>
+                                </div>
+                                <div class="fw-bold ms-4" id="focusedSubject">—</div>
+                            </div>
+                            <div class="mb-3 pb-3 border-bottom">
+                                <div class="d-flex align-items-center gap-2 mb-1">
+                                    <i class="bi bi-clock-fill text-primary"></i>
+                                    <small class="text-muted">Peak Study Time</small>
+                                </div>
+                                <div class="fw-bold ms-4" id="peakStudyTime">—</div>
+                            </div>
+                            <div class="mb-3 pb-3 border-bottom">
+                                <div class="d-flex align-items-center gap-2 mb-1">
+                                    <i class="bi bi-trophy-fill text-success"></i>
+                                    <small class="text-muted">Most Productive Session</small>
+                                </div>
+                                <div class="fw-bold ms-4" id="productiveSession">—</div>
+                            </div>
+                            <div class="mb-0">
+                                <div class="d-flex align-items-center gap-2 mb-1">
+                                    <i class="bi bi-calendar-check-fill text-info"></i>
+                                    <small class="text-muted">Study Consistency</small>
+                                </div>
+                                <div class="fw-bold text-success ms-4" id="studyConsistency">—</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        function handleLogout() {
+            auth.logout();
+            window.location.href = 'landing.html';
+        }
+    </script>
+</body>
+
+</html>
