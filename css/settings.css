@@ -1,0 +1,288 @@
+/* =========================================
+   SETTINGS PAGE REDESIGN (FINAL)
+   ========================================= */
+
+:root {
+    --primary-color: #6366f1;
+    --primary-hover: #4f46e5;
+}
+
+body {
+    background-color: #f8f9fa;
+}
+
+/* ---------- HEADER ---------- */
+.settings-icon-header {
+    width: 48px;
+    height: 48px;
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--primary-color);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.settings-title {
+    font-weight: 800;
+    color: #1e293b;
+}
+
+.settings-subtitle {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #64748b;
+    font-weight: 700;
+}
+
+/* ---------- TABS ---------- */
+.settings-tabs .nav-link {
+    color: #64748b;
+    font-weight: 600;
+    padding: 10px 24px;
+    border-radius: 50px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+}
+
+.settings-tabs .nav-link:hover {
+    background: rgba(99, 102, 241, 0.05);
+    color: var(--primary-color);
+}
+
+.settings-tabs .nav-link.active {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+/* ---------- CARDS ---------- */
+.settings-card {
+    background: white;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+    overflow: hidden;
+    height: 100%;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.settings-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+}
+
+.settings-card-header {
+    padding: 20px 24px;
+    background: #fcfcfc;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.settings-card-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: white;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.02);
+}
+
+.settings-card-body {
+    padding: 24px;
+}
+
+.setting-item {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.setting-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+/* ---------- FORMS ---------- */
+.form-label {
+    color: #475569;
+    margin-bottom: 0.5rem;
+}
+
+.form-control,
+.form-select {
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    padding: 0.6rem 1rem;
+    font-size: 0.95rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.form-control:disabled {
+    background-color: #f1f5f9;
+    opacity: 0.8;
+}
+
+.form-switch .form-check-input {
+    width: 3em;
+    height: 1.6em;
+    margin-left: -2.5em;
+    cursor: pointer;
+}
+
+.form-switch {
+    padding-left: 2.5em;
+}
+
+/* ---------- PRESETS ---------- */
+.color-picker-wrapper {
+    background: #f8fafc;
+    padding: 16px;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+}
+
+.color-preset {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.color-preset:hover {
+    transform: scale(1.15);
+    z-index: 2;
+}
+
+/* ---------- DANGER ZONE ---------- */
+.danger-card {
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.danger-card .settings-card-header {
+    background: #fef2f2;
+}
+
+.danger-icon {
+    color: #ef4444;
+    background: #fee2e2;
+}
+
+/* =========================================
+   DARK MODE OVERRIDES
+   ========================================= */
+
+.dark-mode {
+    background-color: #0a0a0a !important;
+    color: #f0f0f3 !important;
+}
+
+.dark-mode .settings-title {
+    color: #f0f0f3 !important;
+}
+
+.dark-mode .settings-subtitle {
+    color: #94a3b8 !important;
+}
+
+/* Dark Cards */
+.dark-mode .settings-card {
+    background: linear-gradient(145deg, #16161f 0%, #1c1c28 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4) !important;
+}
+
+.dark-mode .settings-card-header {
+    background: rgba(255, 255, 255, 0.02) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.dark-mode .settings-card-icon {
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: #94a3b8 !important;
+    border-color: transparent !important;
+}
+
+.dark-mode h5.fw-bold {
+    color: #f0f0f3 !important;
+}
+
+.dark-mode p.text-muted {
+    color: #9ca3b8 !important;
+}
+
+/* Dark Forms */
+.dark-mode .form-label {
+    color: #cbd5e1 !important;
+}
+
+.dark-mode .form-control,
+.dark-mode .form-select {
+    background: linear-gradient(135deg, #2d2d2d 0%, #3a3a3a 100%) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: #f0f0f3 !important;
+}
+
+.dark-mode .form-control:focus,
+.dark-mode .form-select:focus {
+    background: #2a2a3a !important;
+    border-color: var(--primary-color) !important;
+}
+
+.dark-mode .form-control:disabled {
+    background: #1e1e28 !important;
+    opacity: 0.6 !important;
+}
+
+.dark-mode .setting-item {
+    border-bottom-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Dark Tabs */
+.dark-mode .settings-tabs .nav-link {
+    color: #94a3b8 !important;
+}
+
+.dark-mode .settings-tabs .nav-link:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: #f0f0f3 !important;
+}
+
+.dark-mode .settings-tabs .nav-link.active {
+    color: white !important;
+}
+
+/* Dark Specialized */
+.dark-mode .color-picker-wrapper {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.dark-mode .danger-card {
+    background: linear-gradient(145deg, #2a1215, #1f1212) !important;
+    border-color: rgba(239, 68, 68, 0.3) !important;
+}
+
+.dark-mode .danger-card .settings-card-header {
+    background: rgba(239, 68, 68, 0.1) !important;
+}
