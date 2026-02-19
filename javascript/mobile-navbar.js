@@ -10,7 +10,7 @@ class MobileNavbar {
             this.setActiveNav();
             this.updateSessionBadge();
             this.handleNavigation();
-            
+
             // Listen for page changes
             window.addEventListener('beforeunload', () => {
                 this.setActiveNav();
@@ -28,7 +28,7 @@ class MobileNavbar {
      */
     detectCurrentPage() {
         const path = window.location.pathname.toLowerCase();
-        
+
         if (path.includes('pg1.html') || path.includes('dashboard')) return 'dashboard';
         if (path.includes('timer.html')) return 'timer';
         if (path.includes('sessions.html')) return 'sessions';
@@ -38,7 +38,7 @@ class MobileNavbar {
         if (path.includes('analytics.html')) return 'analytics';
         if (path.includes('settings.html')) return 'settings';
         if (path.includes('shared.html')) return 'shared';
-        
+
         return null;
     }
 
@@ -47,13 +47,13 @@ class MobileNavbar {
      */
     setActiveNav() {
         const navLinks = document.querySelectorAll('.mobile-navbar a');
-        
+
         navLinks.forEach(link => {
             link.classList.remove('active');
-            
+
             const href = link.getAttribute('href')?.toLowerCase();
             const currentPage = this.detectCurrentPage();
-            
+
             if (href && currentPage) {
                 if (
                     (currentPage === 'dashboard' && (href.includes('pg1') || href.includes('dashboard'))) ||
@@ -76,9 +76,11 @@ class MobileNavbar {
      * Update session count badge
      */
     updateSessionBadge() {
-        const sessions = JSON.parse(localStorage.getItem('sessions') || '[]');
+        const currentUser = JSON.parse(localStorage.getItem('memoir_current_user') || 'null');
+        const key = currentUser ? `memoir_sessions_${currentUser.id}` : 'sessions';
+        const sessions = JSON.parse(localStorage.getItem(key) || '[]');
         const sessionCount = sessions.length;
-        
+
         const badges = document.querySelectorAll('[data-sessions-badge]');
         badges.forEach(badge => {
             if (sessionCount > 0) {
@@ -95,17 +97,17 @@ class MobileNavbar {
      */
     handleNavigation() {
         const navLinks = document.querySelectorAll('.mobile-navbar a');
-        
+
         navLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 const href = link.getAttribute('href');
-                
+
                 // Allow normal link behavior
                 if (href && !href.startsWith('#')) {
                     // Add transition effect
                     document.body.style.opacity = '1';
                     document.body.style.transition = 'opacity 0.3s ease-out';
-                    
+
                     setTimeout(() => {
                         window.location.href = href;
                     }, 100);
@@ -119,10 +121,10 @@ class MobileNavbar {
      */
     highlightNav(pageName) {
         const navLinks = document.querySelectorAll('.mobile-navbar a');
-        
+
         navLinks.forEach(link => {
             link.classList.remove('active');
-            
+
             if (link.getAttribute('href')?.toLowerCase().includes(pageName.toLowerCase())) {
                 link.classList.add('active');
             }
@@ -141,12 +143,12 @@ class MobileNavbar {
      */
     shouldShowNavbar() {
         const body = document.body;
-        
+
         // Hide on auth and landing pages
         if (body.classList.contains('auth-body') || body.classList.contains('landing-body')) {
             return false;
         }
-        
+
         return true;
     }
 }

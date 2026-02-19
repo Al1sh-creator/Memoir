@@ -26,9 +26,31 @@ class DashboardManager {
     loadSessions() {
         if (!this.currentUser) return;
         const userId = this.currentUser.id;
+        const userKey = `memoir_sessions_${userId}`;
+
+        // ── Migrate legacy sessions from old 'sessions' key ──────────────────
+        const legacyRaw = localStorage.getItem('sessions');
+        if (legacyRaw) {
+            try {
+                const legacy = JSON.parse(legacyRaw);
+                if (Array.isArray(legacy) && legacy.length > 0) {
+                    const existing = JSON.parse(localStorage.getItem(userKey) || '[]');
+                    const existingIds = new Set(existing.map(s => s.id || s.timestamp || s.createdAt));
+                    const toMerge = legacy.filter(s => !existingIds.has(s.id || s.timestamp || s.createdAt));
+                    if (toMerge.length > 0) {
+                        const merged = [...existing, ...toMerge];
+                        localStorage.setItem(userKey, JSON.stringify(merged));
+                        console.log(`[Dashboard] Migrated ${toMerge.length} legacy sessions into ${userKey}`);
+                    }
+                }
+            } catch (e) { /* ignore parse errors */ }
+        }
+        // ─────────────────────────────────────────────────────────────────────
+
         // Load sessions from user-specific localStorage key
-        const raw = localStorage.getItem(`memoir_sessions_${userId}`);
+        const raw = localStorage.getItem(userKey);
         const allSessions = JSON.parse(raw || '[]');
+        console.log(`[Dashboard] loadSessions: userId=${userId}, found ${allSessions.length} sessions`);
 
         this.sessions = allSessions.map(session => {
             // Ensure date field is set for compatibility
@@ -80,14 +102,30 @@ class DashboardManager {
     }
 
     updateRealTimeData() {
-        // Update data every 30 seconds
+        // Refresh data every 10 seconds in case sessions were added from another tab
         setInterval(() => {
             this.loadSessions();
+            this.updateQuickStats();
             this.updateStreaks();
             this.updateGoals();
             this.updateFocusScore();
             this.updateRecentActivity();
-        }, 30000);
+            this.updateNeedsAttention();
+        }, 10000);
+
+        // Instant refresh when a session is saved in any tab (e.g. from timer page)
+        window.addEventListener('storage', (e) => {
+            if (!this.currentUser) return;
+            if (e.key === `memoir_sessions_${this.currentUser.id}`) {
+                this.loadSessions();
+                this.updateQuickStats();
+                this.updateStreaks();
+                this.updateGoals();
+                this.updateFocusScore();
+                this.updateRecentActivity();
+                this.updateNeedsAttention();
+            }
+        });
     }
 
     setupEventListeners() {
@@ -637,6 +675,9 @@ class DashboardManager {
         const totalSessions = this.sessions.length;
         const totalTime = this.sessions.reduce((sum, s) => sum + (s.durationSeconds || 0), 0);
         const avgSession = totalSessions > 0 ? totalTime / totalSessions / 60 : 0;
+
+        console.log(`[Dashboard] updateQuickStats: sessions=${totalSessions}, totalTime=${totalTime}s, avg=${Math.round(avgSession)}m`);
+        console.log('[Dashboard] totalSessions el:', document.getElementById('totalSessions'));
 
         this.updateElement('totalSessions', totalSessions);
         this.updateElement('totalStudyTime', this.formatTime(totalTime));

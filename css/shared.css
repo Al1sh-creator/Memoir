@@ -1,5 +1,11 @@
 /* Shared sidebar and mobile navigation styles */
-/* Shared sidebar and mobile navigation styles */
+
+/* ========== GLOBAL ACCENT COLOR SYSTEM ========== */
+:root {
+    --accent-color: #0d6efd;
+    --accent-rgb: 13, 110, 253;
+}
+
 .sidebar {
     width: 80px;
     height: 100vh;
@@ -35,8 +41,8 @@
 }
 
 .icon-box.active {
-    background-color: #0d6efd;
-    box-shadow: 0 4px 14px rgba(13, 110, 253, 0.25);
+    background-color: var(--accent-color);
+    box-shadow: 0 4px 14px rgba(var(--accent-rgb), 0.25);
 }
 
 .icon-box.active i {
@@ -86,7 +92,7 @@
 }
 
 .mobile-nav a.active {
-    color: #0d6efd;
+    color: var(--accent-color);
 }
 
 @media (max-width: 768px) {
@@ -146,8 +152,11 @@
     transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-.dark-mode .bg-light {
-    background: #0a0a0a !important;
+.dark-mode .bg-light,
+body.dark-mode.bg-light,
+body.bg-light.dark-mode {
+    background: radial-gradient(ellipse at top, #1a1a2e 0%, #0a0a0a 50%, #000000 100%) !important;
+    color: #f0f0f3 !important;
 }
 
 /* Sidebar */
@@ -189,8 +198,8 @@
 }
 
 .dark-mode .icon-box.active {
-    background: linear-gradient(135deg, #6366f1, #4f46e5) !important;
-    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4), 0 0 0 1px rgba(99, 102, 241, 0.3) !important;
+    background: var(--accent-color) !important;
+    box-shadow: 0 8px 24px rgba(var(--accent-rgb), 0.4), 0 0 0 1px rgba(var(--accent-rgb), 0.3) !important;
     border-color: transparent !important;
 }
 
@@ -235,17 +244,17 @@
 
 /* Buttons */
 .dark-mode .btn-primary {
-    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
+    background: var(--accent-color) !important;
     border: none !important;
     color: white !important;
-    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.35), 0 1px 0 rgba(255, 255, 255, 0.1) inset !important;
+    box-shadow: 0 4px 20px rgba(var(--accent-rgb), 0.35), 0 1px 0 rgba(255, 255, 255, 0.1) inset !important;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 .dark-mode .btn-primary:hover {
-    background: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%) !important;
+    opacity: 0.88 !important;
     transform: translateY(-2px) !important;
-    box-shadow: 0 8px 28px rgba(99, 102, 241, 0.5), 0 1px 0 rgba(255, 255, 255, 0.15) inset !important;
+    box-shadow: 0 8px 28px rgba(var(--accent-rgb), 0.5), 0 1px 0 rgba(255, 255, 255, 0.15) inset !important;
 }
 
 .dark-mode .btn-outline-secondary {
@@ -434,9 +443,9 @@
 }
 
 .dark-mode .nav-pills .nav-link.active {
-    background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
+    background: var(--accent-color) !important;
     color: white !important;
-    border-color: #3b82f6 !important;
+    border-color: var(--accent-color) !important;
 }
 
 /* Tab content */
@@ -704,8 +713,8 @@ body {
 
 .dark-mode .nav-pills .nav-link.mode-btn.active {
     color: #fff !important;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
-    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4), 0 0 0 1px rgba(99, 102, 241, 0.3) !important;
+    background: var(--accent-color) !important;
+    box-shadow: 0 8px 24px rgba(var(--accent-rgb), 0.4), 0 0 0 1px rgba(var(--accent-rgb), 0.3) !important;
     border-color: transparent !important;
 }
 

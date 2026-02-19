@@ -2,24 +2,30 @@
 
 /* Page background */
 body {
-  background: linear-gradient(180deg,#f7fafc 0%, #eef2ff 40%, #fff7ed 100%);
+  background: #f4f6fa;
   min-height: 100vh;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Dark mode body override — must be here so it wins over the base body rule above */
+body.dark-mode {
+  background: radial-gradient(ellipse at top, #1a1a2e 0%, #0a0a0a 50%, #000000 100%) !important;
+  color: #f0f0f3 !important;
 }
 
 /* Card */
 .timer-card {
   max-width: 480px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.68));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.68));
   border-radius: 28px;
   padding: 40px 32px;
   box-shadow:
-    0 10px 30px rgba(2,6,23,0.06),
-    0 2px 6px rgba(2,6,23,0.04),
-    inset 0 1px 0 rgba(255,255,255,0.6);
+    0 10px 30px rgba(2, 6, 23, 0.06),
+    0 2px 6px rgba(2, 6, 23, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(6px);
-  border: 1px solid rgba(99,102,241,0.06);
+  border: 1px solid rgba(99, 102, 241, 0.06);
 }
 
 /* Header */
@@ -37,16 +43,18 @@ body {
   border: 1px solid transparent;
   transition: all .18s ease;
 }
+
 .nav-pills .nav-link.mode-btn:hover {
   transform: translateY(-2px);
   color: #4f46e5;
-  border-color: rgba(79,70,229,0.08);
-  background: rgba(79,70,229,0.035);
+  border-color: rgba(79, 70, 229, 0.08);
+  background: rgba(79, 70, 229, 0.035);
 }
+
 .nav-pills .nav-link.mode-btn.active {
   color: #fff;
-  background: linear-gradient(90deg,#6d28d9,#7c3aed);
-  box-shadow: 0 6px 18px rgba(124,58,237,0.18);
+  background: var(--accent-color);
+  box-shadow: 0 6px 18px rgba(var(--accent-rgb), 0.3);
 }
 
 /* Timer Circle */
@@ -55,17 +63,20 @@ body {
   height: 260px;
   margin: 0 auto;
   border-radius: 50%;
-  background: radial-gradient(circle at 25% 18%, rgba(255,255,255,0.85), rgba(255,255,255,0.6) 20%, rgba(243,244,246,0.6) 50%);
+  background: radial-gradient(circle at 25% 18%, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.6) 20%, rgba(243, 244, 246, 0.6) 50%);
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow:
-    inset 0 8px 24px rgba(99,102,241,0.06),
-    0 18px 40px rgba(2,6,23,0.06);
+    inset 0 8px 24px rgba(99, 102, 241, 0.06),
+    0 18px 40px rgba(2, 6, 23, 0.06);
   position: relative;
   transition: transform .25s ease;
 }
-.timer-circle:hover { transform: translateY(-6px); }
+
+.timer-circle:hover {
+  transform: translateY(-6px);
+}
 
 /* Visual ring sits above the background */
 .progress-ring {
@@ -81,16 +92,18 @@ body {
 /* SVG strokes */
 .progress-ring-bg {
   fill: none;
-  stroke: rgba(15,23,42,0.06);
+  stroke: rgba(15, 23, 42, 0.06);
   stroke-width: 12;
 }
+
 .progress-ring-fill {
   fill: none;
   stroke: url(#timerGradient);
+  /*uses purple cyan gradient*/
   stroke-width: 12;
   stroke-linecap: round;
   transition: stroke-dashoffset .9s linear;
-  filter: drop-shadow(0 6px 12px rgba(99,102,241,0.12));
+  filter: drop-shadow(0 6px 12px rgba(99, 102, 241, 0.12));
 }
 
 /* Time text */
@@ -102,41 +115,63 @@ body {
   line-height: 1;
   font-weight: 800;
   letter-spacing: 1px;
-  background: linear-gradient(180deg,#1f2937,#4b5563);
+  background: linear-gradient(180deg, #1f2937, #4b5563);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
+body.dark-mode .timer-circle span#time {
+  background: linear-gradient(180deg, #e2e8f0, #a5b4fc);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+body.dark-mode #pauseBtn {
+  color: #e2e8f0;
+  background: rgba(99, 102, 241, 0.08);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
 /* Controls */
 #startBtn {
-  background: linear-gradient(90deg,#10b981,#06b6d4);
+  background: var(--accent-color);
   color: white;
   border: none;
-  box-shadow: 0 8px 20px rgba(16,185,129,0.14);
+  box-shadow: 0 8px 20px rgba(var(--accent-rgb), 0.25);
 }
-#startBtn i { margin-right: .5rem; }
 
-#pauseBtn, #resetBtn {
+#startBtn i {
+  margin-right: .5rem;
+}
+
+#pauseBtn,
+#resetBtn {
   border-radius: 999px;
   padding-left: 1.25rem;
   padding-right: 1.25rem;
   height: 42px;
 }
+
 #pauseBtn {
   color: #374151;
-  background: rgba(148,163,184,0.06);
-  border: 1px solid rgba(148,163,184,0.08);
-}
-#resetBtn {
-  color: #ef4444;
-  border: 1px solid rgba(239,68,68,0.12);
-  background: rgba(239,68,68,0.03);
+  background: rgba(148, 163, 184, 0.06);
+  border: 1px solid rgba(148, 163, 184, 0.08);
 }
 
-/* Make primary button slightly larger on desktop */
+#resetBtn {
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.12);
+  background: rgba(239, 68, 68, 0.03);
+}
+
+/* Makes primary button slightly larger on desktop */
 @media (min-width: 768px) {
-  #startBtn { padding: .6rem 1.25rem; font-weight: 700; }
+  #startBtn {
+    padding: .6rem 1.25rem;
+    font-weight: 700;
+  }
 }
 
 /* Info boxes */
@@ -145,7 +180,7 @@ body {
   padding: 12px;
   border-radius: 12px;
   font-weight: 700;
-  border: 1px solid rgba(15,23,42,0.03);
+  border: 1px solid rgba(15, 23, 42, 0.03);
   color: #111827;
 }
 
@@ -153,25 +188,53 @@ body {
 .modal-content {
   border-radius: 16px;
   padding: 24px;
-  box-shadow: 0 12px 40px rgba(2,6,23,0.08);
+  box-shadow: 0 12px 40px rgba(2, 6, 23, 0.08);
 }
 
 /* subtle pulse on completion */
 @keyframes ringPulse {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.04); opacity: .98; }
-  100% { transform: scale(1); opacity: 1; }
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.04);
+    opacity: .98;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
+
 .timer-done {
   animation: ringPulse 900ms ease-in-out 1;
 }
 
 /* small responsive tweaks */
 @media (max-width: 576px) {
-  .timer-card { padding: 28px 18px; margin-bottom: 110px; }
-  .timer-circle { width: 220px; height: 220px; }
-  .progress-ring { top: 6px; left: 6px; width: 208px; height: 208px; }
-  .timer-circle span#time { font-size: 2.6rem; }
+  .timer-card {
+    padding: 28px 18px;
+    margin-bottom: 110px;
+  }
+
+  .timer-circle {
+    width: 220px;
+    height: 220px;
+  }
+
+  .progress-ring {
+    top: 6px;
+    left: 6px;
+    width: 208px;
+    height: 208px;
+  }
+
+  .timer-circle span#time {
+    font-size: 2.6rem;
+  }
 }
 
 /* Utility to ensure SVG gradient is available if inserted dynamically */

@@ -10,7 +10,7 @@ body {
 }
 
 .medal-section {
-    background: linear-gradient(180deg, #0d6efd 0%, #ffffff 100%);
+    background: linear-gradient(180deg, var(--accent-color) 0%, #ffffff 100%);
     min-height: 150px;
     color: #333;
 }
@@ -20,7 +20,8 @@ body {
 }
 
 .btn-primary {
-    background-color: #007bff;
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
     border: none;
 }
 
@@ -190,7 +191,7 @@ body {
 }
 
 .heat.active {
-    background: #0d6efd;
+    background: var(--accent-color);
 }
 
 .heat:hover:not(.active) {
@@ -324,7 +325,7 @@ main {
 }
 
 .mobile-nav a.active {
-    color: #0d6efd;
+    color: var(--accent-color);
 }
 
 @media (max-width: 768px) {
@@ -359,29 +360,7 @@ main {
     }
 }
 
-/* ========== THEME SYSTEM ========== */
-:root {
-    --accent-color: #0d6efd;
-    --bg-light: #f8f9fa;
-    --bg-dark: #121212;
-    --card-dark: #1e1e1e;
-}
-
-body.dark-mode {
-    background-color: var(--bg-dark);
-    color: #e9ecef;
-}
-
-body.dark-mode .settings-card,
-body.dark-mode .analytics-card,
-body.dark-mode .card {
-    background: var(--card-dark);
-    color: #e9ecef;
-}
-
-body.compact-mode .settings-card {
-    padding: 16px;
-}
+/* :root is defined in shared.css — accent-color is set via JS applyAccent() */
 
 .accent {
     color: var(--accent-color) !important;
