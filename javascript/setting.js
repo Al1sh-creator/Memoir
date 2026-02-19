@@ -39,18 +39,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ================= APPLY SETTINGS ================= */
   document.querySelector("#themeSelect").value = savedTheme;
-  document.querySelector("#accentColor").value = savedAccent;
-  document.querySelector("#compactToggle").checked = compactMode;
-  document.querySelector("#focusDuration").value = focusDuration + " min";
-  document.querySelector("#autoLogSessions").checked = autoLogSessions;
-  document.querySelector("#pauseOnInactivity").checked = pauseOnInactivity;
-  document.querySelector("#dailyReminder").checked = dailyReminder;
-  document.querySelector("#reminderTime").value = reminderTime;
-  document.querySelector("#displayName").value = displayName;
 
-  if (document.querySelector("#email")) {
-    document.querySelector("#email").value = currentUser.email || "";
-  }
+  const accentEl = document.querySelector("#accentColor");
+  if (accentEl) accentEl.value = savedAccent;
+
+  const compactEl = document.querySelector("#compactToggle");
+  if (compactEl) compactEl.checked = compactMode;
+
+  const focusEl = document.querySelector("#focusDuration");
+  if (focusEl) focusEl.value = focusDuration + " min";
+
+  const autoLogEl = document.querySelector("#autoLogSessions");
+  if (autoLogEl) autoLogEl.checked = autoLogSessions;
+
+  const pauseEl = document.querySelector("#pauseOnInactivity");
+  if (pauseEl) pauseEl.checked = pauseOnInactivity;
+
+  const reminderEl = document.querySelector("#dailyReminder");
+  if (reminderEl) reminderEl.checked = dailyReminder;
+
+  const reminderTimeEl = document.querySelector("#reminderTime");
+  if (reminderTimeEl) reminderTimeEl.value = reminderTime;
+
+  const displayNameEl = document.querySelector("#displayName");
+  if (displayNameEl) displayNameEl.value = displayName;
+
 
   if (document.getElementById("dailyGoal")) {
     document.querySelector("#dailyGoal").value = dailyGoal;
@@ -77,48 +90,68 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Accent
-  document.querySelector("#accentColor").addEventListener("input", e => {
-    applyAccent(e.target.value);
-    localStorage.setItem("memoir_accent", e.target.value);
-  });
+  if (accentEl) {
+    accentEl.addEventListener("input", e => {
+      applyAccent(e.target.value);
+      localStorage.setItem("memoir_accent", e.target.value);
+    });
+  }
 
   // Compact Mode
-  document.querySelector("#compactToggle").addEventListener("change", e => {
-    document.body.classList.toggle("compact-mode", e.target.checked);
-    localStorage.setItem("memoir_compact", e.target.checked);
-  });
+  if (compactEl) {
+    compactEl.addEventListener("change", e => {
+      document.body.classList.toggle("compact-mode", e.target.checked);
+      localStorage.setItem("memoir_compact", e.target.checked);
+    });
+  }
 
   // Focus Duration
-  document.querySelector("#focusDuration").addEventListener("change", e => {
-    localStorage.setItem(
-      `memoir_focus_duration_${userId}`,
-      e.target.value.replace(" min", "")
-    );
-  });
+  if (focusEl) {
+    focusEl.addEventListener("change", e => {
+      localStorage.setItem(
+        `memoir_focus_duration_${userId}`,
+        e.target.value.replace(" min", "")
+      );
+    });
+  }
 
   // Automation toggles
-  document.querySelector("#autoLogSessions").addEventListener("change", e => {
-    localStorage.setItem("memoir_auto_log_sessions", e.target.checked);
-  });
+  if (autoLogEl) {
+    autoLogEl.addEventListener("change", e => {
+      localStorage.setItem("memoir_auto_log_sessions", e.target.checked);
+    });
+  }
 
-  document.querySelector("#pauseOnInactivity").addEventListener("change", e => {
-    localStorage.setItem("memoir_pause_inactivity", e.target.checked);
-  });
+  if (pauseEl) {
+    pauseEl.addEventListener("change", e => {
+      localStorage.setItem("memoir_pause_inactivity", e.target.checked);
+    });
+  }
+
 
   // Notifications
-  document.querySelector("#dailyReminder").addEventListener("change", e => {
-    localStorage.setItem("memoir_daily_reminder", e.target.checked);
-    e.target.checked ? scheduleDailyReminder() : clearDailyReminder();
-  });
+  if (reminderEl) {
+    reminderEl.addEventListener("change", e => {
+      localStorage.setItem("memoir_daily_reminder", e.target.checked);
+      e.target.checked ? scheduleDailyReminder() : clearDailyReminder();
+    });
+  }
 
-  document.querySelector("#reminderTime").addEventListener("change", e => {
-    localStorage.setItem("memoir_reminder_time", e.target.value);
-    if (document.querySelector("#dailyReminder").checked) {
-      scheduleDailyReminder();
-    }
-  });
+  if (reminderTimeEl) {
+    reminderTimeEl.addEventListener("change", e => {
+      localStorage.setItem("memoir_reminder_time", e.target.value);
+      if (reminderEl && reminderEl.checked) {
+        scheduleDailyReminder();
+      }
+    });
+  }
 
   if (dailyReminder) scheduleDailyReminder();
+
+  // Email (read-only)
+  const emailEl = document.querySelector("#email");
+  if (emailEl) emailEl.value = currentUser.email || "";
+
 
   // Save account settings
   document.querySelectorAll("button.btn-primary").forEach(btn => {
@@ -207,12 +240,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /* ================= NOTIFICATION FUNCTIONS ================= */
 function scheduleDailyReminder() {
-  if (!("Notification" in window)) return;
+  if (!("Notification" in window)) {
+    alert("Your browser does not support notifications. Please use a modern browser.");
+    return;
+  }
 
   if (Notification.permission === "default") {
-    Notification.requestPermission().then(p => p === "granted" && setDailyReminder());
+    Notification.requestPermission().then(permission => {
+      if (permission === "granted") {
+        setDailyReminder();
+        alert("✅ Notification permission granted! Daily reminder has been set.");
+      } else {
+        alert("❌ Notification permission was denied. Please allow notifications in your browser settings.");
+        // Uncheck the toggle since permission was denied
+        const toggle = document.querySelector("#dailyReminder");
+        if (toggle) toggle.checked = false;
+        localStorage.setItem("memoir_daily_reminder", "false");
+      }
+    });
   } else if (Notification.permission === "granted") {
     setDailyReminder();
+  } else {
+    alert("❌ Notifications are blocked. Please allow notifications in your browser settings for this site.");
+    const toggle = document.querySelector("#dailyReminder");
+    if (toggle) toggle.checked = false;
+    localStorage.setItem("memoir_daily_reminder", "false");
   }
 }
 
@@ -227,17 +279,21 @@ function setDailyReminder() {
 
   if (window.dailyReminderTimeout) clearTimeout(window.dailyReminderTimeout);
 
+  const msUntilReminder = next - now;
+  console.log(`⏰ Daily reminder scheduled for ${next.toLocaleString()} (in ${Math.round(msUntilReminder / 60000)} minutes)`);
+
   window.dailyReminderTimeout = setTimeout(() => {
     new Notification("Memoir Study Reminder", {
       body: "Time to study! Stay consistent 💪",
       icon: "/favicon.ico"
     });
-    setDailyReminder();
-  }, next - now);
+    setDailyReminder(); // Reschedule for next day
+  }, msUntilReminder);
 }
 
 function clearDailyReminder() {
   if (window.dailyReminderTimeout) {
     clearTimeout(window.dailyReminderTimeout);
+    console.log("⏰ Daily reminder cleared");
   }
 }

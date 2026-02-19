@@ -30,7 +30,6 @@ class AuthManager {
             createdAt: new Date().toISOString(),
             settings: {
                 theme: 'light',
-                accent: '#0d6efd',
                 compact: false,
                 focusDuration: '25',
                 displayName: userData.name
@@ -154,11 +153,7 @@ class AuthManager {
             applyTheme(settings.theme);
         }
 
-        // Apply accent
-        if (settings.accent) {
-            localStorage.setItem('memoir_accent', settings.accent);
-            applyAccent(settings.accent);
-        }
+
 
         // Apply compact mode
         if (settings.compact !== undefined) {
