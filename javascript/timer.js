@@ -191,17 +191,25 @@ document.getElementById("resetBtn").onclick = () => {
 };
 
 // ================= MODE SELECTOR =================
+let _prevActiveBtn = document.querySelector('.mode-btn.active') || document.querySelector('.mode-btn');
+let _customTimeConfirmed = false;
+
 document.querySelectorAll(".mode-btn").forEach(btn => {
   btn.onclick = () => {
+    const prevBtn = document.querySelector('.mode-btn.active');
     document.querySelectorAll(".mode-btn").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
 
     stopTimer();
 
     if (btn.dataset.time === "custom") {
+      // Remember the previous active btn in case user cancels
+      _prevActiveBtn = prevBtn;
       new bootstrap.Modal(document.getElementById("customTimeModal")).show();
       return;
     }
+
+    _prevActiveBtn = btn;
 
     if (btn.dataset.time === "session") {
       sessionMode = true;
@@ -219,17 +227,48 @@ document.querySelectorAll(".mode-btn").forEach(btn => {
   };
 });
 
+// If custom modal is cancelled without setting a time, revert active state
+document.getElementById("customTimeModal").addEventListener("hide.bs.modal", () => {
+  if (_customTimeConfirmed) {
+    _customTimeConfirmed = false; // reset for next time
+    return; // user confirmed a custom time – keep custom btn active
+  }
+  const customBtn = document.querySelector('.mode-btn[data-time="custom"]');
+  // Cancelled – revert to the previous active mode button
+  if (customBtn && customBtn.classList.contains("active") && _prevActiveBtn && _prevActiveBtn !== customBtn) {
+    customBtn.classList.remove("active");
+    _prevActiveBtn.classList.add("active");
+  }
+});
+
 document.getElementById("setCustomTime").onclick = () => {
   const mins = parseInt(document.getElementById("customMinutes").value, 10);
-  if (!mins || mins <= 0) return;
+  if (isNaN(mins) || mins <= 0) return;
+
+  _customTimeConfirmed = true; // valid time confirmed – don't revert active btn on modal close
 
   bootstrap.Modal.getInstance(
     document.getElementById("customTimeModal")
   ).hide();
 
   stopTimer();
+
+  // Reset to countdown mode
+  sessionMode = false;
   totalTime = mins * 60;
   remaining = totalTime;
+  pauseCount = 0;
+  inactiveCount = 0;
+  sessionStartTime = null;
+
+  // Update active state on mode buttons
+  document.querySelectorAll(".mode-btn").forEach(b => b.classList.remove("active"));
+  const customBtn = document.querySelector('.mode-btn[data-time="custom"]');
+  if (customBtn) customBtn.classList.add("active");
+
+  // Hide finish button (only relevant in session mode)
+  document.getElementById("finishBtn")?.classList.add("d-none");
+
   updateDisplay();
 };
 

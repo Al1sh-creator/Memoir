@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,26 +14,27 @@
     <script src="../javascript/shared.js"></script>
     <script src="../javascript/auth.js"></script>
 </head>
+
 <body class="auth-body">
     <!-- ===============Doodle Layer============== -->
-<div class="doodle-layer">
-  <span class="doodle circle"></span>
-  <span class="doodle zigzag"></span>
-  <span class="doodle blob"></span>
-  <span class="doodle star"></span>
-   <span class="doodle circle"></span>
-  <span class="doodle zigzag"></span>
-  <span class="doodle blob"></span>
-  <span class="doodle star"></span>
-    <span class="doodle circle"></span>
-  <span class="doodle zigzag"></span>
-  <span class="doodle blob"></span>
-  <span class="doodle star"></span>
-</div>
+    <div class="doodle-layer">
+        <span class="doodle circle"></span>
+        <span class="doodle zigzag"></span>
+        <span class="doodle blob"></span>
+        <span class="doodle star"></span>
+        <span class="doodle circle"></span>
+        <span class="doodle zigzag"></span>
+        <span class="doodle blob"></span>
+        <span class="doodle star"></span>
+        <span class="doodle circle"></span>
+        <span class="doodle zigzag"></span>
+        <span class="doodle blob"></span>
+        <span class="doodle star"></span>
+    </div>
 
     <div class="container auth-container">
         <div class="row g-0 h-100 shadow-2xl rounded-5 overflow-hidden bg-white position-relative" id="authBox">
-            
+
             <div class="col-lg-6 d-flex flex-column position-relative z-2 bg-white">
                 <div class="p-5 h-100 d-flex flex-column justify-content-center">
                     <a href="landing.html" class="text-decoration-none text-muted mb-4 d-inline-block fw-bold">
@@ -47,12 +49,16 @@
                         <form id="loginFormData" novalidate>
                             <div class="mb-3">
                                 <label class="form-label small fw-bold">Email</label>
-                                <input type="email" id="loginEmail" class="form-control form-control-lg bg-light border-0" placeholder="Enter your email" required>
+                                <input type="email" id="loginEmail"
+                                    class="form-control form-control-lg bg-light border-0"
+                                    placeholder="Enter your email" required>
                                 <div class="invalid-feedback">Please enter a valid email address.</div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label small fw-bold">Password</label>
-                                <input type="password" id="loginPassword" class="form-control form-control-lg bg-light border-0" placeholder="Enter your password" required>
+                                <input type="password" id="loginPassword"
+                                    class="form-control form-control-lg bg-light border-0"
+                                    placeholder="Enter your password" required>
                                 <div class="invalid-feedback">Password is required.</div>
                             </div>
                             <div class="d-flex justify-content-between align-items-center mb-4">
@@ -64,12 +70,14 @@
                             </div>
                             <button type="submit" class="btn btn-color w-100 rounded-pill py-3 fw-bold hover-lift">
                                 <span id="loginBtnText">Log In</span>
-                                <div id="loginSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status"></div>
+                                <div id="loginSpinner" class="spinner-border spinner-border-sm ms-2 d-none"
+                                    role="status"></div>
                             </button>
                         </form>
                         <div class="text-center mt-4">
                             <span class="text-muted small">Don't have an account? </span>
-                            <a href="#" class="text-success fw-bold small text-decoration-none" onclick="toggleAuth('signup')">Create Account</a>
+                            <a href="#" class="text-success fw-bold small text-decoration-none"
+                                onclick="toggleAuth('signup')">Create Account</a>
                         </div>
                     </div>
 
@@ -81,27 +89,35 @@
                         <form id="signupFormData" novalidate>
                             <div class="mb-3">
                                 <label class="form-label small fw-bold">Full Name</label>
-                                <input type="text" id="signupName" class="form-control form-control-lg bg-light border-0" placeholder="Enter your name" required>
+                                <input type="text" id="signupName"
+                                    class="form-control form-control-lg bg-light border-0" placeholder="Enter your name"
+                                    required>
                                 <div class="invalid-feedback">Please enter your full name.</div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label small fw-bold">Email</label>
-                                <input type="email" id="signupEmail" class="form-control form-control-lg bg-light border-0" placeholder="Enter your email" required>
+                                <input type="email" id="signupEmail"
+                                    class="form-control form-control-lg bg-light border-0"
+                                    placeholder="Enter your email" required>
                                 <div class="invalid-feedback">Please enter a valid email address.</div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label small fw-bold">Password</label>
-                                <input type="password" id="signupPassword" class="form-control form-control-lg bg-light border-0" placeholder="Create a password" required minlength="6">
+                                <input type="password" id="signupPassword"
+                                    class="form-control form-control-lg bg-light border-0"
+                                    placeholder="Create a password" required minlength="6">
                                 <div class="invalid-feedback">Password must be at least 6 characters long.</div>
                             </div>
                             <button type="submit" class="btn btn-color w-100 rounded-pill py-3 fw-bold hover-lift">
                                 <span id="signupBtnText">Create Account</span>
-                                <div id="signupSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status"></div>
+                                <div id="signupSpinner" class="spinner-border spinner-border-sm ms-2 d-none"
+                                    role="status"></div>
                             </button>
                         </form>
                         <div class="text-center mt-4">
                             <span class="text-muted small">Already have an account? </span>
-                            <a href="#" class="text-success fw-bold small text-decoration-none" onclick="toggleAuth('login')">Log In</a>
+                            <a href="#" class="text-success fw-bold small text-decoration-none"
+                                onclick="toggleAuth('login')">Log In</a>
                         </div>
                     </div>
 
@@ -109,38 +125,44 @@
             </div>
 
             <div class="col-lg-6 d-none d-lg-block position-relative bg-success overflow-hidden">
-                <div class="position-absolute w-100 h-100 d-flex flex-column justify-content-center align-items-center text-white p-5 text-center z-2">
+                <div
+                    class="position-absolute w-100 h-100 d-flex flex-column justify-content-center align-items-center text-white p-5 text-center z-2">
                     <div class="doodle-layer opacity-50">
                         <span class="doodle circle border-white"></span>
                         <span class="doodle star border-white" style="top:20%; right:10%"></span>
                     </div>
-                    
+
                     <div id="loginText">
                         <i class="fa-solid fa-owl fs-1 mb-4"></i>
                         <h2 class="fw-bold mb-3">Welcome Back!</h2>
-                        <p class="lead text-white-50">"Success is the sum of small efforts, repeated day in and day out."</p>
+                        <p class="lead text-white-50">"Success is the sum of small efforts, repeated day in and day
+                            out."</p>
                     </div>
-                    
+
                     <div id="signupText" class="d-none">
                         <i class="bi bi-rocket-takeoff-fill fs-1 mb-4"></i>
-                        <h2 class="fw-bold mb-3">Join Project 2025</h2>
+                        <h2 class="fw-bold mb-3">Join Memoir</h2>
                         <p class="lead text-white-50">Your journey to better grades and lower stress starts here.</p>
                     </div>
                 </div>
-                <div class="position-absolute bottom-0 end-0 bg-white opacity-10 rounded-circle" style="width: 300px; height: 300px; transform: translate(30%, 30%);"></div>
-                <div class="position-absolute bottom-0 end-0 bg-white opacity-10 rounded-circle" style="width: 200px; height: 200px; transform: translate(-200%, -400%);"></div>
-                <div class="position-absolute bottom-0 end-0 bg-white opacity-10 rounded-circle" style="width: 50px; height: 50px; transform: translate(-80%, -1500%);"></div>
-                <div class="position-absolute bottom-0 end-0 bg-white opacity-10 rounded-circle" style="width: 30px; height: 30px; transform: translate(-900%, -500%);"></div>
+                <div class="position-absolute bottom-0 end-0 bg-white opacity-10 rounded-circle"
+                    style="width: 300px; height: 300px; transform: translate(30%, 30%);"></div>
+                <div class="position-absolute bottom-0 end-0 bg-white opacity-10 rounded-circle"
+                    style="width: 200px; height: 200px; transform: translate(-200%, -400%);"></div>
+                <div class="position-absolute bottom-0 end-0 bg-white opacity-10 rounded-circle"
+                    style="width: 50px; height: 50px; transform: translate(-80%, -1500%);"></div>
+                <div class="position-absolute bottom-0 end-0 bg-white opacity-10 rounded-circle"
+                    style="width: 30px; height: 30px; transform: translate(-900%, -500%);"></div>
             </div>
-            </div>
-            </div>
-
         </div>
+    </div>
+
+    </div>
     </div>
 
     <script>
         // Check if user is already authenticated
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             if (auth.redirectIfAuthenticated()) {
                 return; // User is already logged in, redirected
             }
@@ -319,9 +341,10 @@
 
         // Check URL params for ?mode=signup
         const urlParams = new URLSearchParams(window.location.search);
-        if(urlParams.get('mode') === 'signup') {
+        if (urlParams.get('mode') === 'signup') {
             toggleAuth('signup');
         }
     </script>
 </body>
+
 </html>
