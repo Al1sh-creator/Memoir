@@ -11,24 +11,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const subjectForm = document.getElementById('subjectForm');
     const subjectsGrid = document.getElementById('subjectsGrid');
 
-    // Default subjects matching the screenshot
-    const defaultSubjects = [
-        { name: "Mathematics", goal: 40, progress: 0 },
-        { name: "Physics", goal: 40, progress: 0 },
-        { name: "Chemistry", goal: 30, progress: 0 },
-        { name: "Biology", goal: 39, progress: 0 },
-        { name: "History", goal: 55, progress: 0 },
-        { name: "Literature", goal: 46, progress: 0 },
-        { name: "Computer Science", goal: 45, progress: 0 },
-        { name: "Economics", goal: 37, progress: 0 }
-    ];
-
     // 2. Load and Display Subjects
     const loadSubjects = () => {
-        // Load from local storage, or use defaults if empty
+        // Load from local storage
         let subjects = JSON.parse(localStorage.getItem(`memoir_subjects_${userId}`));
-        if (!subjects || subjects.length === 0) {
-            subjects = defaultSubjects;
+        if (!subjects) {
+            subjects = [];
             localStorage.setItem(`memoir_subjects_${userId}`, JSON.stringify(subjects));
         }
 
@@ -76,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const percent = goalHours > 0 ? Math.min(100, Math.round((totalHours / goalHours) * 100)) : 0;
 
             const card = document.createElement('div');
-            // Using col-lg-4 creates the 3-column grid shown in the image
+            // Using col-lg-4 creates the 3-column grid
             card.className = 'col-12 col-md-6 col-lg-4';
             card.innerHTML = `
                 <div class="card subject-card h-100" data-subject-index="${index}">
@@ -103,23 +91,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             `;
             subjectsGrid.appendChild(card);
-
-            // Make the entire card clickable to edit - REMOVED per user request
-            // const cardElement = card.querySelector('.subject-card');
-            // if (cardElement) {
-            //     cardElement.addEventListener('click', (e) => {
-            //         // Don't trigger if clicking delete button
-            //         if (!e.target.closest('.delete-btn')) {
-            //             window.editSubject(index);
-            //         }
-            //     });
-            // }
-
-
         });
     };
-
-
 
     // 6. Event Delegation for Interactions
     subjectsGrid.addEventListener('click', (e) => {

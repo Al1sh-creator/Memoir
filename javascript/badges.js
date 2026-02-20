@@ -1,9 +1,12 @@
 // Load data
+const currentUser = auth.getCurrentUser();
+const userId = currentUser ? currentUser.id : "guest";
+
 const earnedBadges =
-    JSON.parse(localStorage.getItem("earnedBadges")) || [];
+    JSON.parse(localStorage.getItem(`memoir_badges_${userId}`)) || [];
 
 const sessions =
-    JSON.parse(localStorage.getItem("sessions")) || [];
+    JSON.parse(localStorage.getItem(`memoir_sessions_${userId}`)) || [];
 
 // Helper: calculate focus streak
 function calculateFocusStreak(sessions) {
@@ -79,9 +82,9 @@ document.querySelectorAll(".badge-card").forEach(card => {
     const id = card.dataset.badgeId;
     const RARE_BADGES = ["streak_7", "marathon_day", "consistency_5"];
 
-if (RARE_BADGES.includes(id)) {
-  card.classList.add("rare");
-}
+    if (RARE_BADGES.includes(id)) {
+        card.classList.add("rare");
+    }
     const earned = earnedBadges.find(b => b.id === id);
 
     const status = card.querySelector(".badge-status");

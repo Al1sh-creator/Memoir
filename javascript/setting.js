@@ -128,7 +128,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-
   // Notifications
   if (reminderEl) {
     reminderEl.addEventListener("change", e => {

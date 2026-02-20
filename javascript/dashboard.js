@@ -28,25 +28,6 @@ class DashboardManager {
         const userId = this.currentUser.id;
         const userKey = `memoir_sessions_${userId}`;
 
-        // ── Migrate legacy sessions from old 'sessions' key ──────────────────
-        const legacyRaw = localStorage.getItem('sessions');
-        if (legacyRaw) {
-            try {
-                const legacy = JSON.parse(legacyRaw);
-                if (Array.isArray(legacy) && legacy.length > 0) {
-                    const existing = JSON.parse(localStorage.getItem(userKey) || '[]');
-                    const existingIds = new Set(existing.map(s => s.id || s.timestamp || s.createdAt));
-                    const toMerge = legacy.filter(s => !existingIds.has(s.id || s.timestamp || s.createdAt));
-                    if (toMerge.length > 0) {
-                        const merged = [...existing, ...toMerge];
-                        localStorage.setItem(userKey, JSON.stringify(merged));
-                        console.log(`[Dashboard] Migrated ${toMerge.length} legacy sessions into ${userKey}`);
-                    }
-                }
-            } catch (e) { /* ignore parse errors */ }
-        }
-        // ─────────────────────────────────────────────────────────────────────
-
         // Load sessions from user-specific localStorage key
         const raw = localStorage.getItem(userKey);
         const allSessions = JSON.parse(raw || '[]');
@@ -685,8 +666,6 @@ class DashboardManager {
     }
 
     checkAndAwardBadges() {
-        const earnedBadges = JSON.parse(localStorage.getItem('earnedBadges') || '[]');
-        const existingIds = new Set(earnedBadges.map(b => b.id));
         const newBadges = [];
         const now = new Date();
 

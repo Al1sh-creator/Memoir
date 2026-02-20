@@ -63,7 +63,7 @@ class AuthManager {
         localStorage.setItem('memoir_current_user', JSON.stringify(user));
 
         // Migrate legacy data to user-specific keys
-        this.migrateLegacyData(user.id);
+        // this.migrateLegacyData(user.id);
 
         // Apply user settings
         this.applyUserSettings();

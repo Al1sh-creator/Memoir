@@ -156,7 +156,7 @@
                         displayName: 'Alice'
                     },
                     stats: {
-                        totalSessions: 55, // Increased session count
+                        totalSessions: 55,
                         totalTime: 82000,
                         currentStreak: 10,
                         badges: ['streak_3', 'streak_7', 'consistency_5', 'focus_80']
@@ -248,20 +248,20 @@
                 }
             ];
 
-            // Create dummy sessions with realistic consecutive patterns
+            // to create dummy data with realistic data
             const sessions = [];
             const now = new Date();
             const subjectIds = subjects.map(s => s.id);
             const subjectNames = subjects.map(s => s.name);
 
-            // Helper function to get productivity label based on focus score
+            // helper function to get productivity label based on focus score
             function getProductivityLabel(score) {
                 if (score >= 75) return "Focused";
                 if (score >= 40) return "Average";
                 return "Distracted";
             }
 
-            // Helper to create a session
+            // helper to create a session
             function createSession(id, daysAgo, hourOfDay, subjectIndex, focusType, note = '') {
                 const sessionDate = new Date(now);
                 sessionDate.setDate(sessionDate.getDate() - daysAgo);
