@@ -1,4 +1,4 @@
-// Enhanced Dashboard Functionality for Athenify
+// Enhanced Dashboard Functionality for Memoir
 class DashboardManager {
     constructor() {
         this.currentUser = null;
@@ -126,7 +126,7 @@ class DashboardManager {
             });
         }
 
-        // Goal tabs - custom implementation since we're not using bootstrap pills
+        // Goal tabs - custom implementation
         const goalTabs = document.querySelectorAll('.goal-tab');
         goalTabs.forEach(tab => {
             tab.addEventListener('click', (e) => {
@@ -218,11 +218,9 @@ class DashboardManager {
     calculateConsecutiveStreak() {
         if (this.sessions.length === 0) return 0;
 
-        // Group sessions by date property (matches Calendar logic)
+        // Group sessions by date property
         const sessionsByDate = {};
         this.sessions.forEach(session => {
-            // Priority: Use existing session.date (which Calendar uses)
-            // Fallback: Calculate from timestamp (Local)
             let dateKey = session.date;
 
             if (!dateKey) {
@@ -239,7 +237,7 @@ class DashboardManager {
             sessionsByDate[dateKey].push(session);
         });
 
-        // Helper: Check if a date qualifies as a streak day (Matches Calendar Logic)
+        // Helper: Check if a date qualifies as a streak day
         const isStreakDay = (sessions) => {
             if (!sessions || sessions.length === 0) return false;
 
@@ -252,17 +250,7 @@ class DashboardManager {
 
         let streak = 0;
         const today = new Date();
-        // Check "Today" first. If today is NOT a streak day yet, check yesterday to continue streak.
-        // If today IS a streak day, count it.
 
-        // Actually, logic: count backwards from today.
-        // If today has qualified, day 0 counts. If not, maybe streak is from yesterday.
-        // But standard streak logic: if today is incomplete, streak doesn't break until tomorrow.
-        // Let's be simple: verify consecutive days starting from yesterday or today.
-
-        // Better Algorithm for Stability:
-        // Find the most recent qualifying day. If it's today or yesterday, the streak is alive.
-        // Count backwards from there.
 
         const dateKeys = Object.keys(sessionsByDate).sort().reverse(); // Newest first
         if (dateKeys.length === 0) return 0;
@@ -270,23 +258,16 @@ class DashboardManager {
         const todayKey = today.toISOString().split('T')[0];
         const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1);
         const yesterdayKey = yesterday.toISOString().split('T')[0];
-
-        // Check internal streak logic
-        // We iterate backwards from today.
         let currentCheck = new Date(today);
         let foundGap = false;
 
-        // Special case: If today isn't qualified yet, we don't kill the streak immediately if yesterday was good.
-        // But if we are counting "Consecutive Streak", usually we count qualified days.
-        // Let's stick to: Count backwards.
 
-        // Revised Loop:
         let consecutive = 0;
 
         for (let i = 0; i < 365; i++) {
             const d = new Date(today);
             d.setDate(d.getDate() - i);
-            // Use LOCAL date string construction to match Calendar logic
+            // Using LOCAL date string construction to match Calendar logic
             const y = d.getFullYear();
             const m = String(d.getMonth() + 1).padStart(2, '0');
             const day = String(d.getDate()).padStart(2, '0');
@@ -302,11 +283,8 @@ class DashboardManager {
                 }
             } else {
                 if (i === 0) {
-                    // Today is NOT good. Streak might be kept by yesterday.
-                    // Don't increment, just continue to check yesterday.
                     continue;
                 } else {
-                    // Break on any other day
                     break;
                 }
             }
@@ -457,16 +435,6 @@ class DashboardManager {
         const studyProgressEl = document.getElementById('studyProgressPercent');
         const timeElapsedEl = document.getElementById('timeElapsedPercent');
 
-        // Only update these if we are currently viewing this period's tab
-        // But since we update all periods, we need to know which tab is active? 
-        // Actually, the simplest way is to check if the current active tab matches 'period'.
-        // However, the elements #studyProgressPercent and #timeElapsedPercent are shared outside the tabs.
-        // So they should reflect the CURRENTLY ACTIVE tab.
-        // But this function loops through ALL periods.
-
-        // Better approach: This function updates the specific goal elements.
-        // We should have a separate handler for the shared elements, OR update them only when the tab is active.
-        // Let's check if the tab for this period is active.
         const activeTab = document.querySelector(`.goal-tab[data-period="${period}"].active`);
         if (activeTab) {
             if (studyProgressEl) {
@@ -746,15 +714,7 @@ class DashboardManager {
             const earnedBadges = JSON.parse(localStorage.getItem(`memoir_badges_${userId}`) || '[]');
             const updatedBadges = [...earnedBadges, ...newBadges];
             localStorage.setItem(`memoir_badges_${userId}`, JSON.stringify(updatedBadges));
-
-            // Optionally notify user (e.g., via toast or alert)
-            // For now, just log and ensure they appear in Recent Medals
             console.log('New Badges Earned:', newBadges);
-
-            // Update Auth/User Stats as well since auth.js syncs badges?
-            // auth.js: updateStats({ badges: ... })
-            // But auth.js likely reads from its own 'stats' object.
-            // Let's sync with auth if possible, but dashboard display uses 'earnedBadges' in localStorage.
         }
     }
 

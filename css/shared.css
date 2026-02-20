@@ -526,7 +526,6 @@ body.bg-light.dark-mode {
     border-left: 5px solid #3b82f6 !important;
 }
 
-/* PG1 specific overrides */
 .dark-mode .medal-section {
     background: linear-gradient(180deg, #1d4ed8 0%, #1e1e1e 100%) !important;
     color: #e4e4e7 !important;
